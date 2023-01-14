@@ -1,0 +1,68 @@
+<div class="headerActions">
+  <h3 style="float: left;"><i nz-icon nzType="file-done" nzTheme="outline"></i> Cadaver Transfer Permit </h3>
+  <button nz-button nzType="default" (click)="excel(); $event.preventDefault();" style="margin-right: 10px;">
+    <i nz-icon nzType="file-excel" nzTheme="outline"></i>
+    EXPORT TO EXCEL
+  </button>
+  <button nz-button nzType="primary"
+  [useExistingCss]="true" printSectionId="print-section" ngxPrint>
+  
+    <i nz-icon nzType="printer" nzTheme="outline"></i>
+    PRINT
+  </button>
+</div>
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <div class="printLayout printContent" id="print-section">
+    <div id="report-section">
+      <br><br><br>
+      <app-header-print></app-header-print>
+      <div style="text-align: center;"><h2>Cadaver Transfer Permit Transaction List</h2></div>
+      <div class="content" nz-col nzSpan="22" nzOffset="1">
+        <nz-table #basicTable [nzData]="listOfData" nzBordered  [nzFrontPagination]="false"
+        [nzShowPagination]="false" nzSize="small">
+
+          <thead>
+            <tr>
+              <th>Transaction #</th>
+              <th>Date</th>
+              <th>Applicant's Name</th>
+              <!-- <th>Examinations</th> -->
+              <th>Barangay</th>
+              <th>Status</th>
+              <th>Fees</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let data of basicTable.data;  let i = index">
+              <tr>
+
+                <td>{{data.form_trans_no}}</td>
+                <td>{{data.ctp_transaction_date | date: 'MM/dd/yyyy'}}</td>
+                <td>{{data.ctp_person_fullname}}</td>
+                <!-- <td>
+                  {{data.exams}}
+                </td> -->
+                <td>{{data.ctp_person_data?.brgy_name}}</td>
+
+                <td style="width: 5%;">
+                  <nz-tag >{{data.payment_status === 1  ? 'Paid' : 'Unpaid'}}</nz-tag>
+                </td>
+                <td>{{data.ctp_transaction_total_fee | currency:'PHP'}}</td>
+              </tr>
+            </ng-container>
+
+
+          </tbody>
+
+        </nz-table>
+      </div>
+    </div>
+    <div class="footDiv">
+      <app-footer-print  *ngIf="formSetting.show_footer == 'true'"></app-footer-print>
+    </div>
+  </div>
+  <div class="footDivPrint">
+    <app-footer-print  *ngIf="formSetting.show_footer == 'true'"></app-footer-print>
+  </div>
+</nz-spin>

@@ -1,0 +1,292 @@
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <nz-spin nzTip="Saving..." [nzSpinning]="saveLoading">
+    <div style="height: 100%;">
+      <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-anchor [nzShowInkInFixed]="false" >
+          <nz-page-header>
+            <nz-page-header-title>Person Setup</nz-page-header-title>
+            <nz-page-header-extra>
+              <!-- <button nz-button (click)="draft(); $event.preventDefault();">
+                <i nz-icon nzType="folder-open"></i>
+                Save as Draft
+              </button> -->
+              <button nz-button nzType="primary" (click)="cancel(); $event.preventDefault();" nzDanger>
+                <i nz-icon nzType="close"></i>
+                Cancel
+              </button>
+              <button nz-button nzType="primary">
+                <i nz-icon nzType="save"></i>
+                {{buttonTitle}}
+              </button>
+            </nz-page-header-extra>
+          </nz-page-header>
+        </nz-anchor>
+        
+        <nz-tabset nzType="card">
+          <nz-tab nzTitle="Transaction Form">
+            <nz-alert *ngIf="warningAlert" nzType="warning" nzShowIcon nzCloseable [nzMessage]="warning" style="margin-bottom: 10px;"></nz-alert>
+            <nz-card nzType="inner" nzTitle="Personal Information">
+    
+              <div nz-row [nzGutter]="24">
+    
+                <div nz-col [nzSpan]="4">
+
+                  <!-- <img [src]="imageUrl" alt="Person" style="width: 200px; height: auto;"> -->
+                <!-- <input type="file" #Image accept="image/*" (change)=" $event.preventDefault();" style="margin-top: 20px;"> -->
+            
+                  <nz-upload
+                  class="avatar-uploader"
+                  nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                  nzName="avatar"
+                  nzListType="picture-card"
+                  [nzShowUploadList]="false"
+                  [nzBeforeUpload]="beforeUpload"
+                  (nzChange)="handleChange($event)"
+                >
+                  <ng-container *ngIf="!avatarUrl">
+                    <i class="upload-icon" nz-icon [nzType]="loading ? 'loading' : 'plus'"></i>
+                    <div class="ant-upload-text">Upload</div>
+                  </ng-container>
+                  <img *ngIf="avatarUrl" [src]="avatarUrl" style="width: 100%" />
+                </nz-upload>
+        
+                </div>
+    
+                <div nz-col [nzSpan]="20">
+                  <nz-input-group>
+                    <p class="label">Full Name :</p>
+                    <div nz-row [nzGutter]="8">
+                      <div nz-col nzSpan="3">
+                        
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please input prefix!" nzExtra="(Prefix)">
+                            <nz-input-group>
+                              <input formControlName="prefix" nz-input placeholder="Prefix" />
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col nzSpan="6">
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please input your firstname!" nzExtra="(First Name)">
+                            <nz-input-group>
+                              <input formControlName="first_name" nz-input placeholder="First Name" />
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col nzSpan="6">
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please input your middle name!" nzExtra="(Middle Name)">
+                            <nz-input-group>
+                              <input formControlName="middle_name" nz-input placeholder="Middle Name" />
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col nzSpan="6">
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please input your last name!" nzExtra="(Last Name)">
+                            <nz-input-group>
+                              <input formControlName="last_name" nz-input placeholder="Last Name" />
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col nzSpan="3">
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please input suffix!" nzExtra="(Suffix)">
+                            <nz-input-group>
+                              <input formControlName="suffix" nz-input placeholder="Suffix" />
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                    </div>
+                  </nz-input-group>
+    
+                  <nz-input-group>
+                    <p class="label">Address :</p>
+                    <div nz-row [nzGutter]="8">
+                      <div nz-col nzSpan="6">
+                        <nz-form-item>
+                          <label formControlName="default_checked" (ngModelChange)="selectedDefault($event);" [(ngModel)]="checked" nz-checkbox style="padding-top: 5px; padding-right: 5px;"></label>
+                          <nz-form-control nzErrorTip="Please select province!" nzExtra="(Province)">
+                            <nz-input-group>
+                              <nz-select style="width: 100%;" formControlName="province_id" [(ngModel)]="selectedValue" nzAllowClear nzPlaceHolder="Select a province">
+                                <nz-option *ngFor="let list of provinceDropdown" nzLabel="{{list.province_name}}" nzValue="{{list.province_id}}"></nz-option>
+                              </nz-select>
+                            </nz-input-group>
+                            <!-- <nz-input-group>
+                              <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                                <input [readOnly]="true" formControlName="province" type="text" nz-input placeholder="Select a province" />
+                              </nz-input-group>
+                              <ng-template #suffixIconButton>
+                                <button nz-button (click)=" $event.preventDefault();" nzType="primary" nzSearch><i nz-icon nzType="select" nzTheme="outline"></i></button>
+                              </ng-template>
+                            </nz-input-group> -->
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col nzSpan="6">
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please select city/municipality!" nzExtra="(City/Municipality)">
+                            <nz-input-group>
+                              <nz-select style="width: 100%;" formControlName="citmun_id" [(ngModel)]="selectedCityMun" nzPlaceHolder="Select a city/municipality">
+                                <nz-option *ngFor="let list of citymunDropdown" nzLabel="{{list.city_mun_name}}" nzValue="{{list.city_mun_id}}"></nz-option>
+                              </nz-select>
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col nzSpan="6">
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please select barangay!" nzExtra="(Barangay)">
+                            <nz-input-group>
+                              <nz-select style="width: 100%;" formControlName="barangay_id" nzPlaceHolder="Select a barangay">
+                                <nz-option type="number" *ngFor="let list of barangayDropdown" nzLabel="{{list.brgy_name}}" nzValue="{{list.brgy_id}}"></nz-option>
+                              </nz-select>
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col nzSpan="6">
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please input street!" nzExtra="(Street)">
+                            <nz-input-group>
+                              <input formControlName="street" nz-input placeholder="Street" />
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                    </div>
+                  </nz-input-group>
+        
+                </div>
+              </div>
+    
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="5">Date of Birth</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input date!">
+                      <nz-input-group>
+                        <nz-date-picker style="width: 100%;" formControlName="birth_date" [(ngModel)]="date"></nz-date-picker>
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="5">Citizenship</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input citizenship!">
+                      <nz-input-group>
+                        <input formControlName="citizenship" nz-input placeholder="Citizenship" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="4">
+                  <nz-form-item>
+                    <nz-form-label>Height(cm)</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input height!">
+                      <nz-input-group>
+                        <input type="number" formControlName="height" nz-input placeholder="Height" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="4">
+                  <nz-form-item>
+                    <nz-form-label>Weight(cm)</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input weight!">
+                      <nz-input-group>
+                        <input type="number" formControlName="weight" nz-input placeholder="Weight" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+              
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="5">Gender</nz-form-label>
+                    <nz-form-control nzErrorTip="Please select gender!">
+                      <nz-input-group>
+                        <nz-select style="width: 100%;" formControlName="gender_id" nzPlaceHolder="Select a gender">
+                          <nz-option *ngFor="let list of genderDropdown" nzLabel="{{list.gender_name}}" nzValue="{{list.gender_id}}"></nz-option>
+                        </nz-select>
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="5">Birth Place</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input birth place!">
+                      <nz-input-group>
+                        <input formControlName="place_of_birth" nz-input placeholder="Place of Birth" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="4">T.I.N</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input tin!">
+                      <nz-input-group>
+                        <input formControlName="tin" nz-input placeholder="Tin" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+    
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="5">Civil Status</nz-form-label>
+                    <nz-form-control nzErrorTip="Please select civil status!">
+                      <nz-input-group>
+                        <nz-select style="width: 100%;" formControlName="civil_status_id" nzPlaceHolder="Select a civil status">
+                          <nz-option *ngFor="let list of civilStatusDropdown" nzLabel="{{list.civil_status_name}}" nzValue="{{list.civil_status_id}}"></nz-option>
+                        </nz-select>
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="5">Profession</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input profession!">
+                      <nz-input-group>
+                        <input formControlName="profession" nz-input placeholder="Profession" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="4">Religion</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input religion!">
+                      <nz-input-group>
+                        <input formControlName="religion" nz-input placeholder="Religion" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+    
+            </nz-card>
+    
+          </nz-tab>
+        </nz-tabset>
+      
+        
+    
+      </form>
+      
+    </div>
+  </nz-spin>
+</nz-spin>

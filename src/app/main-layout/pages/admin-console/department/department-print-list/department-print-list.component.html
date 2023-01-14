@@ -1,0 +1,44 @@
+<div class="headerActions">
+  <h3 style="float: left;"><i nz-icon nzType="file-done" nzTheme="outline" style="color: #1890FF"></i> Persons List</h3>
+  <button nz-button nzType="default" (click)="excel(); $event.preventDefault();" style="margin-right: 10px;">
+    <i nz-icon nzType="file-excel" nzTheme="outline" style="color: #008141"></i> 
+    EXPORT TO EXCEL
+  </button>
+  <button nz-button nzType="primary" (click)="print(); $event.preventDefault();">
+    <i nz-icon nzType="printer" nzTheme="outline"></i>
+    PRINT
+  </button>
+</div>
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <div class="printLayout" id="report-section">
+    <div class="printContent" style="height: 100vh;">
+      <app-header-print></app-header-print>
+      <div style="text-align: center;"><h2>List of Departments</h2></div>
+      <div nz-row [nzGutter]="32" style="align-content: center;">
+      <div nz-col nzSpan="24" class="content">
+        <nz-table class="tbl" #basicTable [nzData]="listOfData" [nzFrontPagination]="false" nzBordered nzSize="small">
+          <thead>
+            <tr>
+              <th style="text-align: center;">Code</th>
+              <th style="text-align: center;">Deparment Name</th>
+              <th style="text-align: center;">Department Head</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let data of basicTable.data">
+              <tr>
+                <td>{{data.dept_code}}</td>
+                <td>{{data.dept_name}}</td>
+                <td>{{data.dept_head}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+    </div> 
+     <div class="foot">
+      <app-footer-print></app-footer-print>
+    </div>
+  </div>
+</nz-spin>

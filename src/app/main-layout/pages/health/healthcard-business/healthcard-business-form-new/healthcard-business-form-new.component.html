@@ -1,0 +1,290 @@
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <nz-spin nzTip="Saving..." [nzSpinning]="saveLoading">
+    <div style="height: 100%;">
+      <form nz-form [formGroup]="validateForm" (ngSubmit)="showConfirm(validateForm.value);$event.preventDefault()"
+
+      >
+        <nz-anchor [nzShowInkInFixed]="false" >
+          <nz-page-header>
+            <nz-page-header-title>Health Card - Business</nz-page-header-title>
+            <nz-page-header-extra>
+              <button nz-button nzType="primary" (click)="cancel(); $event.preventDefault();" nzDanger>
+                <i nz-icon nzType="close"></i>
+                Cancel
+              </button>
+              <button nz-button nzType="primary"
+              [disabled]="saveBtn"
+              >
+                <i nz-icon nzType="save"></i>
+                {{buttonTitle}}
+              </button>
+
+            </nz-page-header-extra>
+          </nz-page-header>
+        </nz-anchor>
+
+        <nz-tabset nzType="card" >
+          <nz-tab nzTitle="Application Details" *ngIf="!isEdit">
+            <div nz-col="24">
+              <div nz-row [nzGutter]="10">
+                <div nz-col [nzSpan]="10">
+                  <nz-card nzTitle="Business Details">
+                    <nz-descriptions [nzColumn]="1" nzBordered>
+                      <nz-descriptions-item nzTitle="Owner" [nzSpan]="1">
+                        {{owner}}
+                      </nz-descriptions-item>
+                      <nz-descriptions-item nzTitle="Business Name" [nzSpan]="1">
+                        {{business_name}}
+                      </nz-descriptions-item>
+                      <nz-descriptions-item nzTitle="Trade Name" [nzSpan]="1">
+                        {{trade_name}}
+                      </nz-descriptions-item>
+                      <nz-descriptions-item nzTitle="Type of Business" [nzSpan]="1">
+                        {{type_of_business}}
+                      </nz-descriptions-item>
+                      <nz-descriptions-item nzTitle="Business Address" [nzSpan]="1">
+                        {{business_address}}
+                      </nz-descriptions-item>
+                    </nz-descriptions>
+                  </nz-card>
+                </div>
+                <div nz-col [nzSpan]="14">
+
+                  <nz-card nzTitle="Person Details" [nzExtra]="extraTemplate">
+                    <ng-container *ngIf="p_stats == false">
+                      <nz-empty></nz-empty>
+                    </ng-container>
+
+                    <ng-container *ngIf="p_stats == true">
+                      <nz-descriptions [nzColumn]="1" nzBordered >
+                        <nz-descriptions-item nzTitle="Full Name" [nzSpan]="1">
+                          {{p_name+" "}}
+                          <nz-tag nzColor="success" *ngIf="owner_id == p_id">Owner</nz-tag>
+                        </nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Address" [nzSpan]="1">
+                          {{p_address}}
+                        </nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Date of Birth" [nzSpan]="1">
+                          {{p_bdate | date: 'MM/dd/yyyy'}}
+                        </nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Place of Birth" [nzSpan]="1">
+                          {{p_bplace}}
+                        </nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Civil Status" [nzSpan]="1">
+                          {{p_cs}}
+                        </nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Citizenship" [nzSpan]="1">
+                          {{p_ctzn}}
+                        </nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Gender" [nzSpan]="1">
+                          {{p_gender}}
+                        </nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Profession" [nzSpan]="1">
+                          {{p_prof}}
+                        </nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Religion" [nzSpan]="1">
+                          {{p_religion}}
+                        </nz-descriptions-item>
+                      </nz-descriptions>
+                    </ng-container>
+                  </nz-card>
+                  <ng-container formGroupName="hc_requestor">
+                    <nz-card>
+                      <div nz-row [nzGutter]="24">
+                        <div nz-col [nzSpan]="24">
+                          <nz-form-item nz-row >
+                            <nz-form-control>
+                              <label nz-checkbox formControlName="agree" (ngModelChange)="addRequestor($event)">
+                                <span>
+                                  The Applicant is the requestor
+                                  <a></a>
+                                </span>
+                              </label>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                          <div nz-col [nzSpan]="12">
+                            <nz-form-label>Requestor's Name</nz-form-label>
+                          <nz-form-item>
+                            <nz-form-control nzErrorTip="!">
+                              <nz-input-group>
+                                <input [readonly]="checked" formControlName="requestor_name" nz-input placeholder="Requestor's Name" />
+                              </nz-input-group>
+                            </nz-form-control>
+                          </nz-form-item>
+                          </div>
+
+                          <div nz-col [nzSpan]="12">
+                            <nz-form-label>Remarks</nz-form-label>
+                          <nz-form-item>
+                            <nz-form-control nzErrorTip="!">
+                              <nz-input-group>
+                                <textarea formControlName="remarks" nz-input placeholder="Remarks"></textarea>
+                              </nz-input-group>
+                            </nz-form-control>
+                          </nz-form-item>
+                          </div>
+
+                      </div>
+                    </nz-card>
+                  </ng-container>
+                </div>
+
+              </div>
+            </div>
+          </nz-tab>
+          <nz-tab nzTitle="Medical Examinations">
+            <nz-alert *ngIf="err_res" nzBanner nzType="error" [nzMessage]="err_message"></nz-alert>
+            <div nz-row [nzGutter]="24" id="medical_info">
+
+              <div nz-col [nzSpan]="6">
+                <nz-card>
+                  <nz-input-group>
+                    <nz-form-label nzRequired>Select Health Examination</nz-form-label>
+                    <nz-form-item>
+
+                      <nz-form-control nzErrorTip="Please select Medical Exam Tittle!" >
+                        <nz-input-group>
+                          <nz-select style="width: 100%;" formControlName="med_exam_id" nzPlaceHolder="Medical Exam Tittle">
+                            <nz-option *ngFor="let lists of listOfMedExam" nzLabel="{{lists.lab_exam_type}}" nzValue="{{lists.lab_exam_id}}"></nz-option>
+                          </nz-select>
+                        </nz-input-group>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </nz-input-group>
+                  </nz-card>
+              </div>
+
+              <div  nz-col [nzSpan]="18">
+                <nz-card>
+                  <div nz-row [nzGutter]="24">
+                      <div nz-col [nzSpan]="12">
+                        <nz-form-label nzRequired>Examiner's Name</nz-form-label>
+                        <nz-form-item>
+
+                            <nz-form-control nzErrorTip="Please enter Examiner's Name (ex. Doc. Dela Cruz)!">
+                              <nz-input-group>
+                                <input formControlName="examiner_name" nz-input placeholder="Please Enter Examiner's Name (ex. Doc. Juan Dela Cruz)." (blur)="checkVal($event)" nzRequired />
+                              </nz-input-group>
+                            </nz-form-control>
+                          </nz-form-item>
+                      </div>
+
+                      <div nz-col [nzSpan]="6">
+                        <nz-form-label nzRequired>Examination Date</nz-form-label>
+                        <nz-form-item>
+
+                          <nz-form-control nzErrorTip="Please input date!">
+                            <nz-input-group>
+                              <nz-date-picker style="width: 100%;" formControlName="examination_date" [(ngModel)]="date"></nz-date-picker>
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+
+
+                      <div nz-col [nzSpan]="24">
+                        <nz-form-label nzRequired>Address</nz-form-label>
+                        <nz-form-item>
+
+                          <nz-form-control nzErrorTip="Please input Address!">
+                            <nz-input-group>
+                              <input formControlName="examination_address" nz-input placeholder="Laboratory Address" (blur)="checkVal($event)" />
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+
+                  </div>
+
+                  <div nz-row [nzGutter]="24">
+
+                      <div nz-col [nzSpan]="12">
+                        <nz-form-label nzRequired>Findings</nz-form-label>
+                        <nz-form-item>
+
+                        <nz-form-control nzErrorTip="Please Enter health examination findings!" >
+                          <nz-input-group>
+                            <!-- <input formControlName="examiner_finding" nz-input placeholder="Examiner" /> -->
+                            <textarea rows="4" formControlName="examination_finding" nz-input placeholder="Please Enter health examination findings."></textarea>
+                          </nz-input-group>
+                        </nz-form-control>
+                      </nz-form-item>
+                      </div>
+
+                      <div nz-col  [nzSpan]="12">
+                        <nz-form-label >Cause of Illness</nz-form-label>
+                        <nz-form-item>
+
+                        <nz-form-control nzErrorTip="Please enter details about the cause of illness!" >
+                          <nz-input-group>
+                            <!-- <input formControlName="examiner_finding" nz-input placeholder="Examiner" /> -->
+                            <textarea rows="4" formControlName="examination_cause" nz-input placeholder="Please enter details about the cause of illnes."></textarea>
+                          </nz-input-group>
+                        </nz-form-control>
+                      </nz-form-item>
+                      </div>
+
+                  </div>
+                  <div nzOrientation="right" style="text-align: end;">
+                    <button nz-button nzType="primary" nzGhost
+                    [disabled]="!validateForm.valid"
+                    (click)="addNewExamRecored($event); $event.preventDefault()"
+                    ><i nz-icon nzTheme="outline" ></i>Add New Examination Record</button>
+                  </div>
+                </nz-card>
+              </div>
+
+                <!-- EXAMINATION TABLES -->
+                <nz-divider nzOrientation="right"></nz-divider>
+                  <div nz-col [nzSpan]="24" >
+                    <nz-card style="border-style: solid; border-color: darkolivegreen; border-radius: 1px;">
+
+                        <h2>Medical Exam</h2>
+                        <nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+                          <nz-table nzBordered #basicTable nzSize="small" [nzScroll]="{ y: '45%' }">
+                            <thead style="border-style: solid; border-color:cadetblue; border-radius:.3rem;">
+                              <tr>
+                                <th>Date</th>
+                                <th>Medical Examiner</th>
+                                <th>Findings</th>
+                                <th>Cause of illness</th>
+                                <th>Examination location</th>
+                                <th>Action <i nz-icon></i></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            <ng-container *ngFor="let data_trans of this.medExamArray().controls; let en = index">
+                                <tr>
+                                  <td>{{  data_trans.value.lab_exam_date | date: 'MM/dd/yyyy'}}</td>
+                                  <td>{{  data_trans.value.examiner_name}}</td>
+                                  <td>{{  data_trans.value.lab_exam_result}}</td>
+                                  <td>{{  data_trans.value.lab_exam_cause}}</td>
+                                  <td>{{  data_trans.value.lab_exam_place}}</td>
+                                  <td>
+                                    <button class="actionDelete" nz-button nzType="text" (click)="delete_exam($event,en)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+
+                                  </td>
+                                </tr>
+                                <!-- show examination results -->
+                            </ng-container>
+                          </tbody>
+                          </nz-table>
+                        </nz-spin>
+                    </nz-card>
+                  </div>
+                </div>
+          </nz-tab>
+        </nz-tabset>
+      </form>
+    </div>
+  </nz-spin>
+</nz-spin>
+
+<ng-template #extraTemplate>
+  <button nz-button nzShape="round" (click)="showPersonList($event); $event.preventDefault();">
+    <i nz-icon [nzType]="p_btn_icon"></i>
+    {{p_btn}}
+  </button>
+</ng-template>

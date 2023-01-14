@@ -1,0 +1,225 @@
+
+<nz-spin [nzSpinning]="loading">
+  <div style="height: 100%;">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
+      <nz-anchor [nzShowInkInFixed]="false">
+        <nz-page-header>
+          <nz-page-header-title>Rental Billing </nz-page-header-title>
+          <nz-page-header-extra>
+           
+            <button class="button-post" [disabled]="!param || recordStatus == 'Posted'" nzType="primary" nz-button (click)="postRecord();$event.preventDefault()" >
+              <i nz-icon nzType="check" nzTheme="outline"></i>
+              Post
+            </button>
+            <button nz-button (click)="cancel($event);" nzType="primary" nzDanger>
+              <i nz-icon nzType="close"></i>
+              Cancel            </button>
+            <button  nz-button nzType="primary" [nzLoading]="loading" class="button-form" [disabled]="!validateForm.valid || recordStatus == 'Posted' ">
+              <i nz-icon nzType="save"></i>
+              Save & Exit
+            </button>
+          </nz-page-header-extra>
+        </nz-page-header>
+      </nz-anchor>
+  
+      <nz-card nzType="inner" nzBorderless nzTitle="{{title}}">
+      <div nz-row [nzGutter]="32">
+        <div nz-col nzSpan="10">
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Billing Date</nz-form-label>
+          <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+            <nz-date-picker [nzFormat]="'MM/dd/yyyy'" formControlName="billing_date" nz-input ></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="12" nzRequired>Billing No.</nz-form-label>
+          <nz-form-control  [nzSm]="5" [nzXs]="24"  >
+            <nz-input-group>
+              <input type="text" nz-input formControlName="billing_no" style="text-transform: uppercase;" placeholder="e.g. BLL-0123-001"  />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="12" nzRequired>Property</nz-form-label>
+          <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+            <nz-input-group nzSearch  [nzAddOnAfter]="browseButton">
+              <input type="text" [readonly]="true" nz-input formControlName="property_name" style="text-transform: uppercase;" placeholder=""  />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+      </div>
+      <div nz-col nzSpan="2">
+
+      </div>
+      <div nz-col nzSpan="10">
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Due Date</nz-form-label>
+          <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+            <nz-date-picker [nzFormat]="'MM/dd/yyyy'" formControlName="due_date" nz-input ></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="12">Rent Amount</nz-form-label>
+          <nz-form-control  [nzSm]="5" [nzXs]="24"  >
+            <nz-input-group>
+              <input type="text" [readonly]="true" nz-input formControlName="bill_amount"   [currencyCode]="' '" mvndrMatCurrencyFormat
+              [allowNegative]="false" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="12">Tenant</nz-form-label>
+          <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+            <nz-input-group >
+              <input type="text" [readonly]="true" nz-input formControlName="tenant_name" style="text-transform: uppercase;" placeholder=""  />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+        </div>
+      </nz-card>
+      <nz-divider *ngIf="validateForm.value.property_id"></nz-divider>
+      <nz-page-header *ngIf="validateForm.value.property_id" style="padding-bottom: 0px !important;">
+        <nz-page-header-title>Utility Billing</nz-page-header-title>
+      </nz-page-header>
+
+      <nz-card *ngIf="validateForm.value.property_id" style="padding: 0px !important" nzBorderless nzTitle="{{title}}">
+        <div nz-row [nzGutter]="32" >
+          <div nz-col nzSpan="10" formGroupName="billing_water">
+            
+          <nz-tag nzColor="processing" style="font-size: 18px;">Water</nz-tag>
+            <div style="margin-top: 10px">
+              <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="12">Date Covered</nz-form-label>
+                <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+                  <nz-range-picker [nzFormat]="'MM/dd/yyyy'" style="width:100%" [(ngModel)]="waterDate" [ngModelOptions]="{standalone:true}" (ngModelChange)="waterRange($event)"></nz-range-picker>
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="12">Reading (cu.m)</nz-form-label>
+                <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+                  <nz-input-group nzCompact>
+                    <input type="text" nz-input formControlName="prev_reading"  (blur)="computeWater()" placeholder="Previous" style="width:45%; text-align: center;" />
+                    <input
+                      type="text"
+                      disabled
+                      nz-input
+                      placeholder="~"
+                      class="demo-input-split"
+                      style="width: 10%; border-left: 0px; border-right: 0px; pointer-events: none; background-color: rgb(255, 255, 255);"
+                    />
+                    <input type="text" formControlName="curr_reading"  (blur)="computeWater()" style="width:45%; text-align: center;" nz-input placeholder="Current" class="demo-input-right" />
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="12">Consumption (cu.m)</nz-form-label>
+                <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+                  <nz-input-group >
+                    <input type="text" [readonly]="true" nz-input formControlName="consumption" style="text-align: right;" placeholder=""  />
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="12">Rate/cu.m</nz-form-label>
+                <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+                  <nz-input-group >
+                    <input [readonly]="true"  type="text" nz-input formControlName="rateper" style="text-align: right;" placeholder=""  [currencyCode]="' '" mvndrMatCurrencyFormat
+                    [allowNegative]="false"   />
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="12">Amount</nz-form-label>
+                <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+                  <nz-input-group >
+                    <input [readonly]="true"  type="text" nz-input formControlName="rate" style="text-align: right;" placeholder=""  [currencyCode]="' '" mvndrMatCurrencyFormat
+                    [allowNegative]="false"  />
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+
+
+            </div>
+          </div>
+          <div nz-col nzSpan="2"></div>
+          <div nz-col nzSpan="10" formGroupName="billing_electricity">
+            
+            <nz-tag nzColor="error" style="font-size: 18px;">Electricity</nz-tag>
+            <div style="margin-top: 10px">
+            <nz-form-item>
+              <nz-form-label [nzSm]="6" [nzXs]="12">Date Covered</nz-form-label>
+              <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+                <nz-range-picker [nzFormat]="'MM/dd/yyyy'" style="width:100%" [(ngModel)]="electDate" [ngModelOptions]="{standalone:true}" (ngModelChange)="electricityRange($event)"></nz-range-picker>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label [nzSm]="6" [nzXs]="12">Reading (kWh)</nz-form-label>
+              <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+                <nz-input-group nzCompact>
+                  <input type="text" nz-input formControlName="prev_reading"  (blur)="computeElectric()" placeholder="Previous" style="width:45%; text-align: center;" />
+                  <input
+                    type="text"
+                    disabled
+                    nz-input
+                    placeholder="~"
+                    class="demo-input-split"
+                    style="width: 10%; border-left: 0px; border-right: 0px; pointer-events: none; background-color: rgb(255, 255, 255);"
+                  />
+                  <input type="text"  style="width:45%; text-align: center" (blur)="computeElectric()"  formControlName="curr_reading" nz-input placeholder="Current" class="demo-input-right" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label [nzSm]="6" [nzXs]="12">Consumption (kWh)</nz-form-label>
+              <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+                <nz-input-group >
+                  <input type="text" [readonly]="true" nz-input formControlName="consumption" style="text-align: right;" placeholder=""  />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label [nzSm]="6" [nzXs]="12">Rate/kWh</nz-form-label>
+              <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+                <nz-input-group >
+                  <input [readonly]="true" type="text" nz-input formControlName="rateper" style="text-align: right;" placeholder=""   [currencyCode]="' '" mvndrMatCurrencyFormat
+                  [allowNegative]="false" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label [nzSm]="6" [nzXs]="12">Amount</nz-form-label>
+              <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+                <nz-input-group >
+                  <input [readonly]="true"  type="text" nz-input formControlName="rate" style="text-align: right;" placeholder=""  [currencyCode]="' '" mvndrMatCurrencyFormat
+                  [allowNegative]="false"  />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+
+
+            </div>
+
+          </div>
+          </div>
+       </nz-card>
+    </form>
+  </div>
+</nz-spin>
+<ng-template #browseButton>
+  <button nz-button nzType="primary" nzSearch (click)="browseProperty();$event.preventDefault()">Browse</button>
+</ng-template>

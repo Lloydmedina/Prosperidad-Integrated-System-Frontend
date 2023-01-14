@@ -1,0 +1,76 @@
+<div style="height: 100%;">
+    <nz-anchor [nzShowInkInFixed]="false">
+      <nz-page-header>
+        <nz-page-header-title>Node Sequencer</nz-page-header-title>
+        <nz-page-header-extra>
+          <button nz-button nzType="primary" class="button-form" (click)="submit()">
+            <i nz-icon nzType="save"></i>
+            Save & Exit
+          </button>
+        </nz-page-header-extra>
+      </nz-page-header>
+    </nz-anchor>
+
+    <nz-card nzType="inner" nzBorderless>
+      <div style="width: 100%;text-align: center;"><i><h4>Drag and Drop to arrange Node Sequence</h4></i></div>
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+          <div style="width:100%;text-align:center"><h2>Parent</h2></div>
+          <nz-table #basicTable [nzPageSize]="20" nzSize="default" [nzData]="parentList" nzBordered [nzShowPagination]="false">
+            <thead>
+              <tr>
+                <th  style="background-color: #1890FF"></th>
+              </tr>
+            </thead>
+            <tbody class="parent"  cdkDropList (cdkDropListDropped)="parentDrop($event)">
+              <tr *ngFor="let data of parentList"   (click)="parentSelect(data)" cdkDrag>
+                <td>{{data.form_name}}</td>
+              </tr>
+            </tbody>
+          
+            
+          </nz-table>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <div style="width:100%;text-align:center"><h2>Children</h2></div>
+          <nz-table  #basicTable  [nzPageSize]="20" [nzData]="childrenList" nzBordered [nzShowPagination]="false">
+            <thead>
+              <tr>
+                <th style="background-color: #1890FF"></th>
+              </tr>
+            </thead>
+            <tbody class="child" cdkDropList (cdkDropListDropped)="childDrop($event)">
+              <tr *ngFor="let data of childrenList"   (click)="childSelect(data)" cdkDrag>
+                <td>{{data.form_name}}</td>
+              </tr>
+            </tbody>
+          
+            
+          </nz-table>
+
+        </div>
+
+        <div  nz-col [nzSpan]="8">
+
+          <div style="width:100%;text-align:center"><h2>Grandchildren</h2></div>
+          <nz-table   #basicTable  [nzPageSize]="20" [nzData]="grandChildrenList" nzBordered [nzShowPagination]="false">
+            <thead>
+              <tr>
+                <th style="background-color: #1890FF"></th>
+              </tr>
+            </thead>
+            <tbody class="gchild" cdkDropList (cdkDropListDropped)="grandChildDrop($event)">
+              <tr *ngFor="let data of grandChildrenList"    cdkDrag>
+                <td>{{data.form_name}}</td>
+              </tr>
+            </tbody>
+          
+            
+          </nz-table>
+
+        </div>
+      </div>
+    </nz-card>
+
+
+</div>

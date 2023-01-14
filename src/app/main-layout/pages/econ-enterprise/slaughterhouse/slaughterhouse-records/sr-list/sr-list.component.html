@@ -1,0 +1,31 @@
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <nz-table #basicTable [nzData]="listOfData" nzBordered [nzTitle]="dateFilter" nzSize="small" nzShowPagination nzShowSizeChanger [nzPageSize]="15" nzShowQuickJumper>
+    <thead>
+      <tr class="content-table-head">
+        <th class="thClass">Transaction Date</th>
+        <th class="thClass">Status</th>
+        <th class="thClass">Action</th>
+      </tr>
+    </thead>
+    <tbody class="content-table-body">
+      <ng-container *ngFor="let data of basicTable.data; let i = index;">
+        <tr>
+          <td>{{data.transaction_date | date:'mediumDate'}}</td>
+          <td *ngIf="data.status == 'Active'"><nz-tag [nzColor]="'#2799FF'">{{data.status}}</nz-tag></td>
+          <td *ngIf="data.status == 'Deleted'"><nz-tag [nzColor]="'#f50'">{{data.status}}</nz-tag></td>
+          <td>
+            <button nz-tooltip nzTooltipTitle="Edit" class="actionEdit" nz-button nzType="text" (click)="edit(data.main_id)"><i nz-icon nzType="form" nzTheme="outline"></i></button>
+            <button nz-tooltip nzTooltipTitle="Delete" class="actionDelete" nz-button nzType="text" (click)="delete(data)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+            <button nz-tooltip nzTooltipTitle="Print" class="actionPrint" nz-button nzType="text" (click)="print(data)"><i nz-icon nzType="printer" nzTheme="outline"></i></button>
+          </td>
+        </tr>
+        
+      </ng-container>
+    </tbody>
+
+    <ng-template #dateFilter>
+      <app-date-filter></app-date-filter>
+    </ng-template>
+    
+  </nz-table>
+</nz-spin>

@@ -1,0 +1,73 @@
+
+<h2>Cumulative Data - Person</h2>
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <nz-table #basicTable [nzData]="listOfData_person" nzBordered nzFooter="Footer" [nzTitle]="dateFilter" nzSize="small">
+    <thead>
+    <tr>
+        <th>Birth Date</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Middle Name</th>
+        <th>Address</th>
+        <th>Contact #</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{data.birth_date | date:'mediumDate'}}</td>
+        <td>{{data.first_name}}</td>
+        <td>{{data.last_name}}</td>
+        <td>{{data.middle_name}}</td>
+        <td>Lapaz, Agusan Del Sur</td>
+        <td>{{data.contact_no}}</td>
+        <td>
+          <button nz-button nzType="primary" (click)="showConfirm(data.person_guid, data.last_name,data.first_name,data.middle_name)">Select</button>
+
+        </td>
+      </tr>
+    </tbody>
+
+    <ng-template #dateFilter>
+      <app-person-filter (valueChange)="search($event)" (clearChange)="clear($event)" (selectChange)="select($event)"></app-person-filter>
+      <!-- <app-date-filter></app-date-filter> -->
+    </ng-template>
+
+  </nz-table>
+</nz-spin>
+
+
+<nz-drawer
+      nzMaskClosable =false
+      [nzWidth]="700"
+      nzSize='large'
+      nzSize="large"
+      [nzVisible]="visible"
+      nzPlacement="right"
+      nzTitle="Exhumation Permit Record"
+      (nzOnClose)="close()"
+    >
+      <ng-container *nzDrawerContent>
+       <div nz-col nzSpan="24">
+          <div nz-row>
+            <nz-collapse nzCard nzAccordion nz-col nzSpan="24">
+              <nz-collapse-panel
+              *ngFor="let record of data_transs"
+              nzHeader="{{record.transaction_date | date:'mediumDate'}}"
+              [nzActive]="record.active">
+              <nz-descriptions nzTitle="Exhumation Permit Details">
+                <nz-descriptions-item nzTitle="Permit Id" [nzSpan]="3">{{record.form_trans_no}}</nz-descriptions-item>
+
+              </nz-descriptions>
+              </nz-collapse-panel>
+            </nz-collapse>
+          </div>
+        </div>
+      </ng-container>
+    </nz-drawer>
+    <ng-template>
+      <button nz-button nzType="default" (click)="close()">Cancel</button>
+      &nbsp;
+      <button nz-button nzType="primary" (click)="close()">OK</button>
+    </ng-template>
+

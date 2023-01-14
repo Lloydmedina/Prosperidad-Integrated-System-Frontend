@@ -1,0 +1,152 @@
+.printLayout {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  box-shadow: 2px 2px 4px 2px #888888;
+}
+
+.tabsets {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}
+
+.printContent {
+  padding: 40px;
+}
+
+.content {
+  // margin-top: 30px;
+  border: 2px solid #0F4252;
+}
+
+.contentBack {
+  margin-top: 20px;
+}
+
+@media print {
+  .content-table-head {
+    font-size: 12px !important;
+  }
+  .content-table-body {
+    font-size: 12px !important;
+  }
+  .printContent {
+    padding: 0;
+  }
+  .content {
+    margin-top: 0;
+  }
+  .dafacLabel {
+    font-size: 12px !important;
+  }
+  .No-twenty-four {
+    font-size: 11px;
+  }
+  #nep {
+    width: 100px !important;
+  }
+
+  ::ng-deep .ant-descriptions-row > td{
+    padding-bottom: 9px !important;
+  }
+
+  ::ng-deep .ant-checkbox {
+    border: 1px solid black !important;
+  }
+  .row-24 {
+    margin-top: -20px;
+  }
+}
+
+#nep {
+  width: 150px;
+}
+
+.headerActions {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  text-align: right;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.border {
+  width: 95%;
+  border: 1px solid black;
+  padding: 2px;
+}
+
+.panel {
+  text-align: center; 
+  background-color: #0F4252; 
+  color: white;
+  font-weight: 500;
+}
+
+.dafacLabel {
+  color: #0F4252 !important; 
+  width: 120px;
+  font-weight: bold;
+}
+
+.dafacLabel2 {
+  color: #0F4252 !important; 
+  width: 170px;
+  font-weight: bold;
+}
+
+.tableLabel {
+  text-align: center !important; 
+  color: #393A34 !important; 
+  background: #38A3BB !important; 
+  font-weight: bold !important;
+  border: 1px solid gray !important;
+}
+
+.panelBottom {
+  text-align: center; 
+  background-color: #5B0B32; 
+  color: white;
+  font-weight: 500;
+}
+
+.headerMarginTop {
+  margin-top: 20px;
+}
+
+.dataPrivacy {
+  background: #E68AA1;
+  border: 1px solid gray;
+}
+
+.signatureLabel {
+  border-top: 1px solid gray;
+  font-weight: bold;
+  height: 50px;
+}
+
+th {
+  border-top: 1px solid black !important;
+  border-left: 1px solid black !important;
+  text-align: center !important;
+  border-right: 1px solid black !important;
+}
+
+td {
+  border-top: 1px solid black !important;
+  border-left: 1px solid black !important;
+  border-right: 1px solid black !important;
+}
+
+tr:last-child td {
+  border-bottom: 1px solid black !important;
+}
+
+.ant-table-content {
+border: 1px solid black !important;
+}

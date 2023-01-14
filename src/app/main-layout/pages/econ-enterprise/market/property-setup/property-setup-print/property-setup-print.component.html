@@ -1,0 +1,126 @@
+<div class="headerActions">
+  <h3 style="float: left;"><i nz-icon nzType="file-done" nzTheme="outline" style="color: #1890FF"></i>Fees & Charges List</h3>
+  <button nz-button nzType="default" (click)="excel(); $event.preventDefault();" style="margin-right: 10px;">
+    <i nz-icon nzType="file-excel" nzTheme="outline" style="color: #008141"></i> 
+    EXPORT TO EXCEL
+  </button>
+  <button nz-button nzType="primary" [useExistingCss]="true" printSectionId="report-section" #print ngxPrint>
+    <i nz-icon nzType="printer" nzTheme="outline"></i>
+    PRINT
+  </button>
+</div>
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <div class="printLayout" id="report-section">
+    <div class="printContent">
+      <app-header-print *ngIf="formSetting.show_header == 'true'"></app-header-print>
+      <div style="text-align: center;"><h2>List of Businesses</h2></div>
+      <div nz-row [nzGutter]="32" style="align-content: center;">
+      <div nz-col nzSpan="24" class="content">
+        <nz-table #basicTable class="tbl" nzTableLayout="fixed" [nzData]="listOfData" nzBordered  [nzFrontPagination]="false"  nzSize="small">
+          <thead>
+            <tr>
+              <th style="text-align: center; width: 50%;">Property</th>
+              <th style="text-align: center;">Area (sqm)</th>
+              <th style="text-align: center;">Rental Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <ng-container *ngFor="let data of basicTable.data">
+              <ng-container *ngFor="let item of mapOfExpandedData[data.key]">
+              <tr *ngIf="(item.parent && item.parent.expand) || !item.parent">
+                    <td
+                    style="text-transform: uppercase;"
+                    [nzIndentSize]="item.level! * 20"
+                    [nzShowExpand]="false"
+                    [(nzExpand)]="item.expand"
+                    (nzExpandChange)="collapse(mapOfExpandedData[data.key], item, $event)"
+                  >
+                    {{ item.name }}
+                  </td>
+                  <td style="text-align: right;">{{ item.area }}</td>
+                  <td  style="text-align: right;">{{ item.amt | number: '1.2-2' }}</td>
+              
+              </tr>
+              </ng-container>
+            </ng-container>
+          </tbody>
+        </nz-table>
+      </div>
+    </div> 
+  <div class="footDiv">
+    <app-footer-print></app-footer-print>
+  </div>
+</div>
+  <div class="footDivPrint">
+    <app-footer-print></app-footer-print>
+  </div>
+</div>
+<!-- <nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <div class="printMulti" id="report-section" style="border: 1px solid black; margin-top: 10px !important; margin: auto;" *ngFor = "let x of numPage">
+    <div *ngIf="x > 0" class="breakThis"></div>
+    <div class="printContent">
+      <app-header-print *ngIf="formSetting.show_header == 'true'"></app-header-print>
+      <div style="text-align: center;"><h2>List of Market Rental Properties</h2></div>
+      <div nz-row [nzGutter]="32" style="align-content: center;">
+      <div nz-col nzSpan="24" class="content">
+
+        <nz-table #basicTable class="tbl" nzTableLayout="fixed" [nzData]="listOfData" nzBordered  [nzFrontPagination]="false"  nzSize="small">
+          <thead>
+            <tr>
+              <th style="text-align: center; width: 50%;">Property</th>
+              <th style="text-align: center;">Area (sqm)</th>
+              <th style="text-align: center;">Rental Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <ng-container *ngFor="let data of basicTable.data">
+              <ng-container *ngFor="let item of mapOfExpandedData[data.key]">
+              <tr *ngIf="(item.parent && item.parent.expand) || !item.parent">
+                    <td
+                    style="text-transform: uppercase;"
+                    [nzIndentSize]="item.level! * 20"
+                    [nzShowExpand]="false"
+                    [(nzExpand)]="item.expand"
+                    (nzExpandChange)="collapse(mapOfExpandedData[data.key], item, $event)"
+                  >
+                    {{ item.name }}
+                  </td>
+                  <td style="text-align: right;">{{ item.area }}</td>
+                  <td  style="text-align: right;">{{ item.amt | number: '1.2-2' }}</td>
+              
+              </tr>
+              </ng-container>
+            </ng-container>
+          </tbody>
+        </nz-table>
+        <nz-table class="tbl" #basicTable [nzData]="finalList[x]" [nzFrontPagination]="false" nzBordered nzSize="small">
+          <thead>
+            <tr>
+              <th style="text-align: center;">Property>
+              <th style="text-align: center;">Area</th>
+              <th style="text-align: center;">Initial Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let data of basicTable.data; let i = index">
+              <tr>
+                <td>{{data.property_name}}</td>
+                <td>{{data.property_area}}</td>
+                <td style="text-align: right;">{{data.property_amount}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+    <div class="footDiv">
+      <app-footer-print  *ngIf="formSetting.show_footer == 'true'"></app-footer-print>
+    </div>
+    </div>
+  </div>
+  <div class="footDivPrint">
+    <app-footer-print  *ngIf="formSetting.show_footer == 'true'"></app-footer-print>
+  </div>
+</nz-spin> -->

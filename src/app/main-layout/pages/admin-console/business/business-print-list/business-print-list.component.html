@@ -1,0 +1,86 @@
+<div class="headerActions">
+  <h3 style="float: left;"><i nz-icon nzType="file-done" nzTheme="outline" style="color: #1890FF"></i> Persons List</h3>
+  <button nz-button nzType="default" (click)="excel(); $event.preventDefault();" style="margin-right: 10px;">
+    <i nz-icon nzType="file-excel" nzTheme="outline" style="color: #008141"></i> 
+    EXPORT TO EXCEL
+  </button>
+  <button nz-button nzType="primary" [useExistingCss]="true" printSectionId="report-section" #print ngxPrint>
+    <i nz-icon nzType="printer" nzTheme="outline"></i>
+    PRINT
+  </button>
+</div>
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <div class="printLayout" id="report-section">
+    <div class="printContent" style="height: 100vh;">
+      <app-header-print *ngIf="formSetting.show_header == 'true'"></app-header-print>
+      <div style="text-align: center;"><h2>List of Businesses</h2></div>
+      <div nz-row [nzGutter]="32" style="align-content: center;">
+      <div nz-col nzSpan="24" class="content">
+        <nz-table class="body" #basicTable [nzData]="listOfData" [nzFrontPagination]="false" nzBordered nzSize="small">
+          <thead>
+            <tr class="content-table-head">
+              <th>Business Name</th>
+              <th>Trade Name</th>
+              <th>Owner</th>
+              <th>Barangay</th>
+            </tr>
+          </thead>
+          <tbody class="content-table-body">
+            <ng-container *ngFor="let data of basicTable.data">
+              <tr>
+                <td>{{data.business_name}}</td>
+                <td>{{data.trade_name}}</td>
+                <td>{{data.owner_name}}</td>
+                <td>{{data.brgy}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </nz-table>
+      </div>
+    </div> 
+  <div class="footDiv">
+    <app-footer-print></app-footer-print>
+  </div>
+</div>
+  <div class="footDivPrint">
+    <app-footer-print></app-footer-print>
+  </div>
+</div>
+<!-- <div class="printMulti"  style="border: 1px solid black; margin-top: 10px !important; margin: auto;" *ngFor = "let x of numPage">
+  <div *ngIf="x > 0" class="breakThis"></div>
+  <div class="printContent">
+    <app-header-print *ngIf="formSetting.show_header == 'true'"></app-header-print>
+    <div style="text-align: center;"><h2>List of Businesses</h2></div>
+    <div nz-row [nzGutter]="32" style="align-content: center;">
+    <div nz-col nzSpan="24" class="content">
+      <nz-table class="tbl" #basicTable [nzData]="finalList[x]" [nzFrontPagination]="false" nzBordered nzSize="small">
+        <thead>
+          <tr>
+            <th style="text-align: center;">Business Name</th>
+            <th style="text-align: center;">Trade Name</th>
+            <th style="text-align: center;">Owner</th>
+            <th style="text-align: center;">Barangay</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let data of basicTable.data">
+            <tr>
+              <td>{{data.business_name}}</td>
+              <td>{{data.trade_name}}</td>
+              <td>{{data.owner_name}}</td>
+              <td>{{data.brgy}}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+  <div class="footDiv">
+    <app-footer-print  *ngIf="formSetting.show_footer == 'true'"></app-footer-print>
+  </div>
+  </div>
+</div>
+<div class="footDivPrint">
+  <app-footer-print  *ngIf="formSetting.show_footer == 'true'"></app-footer-print>
+</div>
+</nz-spin> -->

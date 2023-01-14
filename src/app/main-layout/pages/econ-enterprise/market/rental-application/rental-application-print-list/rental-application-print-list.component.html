@@ -1,0 +1,422 @@
+<div class="headerActions">
+  <h3 style="float: left;"><i nz-icon nzType="file-done" nzTheme="outline" style="color: #1890FF"></i>Market Billing</h3>
+  <button nz-button nzType="default" (click)="excel(); $event.preventDefault();" style="margin-right: 10px;">
+    <i nz-icon nzType="file-excel" nzTheme="outline" style="color: #008141"></i> 
+    EXPORT TO EXCEL
+  </button>
+  <button nz-button nzType="primary" [useExistingCss]="true" printSectionId="report-section" #print ngxPrint>
+    <i nz-icon nzType="printer" nzTheme="outline"></i>
+    PRINT
+  </button>
+</div>
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+<ng-container *ngIf="param">
+  <div class="printMulti">
+    <div class="printContent">
+      <app-header-print *ngIf="formSetting.show_header == 'true'"></app-header-print>
+      <div style="text-align: center;"><h2>Rental Billing</h2></div>
+      <div nz-row [nzGutter]="32" style="align-content: center;">
+        <div nz-col nzSpan="24" class="content">
+          <div nz-row> 
+            <div class="desc" nz-col nzSpan="12">
+              <nz-descriptions [nzColon]="false" nzTitle="Bill To:">
+                <nz-descriptions-item>{{tntDtl.tenant_name}}</nz-descriptions-item>
+              </nz-descriptions>
+              <nz-descriptions [nzColon]="false" >
+                <nz-descriptions-item>{{tntDtl.tenant_address}}</nz-descriptions-item>
+              </nz-descriptions>
+              <nz-descriptions [nzColon]="false" >
+                <nz-descriptions-item>{{tntDtl.tenant_contact}}</nz-descriptions-item>
+              </nz-descriptions>
+            </div> 
+            <div nz-col nzSpan="4">
+            </div>
+            <div class="desc" nz-col nzSpan="8">
+              <nz-descriptions>
+                <nz-descriptions-item  nzTitle="Billing Date">{{billData.billing_date | date: 'MM/dd/yyyy'}}</nz-descriptions-item>
+              </nz-descriptions>
+              <nz-descriptions>
+                <nz-descriptions-item nzTitle="Billing No">{{billData.billing_no | uppercase}}</nz-descriptions-item>
+              </nz-descriptions>
+              <nz-descriptions class="amt" [nzColon]="false" style="width:80%; background-color: #1890ff ;border: 1px solid black;">
+                <nz-descriptions-item style=" color:white" nzTitle=" Amount Due"></nz-descriptions-item>
+              </nz-descriptions>
+              <nz-descriptions class="amt-val" [nzColon]="false" style="width:80%; border: 1px solid black; border-top: 0px;">
+                <nz-descriptions-item nzTitle="Php">{{billData.bill_amount | number: '1.2-2'}}</nz-descriptions-item>
+              </nz-descriptions>
+
+            </div>
+
+          </div>
+          <div nz-row style="margin-top: 2vh">
+            <div nz-col nzSpan="24">
+              <nz-table style="border:1px solid black" #basicTable class="bill-id" nzTableLayout="fixed" [nzData]="['']" nzBorderless  [nzFrontPagination]="false"  nzSize="small">
+                <thead>
+                  <tr>
+                    <th style="text-align: center;">Bldg/Floor</th>
+                    <th style="text-align: center;">Property</th>
+                    <th style="text-align: center;">Rental Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let x of billByProp; let i = index">
+                       <td style="text-align: center; font-size: 12px !important;">{{x.bldg_floor | uppercase}}</td>
+                       <td *ngIf="i <= 4" style="text-align: center;">{{x.prop | uppercase}}</td>
+                       <td  *ngIf="i > 4" style="text-align: right; font-weight: 500;">{{x.prop | uppercase}}:</td>
+                       <td  *ngIf="i <= 4" style="text-align: right;">{{x.amt | number: '1.2-2'}}</td>
+                       <td  *ngIf="i > 4" style="text-align: right;font-weight: 500;">{{x.amt | number: '1.2-2'}}</td>
+                  </tr>
+                </tbody>
+              </nz-table>
+
+              <nz-descriptions style="margin-top:2vh">
+                <nz-descriptions-item  nzTitle="Reminder"> Please pay the exact amount on or before [<span style="font-weight:500"> {{billData.due_date | date: 'MMMM dd, yyyy'}}</span>]</nz-descriptions-item>
+              </nz-descriptions>
+
+            </div>
+          </div>
+
+          <div nz-row style="height: 5vh;"></div>
+          <div *ngIf="formSetting.show_signatory == 'true'" nz-row style="align-items:center;">
+            <div>
+              <nz-descriptions [nzColon]="false">
+                <nz-descriptions-item  *ngFor="let x of formSetting.signatories"><span style="font-weight: 500;">{{x.signatory_type_name}}:</span></nz-descriptions-item>
+              </nz-descriptions>
+              <div style="height:2vh;"></div>
+              <nz-descriptions class="desc" [nzColon]="false" >
+                <nz-descriptions-item  *ngFor="let x of formSetting.signatories">{{x.signatory}}</nz-descriptions-item>
+              </nz-descriptions>
+              <nz-descriptions class="desc" [nzColon]="false">
+                <nz-descriptions-item  *ngFor="let x of formSetting.signatories"><span style="font-weight: 500;">{{x.position}}</span></nz-descriptions-item>
+              </nz-descriptions>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footDiv">
+      <app-footer-print  *ngIf="formSetting.show_footer == 'true'"></app-footer-print>
+    </div>
+  </div>
+  <div class="footDivPrint">
+    <app-footer-print  *ngIf="formSetting.show_footer == 'true'"></app-footer-print>
+  </div>
+  <div class="breakThis"></div>
+  <div class="printMulti">
+    <div class="printContent">
+      <app-header-print *ngIf="formSetting.show_header == 'true'"></app-header-print>
+      <div style="text-align: center;"><h2>Water Billing</h2></div>
+      <div nz-row [nzGutter]="32" style="align-content: center;">
+        <div nz-col nzSpan="24" class="content">
+          <div nz-row> 
+            <div class="desc" nz-col nzSpan="12">
+              <nz-descriptions [nzColon]="false" nzTitle="Bill To:">
+                <nz-descriptions-item>{{tntDtl.tenant_name}}</nz-descriptions-item>
+              </nz-descriptions>
+              <nz-descriptions [nzColon]="false" >
+                <nz-descriptions-item>{{tntDtl.tenant_address}}</nz-descriptions-item>
+              </nz-descriptions>
+              <nz-descriptions [nzColon]="false" >
+                <nz-descriptions-item>{{tntDtl.tenant_contact}}</nz-descriptions-item>
+              </nz-descriptions> 
+              
+              <div style="height:1vh"></div>
+              <nz-descriptions>
+                <nz-descriptions-item nzTitle="Date Covered">{{billData?.billing_electricity?.date_from | date: 'MM/dd/yyyy'}} - {{billData?.billing_electricity?.date_to | date: 'MM/dd/yyyy'}}</nz-descriptions-item>
+              </nz-descriptions>
+            </div> 
+            <div nz-col nzSpan="4">
+            </div>
+            <div class="desc" nz-col nzSpan="8">
+              <nz-descriptions>
+                <nz-descriptions-item  nzTitle="Billing Date">{{billData.billing_date | date: 'MM/dd/yyyy'}}</nz-descriptions-item>
+              </nz-descriptions>
+              <nz-descriptions>
+                <nz-descriptions-item nzTitle="Billing No">{{billData.billing_no | uppercase}}</nz-descriptions-item>
+              </nz-descriptions>
+              <nz-descriptions class="amt" [nzColon]="false" style="width:80%; background-color: #1890ff ;border: 1px solid black;">
+                <nz-descriptions-item style=" color:white" nzTitle=" Amount Due"></nz-descriptions-item>
+              </nz-descriptions>
+              <nz-descriptions class="amt-val" [nzColon]="false" style="width:80%; border: 1px solid black; border-top: 0px;">
+                <nz-descriptions-item nzTitle="Php">{{billData?.billing_water?.rate | number: '1.2-2'}}</nz-descriptions-item>
+              </nz-descriptions>
+
+            </div>
+
+          </div>
+          <div nz-row style="margin-top: 2vh">
+            <div nz-col nzSpan="24">
+              <nz-table style="border:1px solid black" #basicTable class="bill-id" nzTableLayout="fixed" [nzData]="['']" nzBorderless  [nzFrontPagination]="false"  nzSize="small">
+                <thead>
+                  <tr>
+                    <th style="text-align: center;">Bldg/Floor</th>
+                    <th style="text-align: center;">Property</th>
+                    <th style="text-align: center;">Previous(cu.m)</th>
+                    <th style="text-align: center;">Current(cu.m)</th>
+                    <th style="text-align: center;">Consumption (cu.m)</th>
+                    <th style="text-align: center;">Rate/cu.m</th>
+                    <th style="text-align: center;">Rate</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let x of waterBill; let i = index">
+                       <td style="text-align: center; font-size: 12px !important;">{{x.bldg_floor | uppercase}}</td>
+                       <td *ngIf="i <= 4" style="text-align: center;">{{x.prop | uppercase}}</td>
+                       <td *ngIf="i <= 4" style="text-align: right;">{{x.prev}}</td>
+                       <td *ngIf="i <= 4" style="text-align: right;">{{x.curr}}</td>
+                       <td *ngIf="i <= 4" style="text-align: right;">{{x.cons}}</td>
+                       <td  *ngIf="i <= 4" style="text-align: right;">{{x.rateper}}</td>
+                       <td  *ngIf="i <= 4" style="text-align: right;">{{x.amt | number: '1.2-2'}}</td>
+                       
+                       <td  *ngIf="i > 4" style="text-align: right; font-weight: 500;"></td>
+                       <td  *ngIf="i > 4" style="text-align: right; font-weight: 500;"></td>
+                       <td  *ngIf="i > 4" style="text-align: right; font-weight: 500;"></td>
+                       <td  *ngIf="i > 4" style="text-align: right; font-weight: 500;"></td>
+                       <td  *ngIf="i > 4" style="text-align: right; font-weight: 500;">{{x.rateper}}:</td>
+                       <td  *ngIf="i > 4" style="text-align: right;font-weight: 500;">{{x.amt | number: '1.2-2'}}</td>
+                  </tr>
+                </tbody>
+              </nz-table>
+
+              <nz-descriptions style="margin-top:2vh">
+                <nz-descriptions-item  nzTitle="Reminder"> Please pay the exact amount on or before [<span style="font-weight:500"> {{billData.due_date | date: 'MMMM dd, yyyy'}}</span>]</nz-descriptions-item>
+              </nz-descriptions>
+
+            </div>
+          </div>
+
+          <div nz-row style="height: 5vh;"></div>
+          <div *ngIf="formSetting.show_signatory == 'true'" nz-row style="align-items:center;">
+            <div>
+              <nz-descriptions [nzColon]="false">
+                <nz-descriptions-item  *ngFor="let x of formSetting.signatories"><span style="font-weight: 500;">{{x.signatory_type_name}}:</span></nz-descriptions-item>
+              </nz-descriptions>
+              <div style="height:2vh;"></div>
+              <nz-descriptions class="desc" [nzColon]="false" >
+                <nz-descriptions-item  *ngFor="let x of formSetting.signatories">{{x.signatory}}</nz-descriptions-item>
+              </nz-descriptions>
+              <nz-descriptions class="desc" [nzColon]="false">
+                <nz-descriptions-item  *ngFor="let x of formSetting.signatories"><span style="font-weight: 500;">{{x.position}}</span></nz-descriptions-item>
+              </nz-descriptions>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footDiv">
+      <app-footer-print  *ngIf="formSetting.show_footer == 'true'"></app-footer-print>
+    </div>
+  </div>
+  <div class="breakThis"></div>
+  <div class="printMulti">
+    <div class="printContent">
+      <app-header-print *ngIf="formSetting.show_header == 'true'"></app-header-print>
+      <div style="text-align: center;"><h2>Electricity Billing</h2></div>
+      <div nz-row [nzGutter]="32" style="align-content: center;">
+        <div nz-col nzSpan="24" class="content">
+          <div nz-row> 
+            <div class="desc" nz-col nzSpan="12">
+              <nz-descriptions [nzColon]="false" nzTitle="Bill To:">
+                <nz-descriptions-item>{{tntDtl.tenant_name}}</nz-descriptions-item>
+              </nz-descriptions>
+              <nz-descriptions [nzColon]="false" >
+                <nz-descriptions-item>{{tntDtl.tenant_address}}</nz-descriptions-item>
+              </nz-descriptions>
+              <nz-descriptions [nzColon]="false" >
+                <nz-descriptions-item>{{tntDtl.tenant_contact}}</nz-descriptions-item>
+              </nz-descriptions>
+
+              <div style="height:1vh"></div>
+              <nz-descriptions>
+                <nz-descriptions-item nzTitle="Date Covered">{{billData?.billing_electricity?.date_from | date: 'MM/dd/yyyy'}} - {{billData?.billing_electricity?.date_to | date: 'MM/dd/yyyy'}}</nz-descriptions-item>
+              </nz-descriptions>
+            </div> 
+            <div nz-col nzSpan="4">
+            </div>
+            <div class="desc" nz-col nzSpan="8">
+              <nz-descriptions>
+                <nz-descriptions-item  nzTitle="Billing Date">{{billData.billing_date | date: 'MM/dd/yyyy'}}</nz-descriptions-item>
+              </nz-descriptions>
+              <nz-descriptions>
+                <nz-descriptions-item nzTitle="Billing No">{{billData.billing_no | uppercase}}</nz-descriptions-item>
+              </nz-descriptions>
+              <nz-descriptions class="amt" [nzColon]="false" style="width:80%; background-color: #1890ff ;border: 1px solid black;">
+                <nz-descriptions-item style=" color:white" nzTitle=" Amount Due"></nz-descriptions-item>
+              </nz-descriptions>
+              <nz-descriptions class="amt-val" [nzColon]="false" style="width:80%; border: 1px solid black; border-top: 0px;">
+                <nz-descriptions-item nzTitle="Php">{{billData?.billing_electricity?.rate | number: '1.2-2'}}</nz-descriptions-item>
+              </nz-descriptions>
+
+            </div>
+
+          </div>
+          <div nz-row style="margin-top: 2vh">
+            <div nz-col nzSpan="24">
+              <nz-table style="border:1px solid black" #basicTable class="bill-id" nzTableLayout="fixed" [nzData]="['']" nzBorderless  [nzFrontPagination]="false"  nzSize="small">
+                <thead>
+                  <tr>
+                    <th style="text-align: center;">Bldg/Floor</th>
+                    <th style="text-align: center;">Property</th>
+                    <th style="text-align: center;">Previous(kWh)</th>
+                    <th style="text-align: center;">Current(kWh)</th>
+                    <th style="text-align: center;">Consumption (kWh)</th>
+                    <th style="text-align: center;">Rate/kWh</th>
+                    <th style="text-align: center;">Rate</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let x of electBill; let i = index">
+                       <td style="text-align: center; font-size: 12px !important;">{{x.bldg_floor | uppercase}}</td>
+                       <td *ngIf="i <= 4" style="text-align: center;">{{x.prop | uppercase}}</td>
+                       <td *ngIf="i <= 4" style="text-align: right;">{{x.prev}}</td>
+                       <td *ngIf="i <= 4" style="text-align: right;">{{x.curr}}</td>
+                       <td *ngIf="i <= 4" style="text-align: right;">{{x.cons}}</td>
+                       <td  *ngIf="i <= 4" style="text-align: right;">{{x.rateper}}</td>
+                       <td  *ngIf="i <= 4" style="text-align: right;">{{x.amt | number: '1.2-2'}}</td>
+
+                       <td  *ngIf="i > 4" style="text-align: right; font-weight: 500;"></td>
+                       <td  *ngIf="i > 4" style="text-align: right; font-weight: 500;"></td>
+                       <td  *ngIf="i > 4" style="text-align: right; font-weight: 500;"></td>
+                       <td  *ngIf="i > 4" style="text-align: right; font-weight: 500;"></td>
+                       <td  *ngIf="i > 4" style="text-align: right; font-weight: 500;">{{x.rateper}}:</td>
+                       <td  *ngIf="i > 4" style="text-align: right;font-weight: 500;">{{x.amt | number: '1.2-2'}}</td>
+                  </tr>
+                </tbody>
+              </nz-table>
+
+              <nz-descriptions style="margin-top:2vh">
+                <nz-descriptions-item  nzTitle="Reminder"> Please pay the exact amount on or before [<span style="font-weight:500"> {{billData.due_date | date: 'MMMM dd, yyyy'}}</span>]</nz-descriptions-item>
+              </nz-descriptions>
+
+            </div>
+          </div>
+
+          <div nz-row style="height: 5vh;"></div>
+          <div *ngIf="formSetting.show_signatory == 'true'" nz-row style="align-items:center;">
+            <div>
+              <nz-descriptions [nzColon]="false">
+                <nz-descriptions-item  *ngFor="let x of formSetting.signatories"><span style="font-weight: 500;">{{x.signatory_type_name}}:</span></nz-descriptions-item>
+              </nz-descriptions>
+              <div style="height:2vh;"></div>
+              <nz-descriptions class="desc" [nzColon]="false" >
+                <nz-descriptions-item  *ngFor="let x of formSetting.signatories">{{x.signatory}}</nz-descriptions-item>
+              </nz-descriptions>
+              <nz-descriptions class="desc" [nzColon]="false">
+                <nz-descriptions-item  *ngFor="let x of formSetting.signatories"><span style="font-weight: 500;">{{x.position}}</span></nz-descriptions-item>
+              </nz-descriptions>
+              
+            </div>
+          </div>
+          </div>
+      </div>
+    </div>
+    <div class="footDiv">
+      <app-footer-print  *ngIf="formSetting.show_footer == 'true'"></app-footer-print>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="isTransient" >
+  <div class="printMulti" id="report-section" *ngFor = "let x of numPage">
+    <div *ngIf="x > 0" class="breakThis"></div>
+    <div class="printContent">
+      <app-header-print *ngIf="formSetting.show_header == 'true'"></app-header-print>
+      
+      <div style="text-align: center; margin-top:20px;"><h2>MUNICIPAL ECONOMIC ENTERPRISE OFFICE</h2></div>
+      <div style="text-align: center;"><h2>TRANSIENT OCCUPANTS</h2></div>
+      <div style="text-align: center;"><h4>as of {{asOf | date: 'MMMM, yyyy'}}</h4></div>
+      <div nz-row [nzGutter]="32" style="align-content: center;">
+      <div nz-col nzSpan="24" class="content">
+        <nz-table class="tbl" #basicTable [nzData]="finalList[x]" nzBordered  [nzFrontPagination]="false" nzSize="small">
+          <thead>
+            <tr>
+              <th style="width: 5%; text-align: center;">No</th>
+              <th  style="width: 50%;text-align: center;">Name</th>
+              <th  style="width: 30%;text-align: center;">Section</th>
+              <th style="text-align: center;">Transient Regulatory No.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable.data; let i = index">
+              <td style="text-align: center;">{{i + 1}}</td>
+              <td style="text-transform:uppercase;">{{data.applicant_name}}
+              <td>{{data.nature_of_business}}</td>
+              <td style="text-transform:uppercase;text-align: center;">{{data.transient_reg_no}}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+    
+    </div>
+    <div class="footDiv">
+      <app-footer-print  *ngIf="formSetting.show_footer == 'true'"></app-footer-print>
+    </div>
+  </div>
+  <div class="footDivPrint">
+    <app-footer-print  *ngIf="formSetting.show_footer == 'true'"></app-footer-print>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!isTransient">
+  <div class="printMulti" id="report-section" *ngFor = "let x of numPage">
+    <div *ngIf="x > 0" class="breakThis"></div>
+    <div class="printContent">
+      <app-header-print *ngIf="formSetting.show_header == 'true'"></app-header-print>
+      
+      <div style="text-align: center; margin-top:20px;"><h2>OCCUPANTS MASTERLIST</h2></div>
+      <div style="text-align: center;"><h2>FOR THE MARKET RENTAL ADMINISTRATION</h2></div>
+      <div style="text-align: center;"><h4>as of {{asOf | date: 'MMMM, yyyy'}}</h4></div>
+      <div nz-row [nzGutter]="32" style="align-content: center;">
+      <div nz-col nzSpan="24" class="content">
+        <nz-table class="tbl" #basicTable [nzData]="finalList[x]" nzBordered  [nzFrontPagination]="false" nzSize="small">
+          <thead>
+            <tr>
+              <th style="width:5%; text-align: center;">No</th>
+              <th  style="text-align: center;">Name of Occupant</th>
+              <th  style="width: 15%;text-align: center;">Block/Stall No.</th>
+              <th style="text-align: center;">Business Name</th>
+              <th style="text-align: center;">Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr  *ngFor="let data of basicTable.data">
+                  <td *ngIf="data.isBlank"  style=" white-space: nowrap;font-weight: 500;">{{data.section_name}}</td>
+                  <td *ngIf="!data.isBlank"  style=" white-space: nowrap;">{{data.section_name}}</td>
+                  <td>{{data.applicant}}</td>
+                  <td style="text-align: center;">{{data.property_name | uppercase}}</td>
+                  <td style="text-align: center;">{{data.nature_of_business}}</td>
+                  <td style="text-align: center;">{{data.remarks}}</td>
+              </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+    
+    </div>
+    <div class="footDiv">
+      <app-footer-print  *ngIf="formSetting.show_footer == 'true'"></app-footer-print>
+    </div>
+  </div>
+
+
+</ng-container>
+
+
+
+
+  </nz-spin>
+
+  <ng-template id="tplContent" #tplContent let-params>
+    <div style="padding-left: 5%;">
+      <label style="font-weight: 500; font-size: 16px;">As Of: </label>
+      <nz-date-picker style="padding-left: 5px;" [nzFormat]="'MM/dd/yyyy'" [nzSize]="'large'" [(ngModel)]="asOf"></nz-date-picker>
+      <nz-select style="width:150px; padding-left: 15px;" [nzSize]="'large'" nzShowSearch nzPlaceHolder="Select" [(ngModel)]="selectedOpt">
+        <nz-option *ngFor="let x of printOpts" [nzLabel]="x" [nzValue]="x"></nz-option>
+      </nz-select>
+    </div>
+    
+    
+  </ng-template>

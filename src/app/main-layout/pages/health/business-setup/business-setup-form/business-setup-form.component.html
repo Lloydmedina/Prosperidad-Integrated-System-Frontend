@@ -1,0 +1,307 @@
+<!-- <div style="height: 100%;">
+  <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <nz-anchor [nzShowInkInFixed]="false" >
+      <nz-page-header>
+        <nz-page-header-title>Business Setup</nz-page-header-title>
+        <nz-page-header-extra>
+          <button nz-button (click)="draft(); $event.preventDefault();">
+            <i nz-icon nzType="folder-open"></i>
+            Save as Draft
+          </button>
+          <button nz-button nzType="primary" (click)="cancel(); $event.preventDefault();" nzDanger>
+            <i nz-icon nzType="close"></i>
+            Cancel
+          </button>
+          <button nz-button nzType="primary">
+            <i nz-icon nzType="save"></i>
+            Save & Exit
+          </button>
+        </nz-page-header-extra>
+      </nz-page-header>
+    </nz-anchor>
+
+    <nz-tabset nzType="card">
+
+      <nz-tab nzTitle="Transaction Form">
+
+        <div nz-row [nzGutter]="16">
+          <div nz-col nzSpan="12">
+            <nz-card nzType="inner" nzTitle="REGISTRATION">
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="12">
+
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzFor="email">DTI Reg. No</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input your DTI Reg. No!" nzRequired>
+                      <nz-input-group>
+                        <input formControlName="dtiNo" nz-input placeholder="DTI Reg. No" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+
+                </div>
+
+                <div nz-col [nzSpan]="12">
+
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzFor="email">DTI Reg. Date</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input your DTI Reg. Date!" nzRequired>
+                      <nz-input-group>
+                        <input formControlName="dtiDate" nz-input placeholder="DTI Reg. Date" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+
+                </div>
+              </div>
+            </nz-card>
+
+            <nz-card nzType="inner" nzTitle="APPLICANT" class="gutter-row">
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="16">
+
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzFor="email">Business Name</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input your business name!" nzRequired>
+                      <nz-input-group>
+                        <input formControlName="businessName" nz-input placeholder="Business Name" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzFor="email">Trade Name</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input your tradename!" nzRequired>
+                      <nz-input-group>
+                        <input formControlName="tradeName" nz-input placeholder="Trade Name" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+
+
+                </div>
+              </div>
+            </nz-card>
+
+            <nz-card nzType="inner" nzTitle="BUSINESS TYPE" class="gutter-row">
+              <nz-form-label [nzSpan]="7" nzFor="email">Type</nz-form-label>
+                  <nz-radio-group nzButtonStyle="solid">
+                    <label nz-radio-button nzValue="1">Single Proprietorship</label>
+                    <label nz-radio-button nzValue="2">Corparation</label>
+                    <label nz-radio-button nzValue="3">Partnership</label>
+                    <label nz-radio-button nzValue="4">Cooperative</label>
+                  </nz-radio-group>
+            </nz-card>
+          </div>
+
+          <div nz-col nzSpan="12">
+            <nz-card nzType="inner" nzTitle="DETAILS">
+
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="12">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzFor="email">Business Line</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input your line of business!" nzRequired>
+                      <nz-input-group>
+                        <input formControlName="lineOfBusiness" nz-input placeholder="Line Of Business" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="12">
+
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzFor="email">T.I.N</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input your tin!" nzRequired>
+                      <nz-input-group>
+                        <input formControlName="tin" nz-input placeholder="T.I.N" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+
+                </div>
+                <div nz-col [nzSpan]="12">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzFor="email">CTC No.</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input your ctc no.!" nzRequired>
+                      <nz-input-group>
+                        <input formControlName="ctcNo" nz-input placeholder="CTC No." />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="12">
+
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzFor="email">P.I.N</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input your pin!" nzRequired>
+                      <nz-input-group>
+                        <input formControlName="pin" nz-input placeholder="P.I.N" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+
+                </div>
+                <div nz-col [nzSpan]="12">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzFor="email">Business Area</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input your business area!" nzRequired>
+                      <nz-input-group>
+                        <input formControlName="businessArea" nz-input placeholder="Business Area" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="12">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzFor="email">Tel. No.</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input your telephone no.!" nzRequired>
+                      <nz-input-group>
+                        <input formControlName="telephoneNo" nz-input placeholder="Tel. No." />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="12">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzFor="email">Mobile No.</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input your mobile no.!" nzRequired>
+                      <nz-input-group>
+                        <input formControlName="mobileNo" nz-input placeholder="Mobile No." />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="12">
+                  <nz-form-item>
+                    <nz-form-label [nzSm]="7" nzRequired nzFor="email">E-mail</nz-form-label>
+                    <nz-form-control nzErrorTip="The input is not valid E-mail!">
+                      <input nz-input formControlName="email" id="email" placeholder="Email" />
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+
+            </nz-card>
+          </div>
+        </div>
+
+      </nz-tab>
+
+      <nz-tab nzTitle="Cumulative Data">
+        <div nz-row [nzGutter]="16">
+          <div nz-col nzSpan="24">
+            <nz-card nzType="inner" nzTitle="ADDRESS">
+
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="12">
+
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzFor="email">Building Name</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input building name!" nzRequired>
+                      <nz-input-group>
+                        <input formControlName="buildingName" nz-input placeholder="Building Name" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzFor="email">Street</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input street!" nzRequired>
+                      <nz-input-group>
+                        <textarea formControlName="streetNo" rows="3" nz-input placeholder="Street"></textarea>
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzFor="email">Subdivision</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input subdivision!" nzRequired>
+                      <nz-input-group>
+                        <input formControlName="subdivision" nz-input placeholder="Subdivision" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzFor="email">Province</nz-form-label>
+                    <nz-form-control nzErrorTip="Please select province!" nzRequired>
+                      <nz-input-group>
+                        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                          <input formControlName="province" [readOnly]="true" type="text" nz-input placeholder="Province" />
+                        </nz-input-group>
+                        <ng-template #suffixIconButton>
+                          <button nz-button (click)="showProvince(); $event.preventDefault();" nzType="primary" nzSearch><i nz-icon nzType="select" nzTheme="outline"></i></button>
+                        </ng-template>
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzFor="email">Municipality/City</nz-form-label>
+                    <nz-form-control nzErrorTip="Please select municipality/city!" nzRequired>
+                      <nz-input-group>
+                        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                          <input formControlName="municipalityCity" [readOnly]="true" type="text" nz-input placeholder="Municipality/City" />
+                        </nz-input-group>
+                        <ng-template #suffixIconButton>
+                          <button nz-button (click)="showMunicipalityCity(); $event.preventDefault();" nzType="primary" nzSearch><i nz-icon nzType="select" nzTheme="outline"></i></button>
+                        </ng-template>
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzFor="email">Barangay</nz-form-label>
+                    <nz-form-control nzErrorTip="Please select barangay!" nzRequired>
+                      <nz-input-group>
+                        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                          <input formControlName="barangay" [readOnly]="true" type="text" nz-input placeholder="Barangay" />
+                        </nz-input-group>
+                        <ng-template #suffixIconButton>
+                          <button nz-button (click)="showBarangay(); $event.preventDefault();" type="button" nzType="primary" nzSearch><i nz-icon nzType="select" nzTheme="outline"></i></button>
+                        </ng-template>
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzFor="email">Zip Code</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input zip code!" nzRequired>
+                      <nz-input-group>
+                        <input formControlName="zipCode" nz-input placeholder="Zip Code" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+
+                </div>
+              </div>
+
+            </nz-card>
+          </div>
+        </div>
+
+
+
+      </nz-tab>
+
+    </nz-tabset>
+
+  </form>
+
+</div> -->

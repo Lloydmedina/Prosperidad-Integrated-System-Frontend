@@ -1,0 +1,305 @@
+
+<nz-spin [nzSpinning]="loading">
+  <div style="height: 100%;">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
+      <nz-anchor [nzShowInkInFixed]="false">
+        <nz-page-header>
+          <nz-page-header-title>Property Setup </nz-page-header-title>
+          <nz-page-header-extra>
+           
+            <!-- <button nz-button (click)="$event.preventDefault()" >
+              <i nz-icon nzType="folder-open"></i>
+              Save as Draft
+            </button> -->
+            <button nz-button (click)="cancel($event);" nzType="primary" nzDanger>
+              <i nz-icon nzType="close"></i>
+              Cancel            </button>
+            <button  nz-button nzType="primary" [nzLoading]="loading" class="button-form" [disabled]="!validateForm.valid">
+              <i nz-icon nzType="save"></i>
+              {{buttonTitle}}
+            </button>
+          </nz-page-header-extra>
+        </nz-page-header>
+      </nz-anchor>
+  
+      <nz-card nzType="inner" nzBorderless nzTitle="{{title}}">
+      <div nz-row  style="width: 100%;">
+        <div nz-col nzSpan="10">
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="8" [nzXs]="12" nzRequired>Property Name</nz-form-label>
+            <nz-form-control  [nzSm]="24" [nzXs]="24"  nzHasFeedback nzValidatingTip="" [nzErrorTip]="userErrorTpl">
+              <nz-input-group>
+                <input type="text" nz-input formControlName="property_name" style="text-transform: uppercase;" placeholder="e.g. Public Market"/>
+              </nz-input-group>
+              <ng-template #userErrorTpl let-control>
+                <!-- <ng-container *ngIf="control.hasError('duplicated')">Name already taken!</ng-container> -->
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="8" [nzXs]="12">Property Description</nz-form-label>
+            <nz-form-control  [nzSm]="24" [nzXs]="24"  nzHasFeedback nzValidatingTip="" [nzErrorTip]="userErrorTpl">
+                <textarea type="text" nz-input formControlName="property_desc"  placeholder="Description..."></textarea>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="8" [nzXs]="12"  nzRequired>Barangay</nz-form-label>
+              <nz-form-control  [nzSm]="24" [nzXs]="24" >
+                <nz-select
+                  nzShowSearch
+                  nzAllowClear
+                  formControlName="property_brgy_id"
+                  nzPlaceHolder="Select Barangay"
+                >
+                <nz-option *ngFor="let list of brgyList" nzValue="{{list.brgy_id}}" nzLabel="{{list.brgy_name}}" >
+                </nz-option>
+                </nz-select>
+               </nz-form-control>
+              </nz-form-item>
+              
+              <nz-form-item>
+                <nz-form-label [nzSm]="8" [nzXs]="12">Area (sqm)</nz-form-label>
+                <nz-form-control  [nzSm]="24" [nzXs]="24">
+                  <nz-input-group>
+                    <input style="text-align: right;" placeholder="0" type="number" nz-input formControlName="property_area"  />
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+
+              
+              <nz-form-item formGroupName="property_amount">
+                <nz-form-label [nzSm]="8" [nzXs]="12">Rent Amount</nz-form-label>
+                <nz-form-control  [nzSm]="24" [nzXs]="24">
+                  <nz-input-group>
+                    <input style="text-align: right;" id="curr" nz-input placeholder="0.00" formControlName="initial_amount" [currencyCode]="' '" mvndrMatCurrencyFormat
+                    [allowNegative]="false" />
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+        </div>
+        <div nz-col nzSpan="2">
+
+        </div>
+
+        <div nz-col nzSpan="12" style="width: 100%;">
+          <h3 >Property Details</h3>
+          <nz-table class="table-floor" style="table-layout: fixed;" formArrayName="property_floor" [nzTitle]="add" [nzData]="propertyData" #basicTable nzBordered="false" [nzShowPagination]="false" nzSize="small">
+            <thead>
+              <tr>
+                <th style="width: 21%;">Floor</th>
+                <th style="width: 20%;">Area (sqm)</th>
+                <th style="width: 20%;">Rent Amount</th>
+                <th [nzEllipsis]="true" style="width: 32%;">Section</th>
+                <th [nzRight]="true" style="width:6%"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of floorArray().controls; let i = index" [formGroupName]="i" [class.focused]="i == floorIndex">
+                <td>
+                  <nz-form-control [nzSm]="24" >
+                    <input formControlName="property_name" type="text" nz-input placeholder="e.g. Ground Floor" >
+                    </nz-form-control>
+                </td>
+                <td>
+                  <nz-form-control [nzSm]="24" >
+                    <input style="text-align: right; width: 100%;" type="number" nz-input formControlName="property_area"  />
+                    </nz-form-control>
+                </td>
+                <td formGroupName="property_amount">
+                  <nz-form-control [nzSm]="24" >
+                    <input style="text-align: right; width: 100%" id="curr" nz-input formControlName="initial_amount" [currencyCode]="' '" mvndrMatCurrencyFormat
+                    [allowNegative]="false" />
+                    </nz-form-control>
+                </td>
+                <td > 
+                  <ng-container>
+                    <nz-form-control style="padding-top: 1px !important;" [nzSm]="24">
+                      <nz-select 
+                      [nzMaxTagCount]="1"
+                      nzMode="multiple"
+                      nzShowSearch
+                      nzPlaceHolder="Select Section"
+                      style="width: 100%; height: 32.19px !important; max-height: 32.19px !important; overflow: auto;"
+                      formControlName="property_section"
+                    >
+                    <nz-option *ngFor="let list of sectionList; let x = index" [nzValue]="list" nzLabel="{{list.section_name}}" >
+                    </nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                  </ng-container>
+                </td>
+                <td>
+                  <button  style="transform: scale(0.8); width: 50%;"  class="actionEdit" nz-button nzType="text"(click)="view(i);$event.preventDefault()"><i nz-icon nzType="eye" nzTheme="outline"></i></button>
+                  <button  style="transform: scale(0.8); width: 50%;"  class="actionDelete" nz-button nzType="text"(click)="remove(i);$event.preventDefault()"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                  
+                </td>
+             
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </div>
+        <nz-divider></nz-divider>
+        <div nz-row>
+          <div nz-col nzSpan="10" style="width: 100%;"> 
+                
+          <nz-form-item>
+            <nz-form-label [nzSm]="8" [nzXs]="12"  nzRequired>Block/Floor</nz-form-label>
+              <nz-form-control  [nzSm]="24" [nzXs]="24" >
+                <nz-select
+                 [nzDisabled]="floorArray().length == 0"
+                  nzShowSearch
+                  nzAllowClear
+                  [ngModelOptions]="{standalone:true}"
+                  [(ngModel)]="floorIndex"
+                  nzPlaceHolder="Select Floor"
+                  (ngModelChange)="floorSelect()"
+                  >
+                <nz-option *ngFor="let list of floorArray().controls; let i = index" nzValue="{{i}}" nzLabel="{{list.value.property_name}}" >
+                </nz-option>
+                </nz-select>
+               </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-label [nzSm]="8" [nzXs]="12">Area (sqm)</nz-form-label>
+                <nz-form-control  [nzSm]="24" [nzXs]="24">
+                  <nz-input-group>
+                    <input  [disabled]="floorArray().length == 0" style="text-align: right;" type="number" nz-input 
+                    [ngModelOptions]="{standalone:true}" placeholder="0" [(ngModel)]="stallArea"  />
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+
+              
+              <nz-form-item formGroupName="property_amount">
+                <nz-form-label [nzSm]="8" [nzXs]="12">Rent Amount</nz-form-label>
+                <nz-form-control  [nzSm]="24" [nzXs]="24">
+                  <nz-input-group>
+                    <input  [disabled]="floorArray().length == 0" style="text-align: right;" id="curr" nz-input
+                    [ngModelOptions]="{standalone:true}" placeholder="0.00" [(ngModel)]="stallAmount" [currencyCode]="' '" mvndrMatCurrencyFormat
+                    [allowNegative]="false" />
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+
+
+              <nz-form-item>
+                <nz-form-label [nzSm]="8" [nzXs]="12">Remarks</nz-form-label>
+                <nz-form-control  [nzSm]="24" [nzXs]="24" nzValidatingTip="" [nzErrorTip]="userErrorTpl">
+                    <textarea  [disabled]="floorArray().length == 0" type="text" nz-input
+                    [ngModelOptions]="{standalone:true}" [(ngModel)]="stallRemarks" placeholder="Remarks..."></textarea>
+                </nz-form-control>
+              </nz-form-item>
+
+          
+    
+              <nz-form-item>
+                <nz-form-label [nzSm]="8" [nzXs]="12" nzRequired>Section</nz-form-label>
+                <nz-form-control  [nzSm]="24" [nzXs]="2">
+              <nz-select 
+              [nzDisabled]="floorArray().length == 0"
+              nzShowSearch
+              nzPlaceHolder="Select Section"
+              [ngModelOptions]="{standalone:true}"
+              [(ngModel)]="stallSection"
+            >
+            <nz-option *ngFor="let list of stallSectionList" [nzValue]="list" nzLabel="{{list.section_name}}" >
+            </nz-option>
+            </nz-select>
+
+          </nz-form-control>
+        </nz-form-item>
+        
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="8" [nzXs]="12" nzRequired>Unit/Stall No.</nz-form-label>
+          <nz-form-control  [nzSm]="24" [nzXs]="24">
+            <nz-input-group nzCompact>
+              <input [readOnly]="true" [disabled]="floorArray().length == 0"  type="text" nz-input placeholder="Prefix" maxlength="3"   [ngModelOptions]="{standalone:true}"  [(ngModel)]="stallPrefix" style="width:47%; text-align: center; text-transform: uppercase;" />
+              <!-- <input
+               [disabled]="floorArray().length == 0"
+                type="text"
+                disabled
+                nz-input
+                placeholder="~"
+                class="demo-input-split"
+                style="width: 6%; border-left: 0px; border-right: 0px; pointer-events: none; background-color: rgb(255, 255, 255);"
+              /> -->
+              <!-- <input  [disabled]="floorArray().length == 0" type="text" style="width:47%;text-align: center;" nz-input  maxlength="4"     [ngModelOptions]="{standalone:true}"  [(ngModel)]="stallSeries" placeholder="00" class="demo-input-right" /> -->
+              <nz-input-number onKeyDown="return false" [disabled]="floorArray().length == 0" [ngModelOptions]="{standalone:true}"  [(ngModel)]="stallSeries" [nzMin]="minimumUnitStallNo" [nzStep]="1" maxlength="4" placeholder="00"></nz-input-number>
+            </nz-input-group>
+          </nz-form-control>
+         </nz-form-item>
+              <div nz-row *ngIf="editIndex == -1">
+                <div nz-col nzSpan="20">
+                  
+                </div>
+                <div nz-col nzSpan="3"><button *ngIf="editIndex == -1 "  [disabled]="floorIndex == null || stallSection == null" class="add-list" nz-button (click)="popStall();$event.preventDefault()" nzType="primary">Add to List <i nz-icon nzType="plus"></i></button>
+                  </div>
+              </div>
+              <div nz-row *ngIf="editIndex >= 0">
+                <div nz-col nzSpan="14">
+                  
+                </div>
+                <div nz-col nzSpan="10"  style="display: inline-block; align-items: flex-end;">
+                      <button [disabled]="floorArray().length == 0" class="add-list" nz-button (click)="updateStall();$event.preventDefault()" nzType="primary">Update</button>
+                        &nbsp;
+                      <button [disabled]="floorArray().length == 0" class="add-list" nzDanger nz-button (click)="cancelStall();$event.preventDefault()" nzType="primary">Cancel</button>
+                </div>
+           
+              </div>
+
+              </div>
+              <div nz-col nzSpan="2">
+
+              </div>
+              <div nz-col nzSpan="12" style="width: 100%;">
+                <nz-table class="unit-table" style="table-layout: fixed;" [nzTitle]="unit"  #basicTable nzBordered="false" [nzData]="unitStallNoData"   [nzShowPagination]="false" nzSize="small">                  <thead>
+                    <tr>
+                      <th style="width: 21%;">Unit/Stall No</th>
+                      <th style="width: 20%;">Area (sqm)</th>
+                      <th style="width: 20%;" >Rent Amount</th>
+                      <th style="width: 32%;">Section</th>
+                      <th>Remarks</th>
+                      <th style="width: 6%;"> </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container  *ngIf="floorArray().length > 0 && floorIndex != undefined"  >
+                      <tr *ngFor="let data of unitStallArray(floorIndex).controls; let x= index" [class.focused]="x == editIndex" >
+                        <td style="text-transform:uppercase;">{{data.value.property_name}}</td>
+                        <td style="text-align: right;">{{data.value.property_area}}</td>
+                        <td style="text-align: right;">{{data.value.property_amount.initial_amount | number: '1.2-2'}}</td>
+                        <td>{{data.value.property_section.section_name}}</td>
+                        <td>{{data.value.property_remarks}}</td>
+                        <td style="text-align: center;">
+                          <button  style="transform: scale(0.8); width: 50%;"  class="actionEdit" nz-button nzType="text"(click)="editUnit(x);$event.preventDefault()"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+                          <button  style="transform: scale(0.8); width: 50%; "  class="actionDelete" nz-button nzType="text" (click)="removeUnit(x);$event.preventDefault()"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                          
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </nz-table>
+              </div>
+            </div>
+
+      </nz-card>
+    </form>
+  </div>
+  <ng-template #add>
+    <div >
+      <button nz-button nzType="link" (click)="addFloor();$event.preventDefault()" style="transform: scale(0.9); font-weight: 500; color:#1890ff; font-size: 16px;" nzPrimary>Add Floor <i nz-icon nzType="plus" nzTheme="outline"></i></button>
+    </div>
+  </ng-template>
+  
+  <ng-template #unit>
+    <ng-container *ngIf="floorIndex != null">
+      <h3>{{stallTitle}}</h3>
+    </ng-container>
+  </ng-template>
+  
+</nz-spin>

@@ -1,0 +1,28 @@
+<nz-table #basicTable [nzData]="listOfData" nzBordered nzFooter="Footer" [nzTitle]="dateFilter" nzSize="small">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Oct 09, 1997</td>
+      <td>sample</td>
+      <td>sample description</td>
+      <td><nz-tag [nzColor]="'#87d068'">Active</nz-tag></td>
+      <td>
+        <button class="actionEdit" nz-button nzType="text" (click)="edit()"><i nz-icon nzType="form" nzTheme="outline"></i></button>
+        <button class="actionDelete" nz-button nzType="text" (click)="delete()"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+      </td>
+    </tr>
+  </tbody>
+
+  <ng-template #dateFilter>
+    <app-date-filter></app-date-filter>
+  </ng-template>
+  
+</nz-table>

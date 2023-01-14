@@ -1,0 +1,325 @@
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <nz-spin nzTip="Saving..." [nzSpinning]="saveLoading">
+    <div style="height: 100%;">
+      <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm();">
+        <nz-anchor [nzShowInkInFixed]="false" >
+          <nz-page-header>
+            <nz-page-header-title>Solo Parent Setup</nz-page-header-title>
+            <nz-page-header-extra>
+              <!-- <button nz-button (click)="draft(); $event.preventDefault();">
+                <i nz-icon nzType="folder-open"></i>
+                Save as Draft
+              </button> -->
+              <button nz-button nzType="primary" (click)="cancel(); $event.preventDefault();" nzDanger>
+                <i nz-icon nzType="close"></i>
+                Cancel
+              </button>
+              <button nz-button nzType="primary" [disabled]="!validateForm.valid">
+                <i nz-icon nzType="save"></i>
+                {{buttonTitle}}
+              </button>
+            </nz-page-header-extra>
+          </nz-page-header>
+        </nz-anchor>
+
+        <nz-tabset nzType="card">
+
+          <nz-tab [nzTitle]="TransactionForm">
+
+            <nz-card nzType="inner" nzTitle="I. Identifying Information" style="margin-top: 10px;">
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="24">
+                  
+                  <nz-input-group>
+                    <p class="label" style="color: darkblue;"><span style="color: red;">* </span>Full Name :</p>
+                    <div nz-row [nzGutter]="8">
+                      <div nz-col nzSpan="3">
+                        
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please input prefix!" nzExtra="(Prefix)">
+                            <nz-input-group>
+                              <input class="readOnly" [readOnly]="true" formControlName="prefix" nz-input placeholder="Prefix" />
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col nzSpan="6">
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please input your firstname!" nzExtra="(First Name)">
+                            <nz-input-group>
+                              <input class="readOnly" [readOnly]="true" formControlName="first_name" nz-input placeholder="First Name" />
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col nzSpan="6">
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please input your middle name!" nzExtra="(Middle Name)">
+                            <nz-input-group>
+                              <input class="readOnly" [readOnly]="true" formControlName="middle_name" nz-input placeholder="Middle Name" />
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col nzSpan="6">
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please input your last name!" nzExtra="(Last Name)">
+                            <nz-input-group>
+                              <input class="readOnly" [readOnly]="true" formControlName="last_name" nz-input placeholder="Last Name" />
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col nzSpan="3">
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please input suffix!" nzExtra="(Suffix)">
+                            <nz-input-group>
+                              <input class="readOnly" [readOnly]="true" formControlName="suffix" nz-input placeholder="Suffix" />
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                    </div>
+                  </nz-input-group>
+
+                  <nz-input-group>
+                    <p class="label" style="color: darkblue;"><span style="color: red;">* </span>Permanent Address :</p>
+                    <div nz-row [nzGutter]="8">
+                      <div nz-col nzSpan="6">
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please select province!" nzExtra="(Province)">
+                            <nz-input-group>
+                              <nz-select style="width: 100%;" formControlName="province_id" nzAllowClear nzPlaceHolder="Select a province">
+                                <nz-option *ngFor="let list of provinceDropdown" nzLabel="{{list.province_name}}" nzValue="{{list.province_id}}"></nz-option>
+                              </nz-select>
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col nzSpan="6">
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please select city/municipality!" nzExtra="(City/Municipality)">
+                            <nz-input-group>
+                              <nz-select style="width: 100%;" formControlName="citmun_id" nzPlaceHolder="Select a city/municipality">
+                                <nz-option *ngFor="let list of citymunDropdown" nzLabel="{{list.city_mun_name}}" nzValue="{{list.city_mun_id}}"></nz-option>
+                              </nz-select>
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col nzSpan="6">
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please select barangay!" nzExtra="(Barangay)">
+                            <nz-input-group>
+                              <nz-select style="width: 100%;" formControlName="barangay_id" nzPlaceHolder="Select a barangay">
+                                <nz-option type="number" *ngFor="let list of barangayDropdown" nzLabel="{{list.brgy_name}}" nzValue="{{list.brgy_id}}"></nz-option>
+                              </nz-select>
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col nzSpan="6">
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please input street!" nzExtra="(Street)">
+                            <nz-input-group>
+                              <input class="readOnly" [readOnly]="true" formControlName="street" nz-input placeholder="Street" />
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                    </div>
+                  </nz-input-group>
+
+                  <nz-input-group>
+                    <div nz-row [nzGutter]="8">
+                      <div nz-col nzSpan="6">
+                        <nz-form-item>
+                          <!-- <nz-form-label [nzSpan]="5">Date of Birth</nz-form-label> -->
+                          <nz-form-control nzErrorTip="Please input date!">
+                            <p class="label" style="color: darkblue;"><span style="color: red;">* </span>Date of Birth :</p>
+                            <nz-input-group>
+                              <nz-date-picker style="width: 100%; background: #f0f0f0;" formControlName="birth_date" [(ngModel)]="date"></nz-date-picker>
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+
+                      <div nz-col nzSpan="6">
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please input place of birth!">
+                            <p class="label" style="font-style: normal !important;">Place of Birth :</p>
+                            <nz-input-group>
+                              <input class="readOnly" [readOnly]="true" formControlName="place_of_birth" nz-input placeholder="Place of Birth" />
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+
+                      <div nz-col nzSpan="6">
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please input occupation!">
+                            <p class="label" style="font-style: normal !important;">Occupation :</p>
+                            <nz-input-group>
+                              <input class="readOnly" [readOnly]="true" formControlName="occupation" nz-input placeholder="Occupation" />
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+
+                      <div nz-col nzSpan="6">
+                        <nz-form-item>
+                          <!-- <nz-form-label [nzSpan]="5">Sex</nz-form-label> -->
+                          <nz-form-control nzErrorTip="Please select gender!">
+                            <p class="label" style="color: darkblue;"><span style="color: red;">* </span>Sex :</p>
+                            <nz-input-group>
+                              <nz-select style="width: 100%;" formControlName="gender_id" nzPlaceHolder="Select a gender">
+                                <nz-option *ngFor="let list of genderDropdown" nzLabel="{{list.gender_name}}" nzValue="{{list.gender_id}}"></nz-option>
+                              </nz-select>
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+
+                    </div>
+                  </nz-input-group>
+
+                </div>
+              </div>
+            </nz-card>
+
+            <nz-card nzType="inner" nzTitle="I.a. Solo Parent Information" style="margin-top: 10px;">
+              <div nz-row [nzGutter]="8">
+                <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-control nzErrorTip="Please input circumstances!">
+                      <p class="label" style="color: darkblue;"><span style="color: red;">* </span>Circumstances of being a Solo Parent :</p>
+                      <nz-input-group>
+                        <textarea rows="3" nz-input formControlName="circumstances"></textarea>
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+
+                <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-control nzErrorTip="Please input needs/problem!">
+                      <p class="label" style="color: darkblue;"><span style="color: red;">* </span>Needs/Problem of being Solo Parent :</p>
+                      <nz-input-group>
+                        <textarea rows="3" nz-input formControlName="need_or_problem"></textarea>
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+
+              <div nz-row [nzGutter]="8">
+                <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-control nzErrorTip="Please input reason for applying!">
+                      <p class="label" style="color: darkblue;"><span style="color: red;">* </span>Reason for Applying Solo Parent Privilege :</p>
+                      <nz-input-group>
+                        <textarea rows="3" nz-input formControlName="reason_for_applying"></textarea>
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+
+                <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-control nzErrorTip="Please input family resources!">
+                      <p class="label" style="font-style: normal !important;">Family Resources :</p>
+                      <nz-input-group>
+                        <textarea rows="3" nz-input formControlName="family_resources"></textarea>
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+            </nz-card>
+
+          </nz-tab>
+
+          <nz-tab [nzTitle]="FamilyMembers">
+
+            <nz-card nzType="inner" nzTitle="II. Family Composition">
+
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="24">
+
+                  <nz-table [nzShowPagination]="false" style="border: 1px solid #f1f1f1;" formArrayName="family_details" [nzData]="dataDisplay" [nzTitle]="BrowsePerson" nzBordered #basicTable nzSize="small" nzShowSizeChanger>
+                    <thead>
+                      <tr>
+                        <th nzWidth="3%">No</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Relation to Head</th>
+                        <th>Educational Attainment</th>
+                        <th>Occupation</th>
+                        <th>Income</th>
+                        <th nzWidth="3%">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let quantity of quantities().controls; let i=index" [formGroupName]="i">
+                        <td>{{i+1}}.</td>
+                        <td><input class="readOnly" [readOnly]="true" formControlName="full_name" nz-input placeholder="Full Name" nzBorderless /></td>
+                        <td><input class="readOnly" [readOnly]="true" formControlName="age" nz-input placeholder="Age" nzBorderless /></td>
+                        <td>
+                          <nz-select style="width: 100%;" formControlName="relation" nzPlaceHolder="Select relation to member">
+                            <nz-option nzLabel="Father" nzValue="Father"></nz-option>
+                            <nz-option nzLabel="Mother" nzValue="Mother"></nz-option>
+                            <nz-option nzLabel="Brother" nzValue="Brother"></nz-option>
+                            <nz-option nzLabel="Sister" nzValue="Sister"></nz-option>
+                          </nz-select>
+                        </td>
+                        <td>
+                          <nz-select style="width: 100%;" formControlName="educational_attainment" nzPlaceHolder="Select educational attainment">
+                            <nz-option *ngFor="let list of educationalTypeDropdown" nzLabel="{{list.educational_name}}" nzValue="{{list.id}}"></nz-option>
+                          </nz-select>
+                        </td>
+                        <td><input formControlName="occupational_skills" nz-input placeholder="Occupation Skills" /></td>
+                        <td><input [id]="incomeAmountDetails[i]" style="text-align: right;" formControlName="occupation_income" localeCurrencyInput [allowNegative]="false" [currencyCode]="' '" [value]="incomeAmount[i]" (ngModelChange)="updateIncome()" nz-input placeholder="Enter income" /></td>
+                        <td>
+                          <button nz-tooltip nzTooltipTitle="Delete" class="actionDelete" (click)="removeQuantity(i); $event.preventDefault();" nz-button nzType="text"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                        </td> 
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td style="text-align: right;" colspan="6"><b>TOTAL FAMILY INCOME:</b></td>
+                        <td style="text-align: right;"><b>&#8369; {{totalIncome | number: '1.2-2'}}</b></td>
+                        <td></td>
+                      </tr>
+                    </tfoot>
+                    <ng-template #BrowsePerson>
+                      <div style="text-align-last: end;">
+                        <button (click)="openBrowseDrawer(); $event.preventDefault();" nz-button nzType="default">
+                          <i nz-icon nzType="user-add" nzTheme="outline"></i>
+                          Browse Person
+                        </button>
+                      </div>
+                    </ng-template>
+                    
+                  </nz-table>
+
+                </div>
+              </div>
+
+            </nz-card>
+
+          </nz-tab>
+
+        </nz-tabset>
+
+      </form>
+    </div>
+  </nz-spin>
+</nz-spin>
+<ng-template #TransactionForm>
+  <i nz-icon nzType="container" nzTheme="outline"></i>
+  Person Details
+</ng-template>
+<ng-template #FamilyMembers>
+  <i nz-icon nzType="snippets" nzTheme="outline"></i>
+  Family Members
+</ng-template>

@@ -1,0 +1,159 @@
+<div class="headerActions">
+  <h3 style="float: left;"><i nz-icon nzType="file-done" nzTheme="outline" style="color: #1890FF"></i> OSCA Form</h3>
+  <button nz-button nzType="default" (click)="excel(); $event.preventDefault();" style="margin-right: 10px;">
+    <i nz-icon nzType="file-excel" nzTheme="outline" style="color: #008141"></i> 
+    EXPORT TO EXCEL
+  </button>
+  <button nz-button nzType="primary" [useExistingCss]="true" printSectionId="report-section" #print ngxPrint>
+    <i nz-icon nzType="printer" nzTheme="outline"></i>
+    PRINT
+  </button>
+</div>
+
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <div class="printLayout" id="report-section">
+    <div class="printContent">
+      <app-header-print></app-header-print>
+      <div style="text-align: center;"><h2>Office of the City Abattoir</h2></div>
+
+      <nz-descriptions>
+        <nz-descriptions-item nzTitle="Name of Meat Establishment" [nzSpan]="3">
+          <div class="border">
+            <!-- Present Address/Residence here -->
+            &nbsp;
+          </div>
+        </nz-descriptions-item>
+      </nz-descriptions>
+
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+          <nz-descriptions>
+            <nz-descriptions-item nzTitle="City" [nzSpan]="3">
+              <div class="border">
+                <!-- Present Address/Residence here -->
+                &nbsp;
+              </div>
+            </nz-descriptions-item>
+    
+            <nz-descriptions-item nzTitle="Province" [nzSpan]="3">
+              <div class="border">
+                <!-- Present Address/Residence here -->
+                &nbsp;
+              </div>
+            </nz-descriptions-item>
+          </nz-descriptions>
+    
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-descriptions>
+            <nz-descriptions-item nzTitle="Date" [nzSpan]="3">
+              <div class="border">
+                <!-- Present Address/Residence here -->
+                &nbsp;
+              </div>
+            </nz-descriptions-item>
+    
+            <nz-descriptions-item nzTitle="Time" [nzSpan]="3">
+              <div class="border">
+                <!-- Present Address/Residence here -->
+                &nbsp;
+              </div>
+            </nz-descriptions-item>
+          </nz-descriptions>
+        </div>
+      </div>
+
+      <div style="text-align: center;">
+        <h1 style="font-weight: bold;">C O N D E M N A T I O N &nbsp; S L I P</h1>
+      </div>
+
+      <div>
+        <p style="font-size: 15px; text-indent: 80px; font-weight: 500;">
+          Pursuant to Republic Act No. 7394 otherwise known as "The Consumer Act of the Philippines" under Article 10 and Article 17; and
+          Republic Act 9296 "The Meat Inspection Code of the Philippines" and Department of Agriculture Administrative Order No. 28 
+          (Implementing Rules and Regulations of RA 9296 series 2005); and NMIC Administrative Order No. 06 series of 1975 the following
+          food animal, organs, meat & meat products is hereby condemned.
+        </p>
+      </div>
+
+      <nz-table #basicTable [nzData]="dataDisplay" [nzFrontPagination]="false" nzBordered nzSize="small">
+        <thead>
+          <tr>
+            <th>FOOD ANIMAL / MEAT / Meat Products</th>
+            <th>Quantity / Weight</th>
+            <th>Cause of Condemnation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let data of data?.family_details; let i=index;">
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </nz-table>
+
+      <div nz-row [nzGutter]="24">
+        <div nz-col nzSpan="12">
+          <p style="font-style: italic; font-weight: 500;">Condemned by:</p>
+
+          <span>&nbsp;</span>
+          <div class="signatureLabel">
+            Signature/Thumbmark over printed name <br>
+            <span class="subSignLabel">(Signature over printed name)</span>
+          </div>
+          
+
+          <p style="font-style: italic; font-weight: 500; padding-top: 10px;">Disposed by:</p>
+
+          <span>&nbsp;</span>
+          <div class="signatureLabel">
+            Signature/Thumbmark over printed name <br>
+            <span class="subSignLabel">(Signature over printed name)</span>
+          </div>
+
+        </div>
+        <div nz-col nzSpan="12">
+          <p style="font-style: italic; font-weight: 500;">Conforme:</p>
+
+          <span>&nbsp;</span>
+          <div class="signatureLabel">
+            Signature/Thumbmark over printed name <br>
+            <span class="subSignLabel">(Signature over printed name)</span>
+          </div>
+
+          <p style="font-style: italic; font-weight: 500; padding-top: 10px;">Witness:</p>
+
+          <span>&nbsp;</span>
+          <div class="signatureLabel">
+            <span class="subSignLabel">(Signature over printed name)</span>
+          </div>
+
+          <div nz-row>
+            <div nz-col [nzSpan]="12">
+
+            </div>
+            <div nz-col [nzSpan]="12">
+              <nz-descriptions>
+                <nz-descriptions-item [nzTitle]="nmis" [nzSpan]="3">
+                  <div class="border">
+                    <!-- Present Address/Residence here -->
+                    &nbsp;
+                  </div>
+                </nz-descriptions-item>
+              </nz-descriptions>
+              <ng-template #nmis>
+                <span style="font-size: 11px;">NMIS Form Code</span>
+              </ng-template>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- <app-footer-print></app-footer-print> -->
+    </div>
+  </div>
+</nz-spin>

@@ -1,0 +1,465 @@
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+
+  <h2>Cumulative Data - Dental Certificate</h2>
+
+  <nz-table #basicTable [nzData]="listOfData" nzBordered nzFooter=": : :" [nzTitle]="dateFilter" nzSize="small">
+
+    <thead>
+      <tr>
+        <th>Transaction #</th>
+        <th>Date</th>
+        <th>Applicant's Name</th>
+        <th>Barangay</th>
+        <th>Status</th>
+        <th>Fees</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of basicTable.data;  let i = index">
+        <tr>
+
+          <td>{{data.form_trans_no}}</td>
+          <td>{{data.dc_transaction_date | date:'mediumDate'}}</td>
+          <td>{{data.dc_person_fullname}}</td>
+          <td>{{data.dc_person_data.brgy_name}}</td>
+
+          <td style="width: 5%;">
+            <nz-tag   *ngIf="data.dc_transaction_status == '0'" [nzColor]="'#87d068'">Pending</nz-tag>
+            <nz-tag   *ngIf="data.dc_transaction_status == '1'" [nzColor]="'blue'">Approved</nz-tag>
+            <nz-tag   *ngIf="data.dc_transaction_status == '3'" >Canceled</nz-tag>
+
+
+          </td>
+          <td>{{data.dc_transaction_total_fee | currency:'PHP'}}</td>
+          <td [nzExpand]="expandSet.has(data.person_id)" (nzExpandChange)="onExpandChange(data.dc_person_id, data.dc_pk_id, $event, i);" style="width: 8%;">
+            <ng-container *ngIf="data.dc_transaction_status != '3'">
+              <button class="actionEdit" *ngIf="data.payment_status == '0' " nz-button nzType="text" (click)="edit(data)"><i nz-icon nzType="form" nzTheme="outline"></i></button>
+              <button class="actionDelete" *ngIf="data.payment_status == '0' " nz-button nzType="text" (click)="delete(data)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+            </ng-container>
+              <button nz-button nzType="primary" *ngIf="data.payment_status != '0' " nzShape="circle"
+              (click)="showConfirm(data.dc_pk_id, data.last_name,data.first_name,data.middle_name)"
+              >
+                <i nz-icon nzType="printer" nzTheme="outline"></i></button>
+
+          </td>
+        </tr>
+        <tr class="dtl" [nzExpand]="expandSet.has(i)">
+          <div nz-row>
+            <div nz-col nzFlex="1">
+              <nz-collapse nzAccordion nz-card  style="height: 100%;">
+                <nz-collapse-panel nzHeader="Transaction Info." >
+
+                  <nz-comment nzAuthor="Health Card Type:">
+                    <nz-comment-content>
+                      <span> {{data.dc_transaction_type}}</span>
+                    </nz-comment-content>
+                  </nz-comment>
+                  <nz-comment nzAuthor="Issued Date:">
+                    <nz-comment-content>
+                      <span> {{data.dc_transaction_date | date:'mediumDate'}}</span>
+                    </nz-comment-content>
+                  </nz-comment>
+                  <nz-comment nzAuthor="Payment:">
+                    <nz-comment-content>
+                      <span> {{data.dc_payed_amount == null ? "None" : data.dc_payed_amount}}</span>
+                    </nz-comment-content>
+                  </nz-comment>
+                  <nz-comment nzAuthor="Proccessed By:">
+                    <nz-comment-content>
+
+                      <span> {{data.dc_department_head}}</span>
+                    </nz-comment-content>
+                  </nz-comment>
+
+                </nz-collapse-panel>
+
+                <nz-collapse-panel nzHeader="Applicant Info."
+                >
+                  <nz-descriptions>
+                    <nz-descriptions-item nzTitle="Name" [nzSpan]="3">
+                      <div class="text-bordered">
+                        {{data.dc_person_data.first_name+" "+data.dc_person_data.middle_name+" "+ data.dc_person_data.last_name}}
+                      </div>
+                    </nz-descriptions-item>
+                  </nz-descriptions>
+
+                  <nz-descriptions>
+                    <nz-descriptions-item nzTitle="Occupation" [nzSpan]="3">
+                      <div class="text-bordered">
+                        {{data.dc_person_data.profession == null ? "None" : data.dc_person_data.profession}}
+                      </div>
+                    </nz-descriptions-item>
+                  </nz-descriptions>
+
+                  <nz-descriptions>
+                    <nz-descriptions-item nzTitle="Address" [nzSpan]="3">
+                      <div class="text-bordered">
+                        {{data.dc_person_data.brgy_name+" "+data.dc_person_data.city_mun_name+" "+ data.dc_person_data.province_name}}
+                      </div>
+                    </nz-descriptions-item>
+                  </nz-descriptions>
+                  <nz-descriptions>
+                    <nz-descriptions-item nzTitle="Age" [nzSpan]="1">
+                      <div class="text-bordered">
+                        {{data.dc_person_data.age}}
+                      </div>
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Nationality" [nzSpan]="2">
+                      <div class="text-bordered">
+                        {{data.dc_person_data.citizenship}}
+                      </div>
+                    </nz-descriptions-item>
+                  </nz-descriptions>
+                  <nz-descriptions>
+                    <nz-descriptions-item nzTitle="Sex" [nzSpan]="1">
+                      <div class="text-bordered">
+                        {{data.dc_person_data.gender_name}}
+                      </div>
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="C.S." [nzSpan]="2">
+                      <div class="text-bordered">
+                        {{data.dc_person_data.civil_status_name}}
+                      </div>
+                    </nz-descriptions-item>
+                  </nz-descriptions>
+
+
+                </nz-collapse-panel>
+
+                <!-- <nz-collapse-panel nzHeader="Requestor Info.">
+                  <nz-comment nzAuthor="Name:">
+                    <nz-comment-content>
+                      <span> {{data.requestor_name}}</span>
+                    </nz-comment-content>
+                  </nz-comment>
+                  <nz-comment nzAuthor="Date:">
+                    <nz-comment-content>
+                      <span> {{data.transaction_date | date:'mediumDate'}}</span>
+                    </nz-comment-content>
+                  </nz-comment>
+                </nz-collapse-panel> -->
+
+                <nz-collapse-panel nzHeader="Payment Info.">
+                  <nz-comment nzAuthor="OR No:">
+                    <nz-comment-content>
+                      <span> {{data.dc_payment_data == null ? "None" : data.dc_payment_data.or_id}}</span>
+                    </nz-comment-content>
+                  </nz-comment>
+                  <nz-comment nzAuthor="OR Date:">
+                    <nz-comment-content>
+                      <span> {{data.dc_payment_data == null ? "None" : data.dc_payment_data.or_date | date:'mediumDate'}}</span>
+                    </nz-comment-content>
+                  </nz-comment>
+                  <nz-comment nzAuthor="OR Amount Paid:">
+                    <nz-comment-content>
+                      <span> {{data.dc_payment_data == null ? "None" : data.dc_payment_data.amount_paid | currency:'PHP'}}</span>
+                    </nz-comment-content>
+                  </nz-comment>
+                  <nz-comment nzAuthor="Payment Status:">
+                    <nz-comment-content>
+
+                      <span> {{data.payment_status === 1  ? 'Paid' : 'Unpaid'}} {{data.payment_type != null ? "("+data.payment_type+")" : ' '}} </span>
+                    </nz-comment-content>
+                  </nz-comment>
+                  <br>
+                  <button nz-button nzType="primary" *ngIf="data.dc_transaction_total_fee > data.amount_paid"
+                  (click)="showPayment(data.dc_pk_id, data.dc_transaction_total_fee) "
+                  >Add Payment</button>
+                </nz-collapse-panel>
+
+
+              </nz-collapse>
+
+            </div>
+            <div nz-col nzFlex="4">
+              <nz-card style="height: 100%;">
+                <h3>Dental Procedures:  </h3>
+                <nz-table nzBordered #basicTable [nzData]="listOfData_trans[i]" nzSize="small" [nzScroll]="{ y: '45%' }">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Title</th>
+                      <th>Dentist</th>
+                      <th>Facility Address</th>
+                      <th>Action <i nz-icon></i></th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                  <ng-container *ngFor="let data_trans of basicTable.data; let en = index" >
+                      <tr>
+                        <td>{{  data_trans.dc_lab_exam_date | date:'mediumDate'}}</td>
+                        <td>{{  data_trans.dc_lab_exam_name}}</td>
+                        <td>{{  data_trans.dc_examiner_name}}</td>
+                        <td>{{  data_trans.dc_lab_exam_place}}</td>
+                        <td [nzExpand]="expandSet_sub.has(data_trans.dtl_id)"
+                        (nzExpandChange)="showExamRes($event,en)" style="width: 4%;"
+                        nz-tooltip="Click to view more details"
+                        >
+                        <button class="actionEdit" nz-button nzType="text" (click)="openDrawer(data_trans.dc_dtl_id)"><i nz-icon nzType="form" nzTheme="outline"></i></button>
+                        </td>
+                      </tr>
+
+                      <tr [nzExpand]="expandSet_sub.has(en) " >
+                        <nz-row >
+                          <div nz-col nzFlex="2">
+                            <nz-card nzTitle="Health Examination Findings:">
+                            <p>
+                              {{data_trans.dc_lab_exam_result}}
+                            </p>
+                            </nz-card>
+
+                          </div>
+                          <div nz-col nzFlex="2">
+                            <nz-card nzTitle="Cause of Illness:">
+                            <p>
+                              {{data_trans.dc_lab_exam_cause}}
+                            </p>
+                            </nz-card>
+                          </div>
+                        </nz-row>
+                      </tr>
+
+                  </ng-container>
+                 </tbody>
+                </nz-table>
+              </nz-card>
+            </div>
+          </div>
+
+        </tr>
+      </ng-container>
+
+
+    </tbody>
+
+    <ng-template #dateFilter>
+      <nz-space>
+        <nz-select *nzSpaceItem [(ngModel)]="selectedValue" nzPlaceHolder="Select a filter range type" >
+          <nz-option nzValue="date" nzLabel="Date"></nz-option>
+          <nz-option nzValue="week" nzLabel="Week"></nz-option>
+          <nz-option nzValue="month" nzLabel="Month"></nz-option>
+          <nz-option nzValue="year" nzLabel="Year"></nz-option>
+        </nz-select>
+        <nz-date-picker
+        *nzSpaceItem [nzMode]="selectedValue"
+        [nzDisabledDate]="(disabledStartDate)"
+        nzFormat="yyyy-MM-dd"
+        [(ngModel)]="startDateValue"
+        nzPlaceHolder="Start"
+
+        ></nz-date-picker>
+      </nz-space>
+      <br />
+        <!-- <app-person-filter></app-person-filter> -->
+      </ng-template>
+
+  </nz-table>
+  </nz-spin>
+
+
+  <nz-drawer
+  nzMaskClosable =false
+  [nzWidth]="700"
+  [nzVisible]="drawerVisible"
+  nzPlacement="right"
+  nzTitle="Update Dental Procedure"
+  (nzOnClose)="close()"
+  >
+  <ng-container *nzDrawerContent>
+    <nz-descriptions [nzColumn]="2" nzTitle="Examination Details">
+    </nz-descriptions>
+    <nz-divider></nz-divider>
+    <div nz-form [formGroup]="updateForm">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="16">
+          <nz-card>
+            <h3>Select Dental Procedure:</h3>
+
+            <nz-input-group>
+              <nz-form-item>
+                <nz-form-control nzErrorTip="Please select Medical Exam Tittle!" >
+                  <nz-input-group>
+                    <nz-select style="width: 100%;" formControlName="dc_lab_exam_id" nzPlaceHolder="Medical Exam Tittle">
+                      <nz-option *ngFor="let lists of listOfMedExam" nzLabel="{{lists.lab_exam_type}}" nzValue="{{lists.lab_exam_id}}"></nz-option>
+                    </nz-select>
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-input-group>
+            </nz-card>
+        </div>
+
+        <div nz-col [nzSpan]="24">
+          <nz-card>
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="12">
+                <p class="label">Examiner's Name</p>
+                  <nz-form-item>
+                    <nz-form-control nzErrorTip="Please enter Examiner's Name (ex. Doc. Dela Cruz)!">
+                      <nz-input-group>
+                        <input formControlName="dc_examiner_name" nz-input placeholder="Please Enter Examiner's Name (ex. Doc. Juan Dela Cruz)." (blur)="checkVal($event)" nzRequired />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+              </div>
+
+              <div nz-col [nzSpan]="12">
+                <p class="label">Examination Date </p>
+                <nz-form-item>
+                  <nz-form-control nzErrorTip="Please input date!">
+                    <nz-input-group>
+                      <nz-date-picker style="width: 100%;" formControlName="dc_lab_exam_date" [(ngModel)]="date"></nz-date-picker>
+                    </nz-input-group>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+
+
+              <div nz-col [nzSpan]="24">
+                <p class="label">Address</p>
+                <nz-form-item>
+                  <nz-form-control nzErrorTip="Please input Address!">
+                    <nz-input-group>
+                      <input formControlName="dc_lab_exam_place" nz-input placeholder="Laboratory Address" (blur)="checkVal($event)" />
+                    </nz-input-group>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+
+              <div nz-col [nzSpan]="12">
+                <p class="label">Findings</p>
+              <nz-form-item>
+                <nz-form-control nzErrorTip="Please Enter health examination findings!" >
+                  <nz-input-group>
+
+                    <textarea rows="4" formControlName="dc_lab_exam_result" nz-input placeholder="Please Enter health examination findings." (blur)="checkVal($event)"></textarea>
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+              </div>
+
+              <div nz-col  [nzSpan]="12">
+                <p class="label">Cause of Illness </p>
+              <nz-form-item>
+                <nz-form-control nzErrorTip="Please enter details about the cause of illness!" >
+                  <nz-input-group>
+
+                    <textarea rows="4" formControlName="dc_lab_exam_cause" nz-input placeholder="Please enter details about the cause of illnes." (blur)="checkVal($event)"></textarea>
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+              </div>
+
+          </div>
+          </nz-card>
+
+          <nz-divider></nz-divider>
+          <div nzOrientation="right">
+            <div nz-row nzJustify="space-between">
+              <div nz-col nzSpan="12">
+                <button nz-button nzType="primary" nzDanger style="margin-right: 50px;" (click)="close()"><i nz-icon nzType="close" nzTheme="outline"></i>Cancel</button>
+              </div>
+              <div nz-col nzSpan="12"  style="text-align: end;">
+                <button nz-button nzType="primary"(click)="updateExam(updateForm.value, updateForm.value.dc_dtl_id)" [disabled]="!updateForm.valid">
+              <i nz-icon nzType="save" nzTheme="outline"></i>Update</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+
+    </div>
+  </ng-container>
+  </nz-drawer>
+
+
+
+  <nz-drawer
+  nzMaskClosable =false
+  [nzWidth]="500"
+  [nzVisible]="paymentDrawer"
+  nzPlacement="right"
+  nzTitle="Dental-Certificate Payment"
+  (nzOnClose)="closePayment()"
+  >
+  <ng-container >
+    <form *nzDrawerContent nz-form [formGroup]="paymentForm" (ngSubmit)="saveConfirm(paymentForm.value);$event.preventDefault()">
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-card>
+
+            <div nz-col [nzSpan]="12">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8">OR NO</nz-form-label>
+                <nz-form-control nzErrorTip="!">
+                  <nz-input-group>
+
+                    <input nz-input
+                    type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                    formControlName="or_id"/>
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8">OR Date</nz-form-label>
+                <nz-form-control nzErrorTip="!">
+                  <!-- <nz-input-group>
+                    <input nz-input formControlName="or_date" [disabled]="true" />
+                  </nz-input-group> -->
+                  <nz-input-group>
+                    <nz-date-picker style="width: 100%;" formControlName="or_date" [(ngModel)]="date"></nz-date-picker>
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <nz-radio-group formControlName="payment_status">
+              <label nz-radio nzValue="1"(click)="fullPayment($event)">Full Payment</label>
+              <!-- <label nz-radio nzValue="2" (click)="overridePayment($event)">Override</label>
+              <label nz-radio nzValue="3" (click)="waivedPayment($event)">Waived</label> -->
+            </nz-radio-group>
+            <br><br>
+            <div nz-col [nzSpan]="12">
+
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="8">Payment</nz-form-label>
+                    <nz-form-control nzErrorTip="!">
+                      <nz-input-group>
+                        <input
+                        (keyup)="validateValue($event)"
+                        localeCurrencyInput [allowNegative]="false" [currencyCode]="' '" [value]="amount_inputed" (ngModelChange)="amountInputed($event)"
+                        type="number"
+                        formControlName="amount_paid" nz-input  />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+
+
+            </div>
+            <div nz-col [nzSpan]="24">
+              <div nz-row nzJustify="end">
+                <div nz-col>
+                  <button nz-button nzType="primary"
+                     [disabled]="chk_payment || !paymentForm.valid"
+                       >
+                     <i nz-icon nzType="save"></i>
+                       Post Payment
+                     </button>
+                </div>
+              </div>
+            </div>
+
+          </nz-card>
+        </div>
+
+      </div>
+    </form>
+  </ng-container>
+  </nz-drawer>

@@ -1,0 +1,42 @@
+
+<h2>Women & Children Crisis Center Transaction records</h2>
+<br>
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <div style="text-align: center;" nz-col="24">
+  </div>
+  <nz-table #basicTable [nzData]="listOfData" nzBordered [nzTitle]="dateFilter" nzSize="small" nzShowPagination nzShowSizeChanger>
+    <thead>
+      <tr>
+        <th>Form No.</th>
+        <th>Intake Date</th>
+        <th>Client's Name</th>
+        <th>Address</th>
+        <th>Case Title</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of basicTable.data; let i = index;">
+        <tr>
+          <td>{{data.form_trans_no}}</td>
+          <td>{{data.wcc_summ_intake_date | date:'mediumDate'}}</td>
+          <td>{{data.client_pname}}</td>
+          <td>{{data.client_address}}</td>
+          <td>{{data.case_tittle}}</td>
+          <td *ngIf="data.status == '0'"><nz-tag [nzColor]="'blue'">Pending</nz-tag></td>
+          <td *ngIf="data.status == '1'"><nz-tag [nzColor]="'#f50'">Approved</nz-tag></td>
+          <td>
+            <button nz-tooltip nzTooltipTitle="Select" nz-button nzType="primary" (click)="proceedToForm(data)">Select</button>
+          </td>
+        </tr>
+
+      </ng-container>
+    </tbody>
+
+    <ng-template #dateFilter>
+      <app-date-filter></app-date-filter>
+    </ng-template>
+
+  </nz-table>
+</nz-spin>

@@ -1,0 +1,55 @@
+<nz-table #basicTable [nzData]="listOfData" nzBordered [nzTitle]="dateFilter" nzSize="small">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Business Name</th>
+      <th>Trade Name</th>
+      <th>Owner</th>
+      <th>Telephone No.</th>
+      <th>Status</th>
+      <th>Barangay</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{data.savedate | date: 'MM/dd/yyyy'}}</td>
+      <td>{{data.business_name}}</td>
+      <td>{{data.trade_name}}</td>
+      <td>{{data.owner_name}}</td>
+      <td>{{data.tel_no}}</td>
+      <td>{{data.brgy}}</td>
+      <td style="width: 5%;">
+        <nz-tag   *ngIf="data.status === 'Active'" [nzColor]="'#87d068'">{{data.status}}</nz-tag>
+        <nz-tag   *ngIf="data.status !== 'Active'" [nzColor]="'#f50'">{{data.status}}</nz-tag>
+      </td>
+      <td style="width: 8%;">
+        <button class="actionEdit" nz-button nzType="default" (click)="selectBiz(data)"><i nz-icon nzType="form" nzTheme="outline"></i> Select</button>
+      </td>
+    </tr>
+  </tbody>
+
+  <ng-template #dateFilter>
+    <nz-input-group nzAllowClear style="width: 50%;"  nzSize="large" [nzSuffix]="suffixIconSearch">
+      <input 
+      type="text" 
+      [(ngModel)]="searchModel" 
+      (ngModelChange)="beginSearch($event)" 
+      nz-input 
+      placeholder="Search Business Name / Trade Name / Barangay"
+      [nzAutocomplete]="auto" />
+      <!-- <nz-autocomplete [nzDataSource]="filteredOptions" nzBackfill="true" #auto (click)="triggerSearch($event)"></nz-autocomplete> -->
+      <nz-autocomplete #auto>
+        <nz-auto-option (click)="triggerSearch(option)" *ngFor="let option of filteredOptions" [nzValue]="option.val">{{ option.val }}</nz-auto-option>
+      </nz-autocomplete>
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+      <i *ngIf="searchModel == ''" nz-icon nzType="search"></i>
+      <a *ngIf="searchModel != ''" (click)="clearSearch()"><i nz-icon nzType="close"></i></a>
+    </ng-template>
+
+    <label style="padding-left: 2%;" nz-checkbox [(ngModel)]="regSwitch"  (ngModelChange)="regFilter()">Show Registered Only</label>
+    <label nz-checkbox [(ngModel)]="statusSwitch" (ngModelChange)="statusFilter()">Show Active Only</label>
+  </ng-template>
+  
+</nz-table>

@@ -1,0 +1,52 @@
+#sub_button1{
+  display: none !important;
+}
+
+
+.actionEdit {
+  color: #1582E7;
+}
+
+.actionDelete {
+  color: #f50;
+}
+
+.actionEdit:hover {
+  color: #1582E7;
+}
+
+.actionDelete:hover {
+  color: #1582E7;
+}
+
+
+#sub_button2{
+  display: none !important;
+}
+
+.text-bordered{
+  width: 100%;
+  border-bottom: 1px solid rgb(109, 108, 108);
+}
+
+nz-select {
+  width: 200px;
+}
+
+.navigation {
+  border-color: 1px rgba(0, 0, 0, 0.1);
+}
+
+#mybutton {
+  position: fixed;
+  bottom: 80px;
+  right: 40px;
+}
+
+.icon {
+  padding-right: 10px;
+}
+
+.navigation {
+  border-color: 1px rgba(0, 0, 0, 0.1);
+}

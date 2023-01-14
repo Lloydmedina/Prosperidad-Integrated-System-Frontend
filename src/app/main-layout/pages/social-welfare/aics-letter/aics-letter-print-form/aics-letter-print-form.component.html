@@ -1,0 +1,85 @@
+<div class="headerActions">
+  <h3 style="float: left;"><i nz-icon nzType="file-done" nzTheme="outline" style="color: #1890FF"></i> Family Composition Form</h3>
+  <button nz-button nzType="default" (click)="excel(); $event.preventDefault();" style="margin-right: 10px;">
+    <i nz-icon nzType="file-excel" nzTheme="outline" style="color: #008141"></i> 
+    EXPORT TO EXCEL
+  </button>
+  <button nz-button (click)="convertToPDF();" nzType="default" style="margin-right: 10px;">
+    <span nz-icon nzType="file-pdf" nzTheme="outline" style="color: red;"></span>
+    EXPORT TO PDF
+  </button>
+  <button nz-button nzType="primary" [useExistingCss]="true" printSectionId="report-section" #print ngxPrint>
+    <i nz-icon nzType="printer" nzTheme="outline"></i>
+    PRINT
+  </button>
+</div>
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <div class="printLayout" id="report-section">
+    <div id="content" #content>
+      <div class="printContent">
+        <app-header-print></app-header-print>
+        <div style="text-align: center; margin-top: 30px;"><h2><b>OFFICE OF THE MUNICIPAL SOCIAL WELFARE AND DEVELOPMENT</b></h2></div>
+        <div style="text-align: center; margin-top: 30px;"><h2><b>CERTIFICATE OF ELIGIBILITY</b></h2></div>
+  
+        <div>
+          <p style="font-size: 25px; margin-top: 30px;" class="label">
+            THIS IS TO CERTIFY THAT <span style="font-style: uppercase;"><b>{{data?.last_name}}, {{data?.first_name}} {{data?.middle_name}}</b></span> , <b>{{data?.street}}</b>, <b>{{data?.brgy_name}}</b>, Prosperidad, Agusan del Sur has been found eligible for Medical assistance after interview and case study
+            has been made.
+          </p>
+        </div>
+  
+        <div>
+          <p style="font-size: 25px; margin-top: 30px;" class="label">
+            Records of the General Intake Sheet dated on <b>{{data?.aics_intake_date | date:'mediumDate'}}</b> is hereby attached as basis for Medical assistance to be given to the Client.
+          </p>
+        </div>
+  
+        <div>
+          <p style="font-size: 25px; margin-top: 30px;" class="label">
+            Client is recommended for Medical assistance in the amount of __________ <b>only</b>
+          </p>
+        </div>
+  
+        <div style="margin-top: 100px;"><p style="font-size: 25px;" class="label">Prepared and Noted by:</p></div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="12">
+  
+            <span>&nbsp;</span>
+            <div style="text-align: center;">
+              <p style="font-size: 25px;" class="label">C/MSWDO Social Worker/Officer</p>
+            </div>
+          </div>
+  
+          <div nz-col [nzSpan]="12">
+  
+            <span>&nbsp;</span>
+            <div style="text-align: center;">
+              <p style="font-size: 25px;" class="label">Social worker</p>
+            </div>
+          </div>
+        </div>
+  
+        <div style="margin-top: 30px;"><p style="font-size: 25px;" class="label">Approved by:</p></div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="12">
+  
+            <span>&nbsp;</span>
+            <div style="text-align: center;">
+              <p style="font-size: 25px;" class="label">Municipal Mayor</p>
+            </div>
+          </div>
+  
+          <div nz-col [nzSpan]="12">
+  
+            <!-- <span>&nbsp;</span>
+            <div style="text-align: center;">
+              <p style="font-size: 25px;" class="label">Social worker</p>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nz-spin>

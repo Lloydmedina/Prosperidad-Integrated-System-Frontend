@@ -1,0 +1,60 @@
+<nz-layout class="layout">
+  <nz-sider [ngClass]="{'light': theme === false, 'dark': theme === true}" nzWidth="320px" [nzTrigger]="triggerToggle">
+    <ng-template #triggerToggle>
+      <button *ngIf="toggle === false" nz-button nzType="default" nzShape="circle"><i nz-icon nzType="double-left" nzTheme="outline"></i></button>
+      <button *ngIf="toggle === true" nz-button nzType="default" nzShape="circle"><i nz-icon nzType="double-right" nzTheme="outline"></i></button>
+    </ng-template>
+    
+    <div *ngIf="biglogo" id="logo-image" [routerLink]="routerLinkData" ></div>
+    <nz-space [nzSize]="1" *ngIf="smalllogo">
+      <img *nzSpaceItem nz-image class="logo" nzSrc="../../assets/img/MunicipalLogo.png" nzPlaceholder="Prosperidad Logo" [routerLink]="routerLinkData" />
+    </nz-space>
+
+    <div class="wrapper">
+      <ul *ngFor="let nav of listOfNav" nz-menu nzMode="inline" [nzTheme]="theme ? 'dark' : 'light'" [nzInlineCollapsed]="isCollapsed" [nzSelectable]="false">
+        <li *ngIf="nav.data.child == null" routerLink="{{nav.data.domain_path}}" nz-menu-item nz-tooltip nzTooltipPlacement="right"
+          [nzTooltipTitle]="isCollapsed ? '' : ''">
+          <i nz-icon nzType="{{nav.data.form_icon}}" nzTheme="outline"></i>
+          <span>{{nav.data.form_name}}</span>
+        </li>
+        <li [nzOpen]="true" nz-submenu *ngIf="nav.data.child != null" nzTitle="{{nav.data.form_name}}" nzIcon="{{nav.data.form_icon}}">
+          <ul *ngFor="let subchild of nav.data.child">
+            <li  *ngIf="subchild.form_type == 'Folder'" nz-submenu nzTitle="{{subchild.form_name}}" nzIcon="{{subchild.form_icon}}">
+              <ul *ngFor="let x of subchild.child">
+                <li [ngClass]="{'description': x.form_alias != null && x.form_alias != ''}"  *ngIf="x.child == null" (click)="getTitle(subchild.form_name, x.form_name);" routerLink="{{x.routes[0].executable_path}}" [nzMatchRouter]="true" [nzMatchRouterExact]="true"  nz-menu-item routerLinkActive="active-link">
+                  <div style="font-weight: 400; color: #F7B011;">{{x.form_name}} </div>
+                  <div *ngIf="x.form_alias != null && x.form_alias != ''" style="font-size: 10px; font-style: italic;">
+                    <i nz-icon nzType="swap-right" nzTheme="outline"></i>
+                    {{x.form_alias}}
+                  </div>
+                </li>
+              </ul>
+            </li>
+            <li [ngClass]="{'description': subchild.form_alias != null && subchild.form_alias != ''}" *ngIf="subchild.form_type == 'Form' && subchild.child == null" (click)="getTitle(nav.data.form_name, subchild.form_name);" routerLink="{{subchild.routes[0].executable_path}}" [nzMatchRouter]="true" [nzMatchRouterExact]="true"  nz-menu-item routerLinkActive="active-link">
+              <div style="font-weight: 400; color: #F7B011;">{{subchild.form_name}} </div>
+              <div *ngIf="subchild.form_alias != null && subchild.form_alias != ''" style="font-size: 10px; font-style: italic;">
+                <i nz-icon nzType="swap-right" nzTheme="outline"></i>
+                {{subchild.form_alias}}
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nz-sider>
+
+  <nz-layout class="right-layout">
+
+    <app-header style="position: relative;" [title]="title" [subtitle]="subtitle" [userValue]="userValue" (valueChange)="switch($event)"></app-header>
+
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+
+    <app-footer></app-footer>
+    
+  </nz-layout>
+
+</nz-layout>

@@ -1,0 +1,55 @@
+
+<nz-spin nzTip="Loading list..." [nzSpinning]="isLoading">
+<nz-table #basicTable [nzData]="listOfData" nzBordered [nzTitle]="dateFilter" nzSize="small" nzShowPagination nzShowSizeChanger [nzPageSize]="15" nzShowQuickJumper>
+  <thead>
+    <tr class="content-table-head">
+      <th class="thClass">Position Name</th>
+      <th class="thClass">Department</th>
+      <th class="thClass">Type</th>
+      <th class="thClass">Status</th>
+      <th class="thClass">Action</th>
+    </tr>
+  </thead>
+  <tbody cdkDropList (cdkDropListDropped)="drop($event)" class="content-table-body">
+    <tr *ngFor="let data of listOfData" cdkDrag class="rowHover">
+      <td>{{data.position_name}}</td>
+      <td>{{data.short_desc}}</td>
+      <td>{{data.position_type}}</td>
+      <td style="width: 5%;">
+        <nz-tag   *ngIf="data.status === 'Active'" [nzColor]="'#87d068'">{{data.status}}</nz-tag>
+        <nz-tag   *ngIf="data.status !== 'Active'" [nzColor]="'#f50'">{{data.status}}</nz-tag>
+      </td>
+      <td style="width: 8%;">
+        <button [disabled]="control.edit" class="actionEdit" nz-button nzType="text" (click)="edit(data)"><i nz-icon nzType="form" nzTheme="outline"></i></button>
+        <button [disabled]="control.delete" class="actionDelete" nz-button nzType="text" (click)="delete(data)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+      
+      </td>
+    </tr>
+  </tbody>
+
+  <ng-template #dateFilter>
+    <nz-input-group nzAllowClear style="width: 50%;"  nzSize="large" [nzSuffix]="suffixIconSearch">
+      <input 
+      type="text" 
+      [(ngModel)]="searchModel"
+      (ngModelChange)="beginSearch($event)" 
+      nz-input 
+      placeholder="Search Fees/Charges"
+      [nzAutocomplete]="auto" />
+      <!-- <nz-autocomplete [nzDataSource]="filteredOptions" nzBackfill="true" #auto (click)="triggerSearch($event)"></nz-autocomplete> -->
+      <nz-autocomplete #auto>
+        <nz-auto-option (click)="triggerSearch(option)" *ngFor="let option of filteredOptions" [nzValue]="option">{{ option }}</nz-auto-option>
+      </nz-autocomplete>
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+      <i *ngIf="searchModel == ''" nz-icon nzType="search"></i>
+      <a *ngIf="searchModel != ''" (click)="clearSearch()"><i nz-icon nzType="close"></i></a>
+    </ng-template>
+    
+    <label nz-checkbox  style="padding-left: 2%;" [(ngModel)]="statusSwitch" (ngModelChange)="statusFilter()">Show Active Only</label>
+  </ng-template>
+  
+  
+  
+</nz-table>
+</nz-spin>

@@ -1,0 +1,105 @@
+
+@media print{
+    
+    .footDivPrint{  
+      display: block !important;
+      position:fixed;
+      bottom:  10px !important;
+      padding: 50px 0px 0px 0px !important;
+      width: 100% !important;
+      font-weight: 100;
+    
+    }
+    .footDiv{
+      display: none;
+    }
+    .breakThis{
+      break-before: always;
+    }
+      .printMulti{
+          /* break-after: always; */
+          margin: 0px !important;
+          padding-top: 0px !important;
+          border: 0px !important;
+          box-sizing: border-box;
+          box-shadow: none !important;
+          height: 100% !important;
+          width: 100% !important;
+      }
+      .printContent{
+        height: 100% !important;
+        margin: 5mm !important;
+      }
+  
+      tbody tr td{
+          font-size: 14px !important;
+      }
+  
+    }
+  
+    .footDiv{
+      bottom:  0 !important;
+      padding: 0 !important;
+  }
+  
+  .printLayout {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 80%;
+      box-shadow: 2px 2px 4px 2px #888888;
+    }
+    
+    .printContent {
+      padding: 40px;
+    }
+    
+    .content {
+      margin-top: 30px;
+    }
+  
+    tbody tr td{
+        font-size: 14px !important;
+        height: 30px;
+    }
+    .headerActions {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 80%;
+      text-align: right;
+      margin-bottom: 20px;
+      margin-top: 20px;
+    }
+    .printMulti{
+      margin: auto;
+      margin-top: 10px;
+      border: 1px solid black;
+      box-shadow: 2px 2px 4px 2px #888888;
+      width: 60vw;
+      align-self: auto;
+  }
+    .footDivPrint{
+      display: none;
+    }
+
+    th {
+      border-top: 1px solid black !important;
+      border-left: 1px solid black !important;
+      text-align: center !important;
+      border-right: 1px solid black !important;
+    }
+    
+    td {
+      border-top: 1px solid black !important;
+      border-left: 1px solid black !important;
+      border-right: 1px solid black !important;
+    }
+    
+    tr:last-child td {
+      border-bottom: 1px solid black !important;
+    }
+    
+    .ant-table-content {
+    border: 1px solid black !important;
+    }

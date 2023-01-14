@@ -1,0 +1,49 @@
+.printLayout {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  box-shadow: 2px 2px 4px 2px #888888;
+}
+@media print{
+  .footDiv{
+    display: block !important;
+    position:fixed;
+    bottom:  20px !important;
+    padding: 50px 0px 0px 0px !important;
+    width: 100% !important;
+    font-weight: 100;
+  }
+  .content-table-head {
+    font-size: 12px !important;
+  }
+  .content-table-body {
+    font-size: 12px !important;
+  }
+  .printContent {
+    padding: 0;
+    margin-left: 40px;
+    margin-right: 40px;
+  }
+  .content {
+    margin-top: 0;
+  }
+}
+
+.printContent {
+  padding: 50px;
+}
+
+.content {
+  margin-top: 50px;
+}
+
+.headerActions {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  text-align: right;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}

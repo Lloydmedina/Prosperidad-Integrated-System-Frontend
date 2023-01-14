@@ -1,0 +1,87 @@
+
+<div nz-row>
+  <div nz-col class="firstColumn" nzFlex="100%" [nzSpan]="17">
+    <nz-carousel nzAutoPlay>
+      <div nz-carousel-content *ngFor="let index of array">
+        <img [src]="index" alt="Prosperidad Logo" class="backgroundSlider">
+      </div>
+    </nz-carousel>
+    <!-- <img src="assets/img/MunicipalLogo.png" alt="Prosperidad Logo"> -->
+  </div>
+  <div nz-col class="secondColumn" [nzSpan]="7">
+    <div style="padding: 15px;">
+
+      <nz-card style="text-align: center;">
+        <img src="assets/img/MunicipalLogo.png" alt="Prosperidad Logo" class="formLogo">
+        <h2>Prosperidad - Agusan Del Sur</h2>
+        <h3>Sign-In</h3>
+        <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm(validateForm.value)">
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Please input your username!">
+              <nz-input-group nzPrefixIcon="user">
+                <input style="text-transform: none;" type="text" nz-input formControlName="username" placeholder="Username" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Please input your Password!">
+              <nz-input-group nzPrefixIcon="lock">
+                <input style="text-transform: none;" type="password" nz-input formControlName="password" placeholder="Password" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <div nz-row class="login-form-margin">
+            <div nz-col [nzSpan]="12">
+              <label nz-checkbox formControlName="remember">
+                <span>Remember me</span>
+              </label>
+            </div>
+            <div nz-col [nzSpan]="12">
+              <a class="login-form-forgot">Forgot password</a>
+            </div>
+          </div>
+          <button [nzLoading]="isLoaded" nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
+          <!-- Or
+          <a (click)="showConfirm()">Login as Guest!</a> -->
+        </form>
+
+      </nz-card>
+
+      
+
+    </div>
+
+    <div style="padding: 15px;">
+      <nz-card [nzTitle]="News">
+        <nz-timeline>
+          <nz-timeline-item>Create a services site 2015-09-01</nz-timeline-item>
+          <nz-timeline-item>Solve initial network problems 2015-09-01</nz-timeline-item>
+          <nz-timeline-item>Technical testing 2015-09-01</nz-timeline-item>
+          <nz-timeline-item>Network problems being solved 2015-09-01</nz-timeline-item>
+        </nz-timeline>
+      </nz-card>
+      <ng-template #News>
+        <div style="color: #1890FF;">
+          <i nz-icon nzType="read"></i> News
+        </div>
+      </ng-template>
+    </div>
+
+    <div style="padding: 15px;">
+      <nz-card [nzTitle]="Updates">
+        <nz-timeline>
+          <nz-timeline-item>Create a services site 2015-09-01</nz-timeline-item>
+          <nz-timeline-item>Solve initial network problems 2015-09-01</nz-timeline-item>
+          <nz-timeline-item>Technical testing 2015-09-01</nz-timeline-item>
+          <nz-timeline-item>Network problems being solved 2015-09-01</nz-timeline-item>
+        </nz-timeline>
+      </nz-card>
+      <ng-template #Updates>
+        <div style="color: #1890FF;">
+          <i nz-icon nzType="carry-out"></i> Updates
+        </div>
+      </ng-template>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,153 @@
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <div style="margin-bottom: 10px;">
+    <span nz-typography><kbd>Note: Select Family Head to continue to registration form.</kbd></span>
+  </div>
+  <div *ngIf="showAlert" style="margin-bottom: 10px;">
+    <nz-alert
+    nzType="warning"
+    [nzMessage]="alermessage"
+    ></nz-alert>
+    <ng-template #alermessage>
+      <span style="font-weight: 500;">{{fullName}}</span> is already in Family Composition cummulative data. Click
+      <span class="view" (click)="viewBrowse()">View</span> if you want to view this record.
+    </ng-template>
+  </div>
+  <nz-table #basicTable [nzData]="listOfData" nzBordered [nzTitle]="dateFilter" nzSize="small" nzShowPagination nzShowSizeChanger nzShowQuickJumper>
+    <thead>
+      <tr class="content-table-head">
+        <th class="thClass">Birth Date</th>
+        <th class="thClass">Name</th>
+        <th class="thClass">Address</th>
+        <th class="thClass">Civil Status</th>
+        <th class="thClass">Gender</th>
+        <th class="thClass">Status</th>
+        <th class="thClass" nzWidth="10%">Action</th>
+      </tr>
+    </thead>
+    <tbody class="content-table-body">
+      <ng-container *ngFor="let data of basicTable.data">
+        <tr>
+          <td>{{data.birth_date | date:'mediumDate'}}</td>
+          <td>{{data.prefix}} {{data.first_name}} {{data.middle_name}} {{data.last_name}} {{data.suffix}}</td>
+          <td>{{data.brgy_name}} {{data.street}} , {{data.city_mun_name}}, {{data.province_name}}</td>
+          <td>{{data.civil_status_name}}</td>
+          <td>{{data.gender_name}}</td>
+          <td *ngIf="data.status == 'Active'"><nz-tag [nzColor]="'#2799FF'">{{data.status}}</nz-tag></td>
+          <td *ngIf="data.status == 'Deleted'"><nz-tag [nzColor]="'red'">{{data.status}}</nz-tag></td>
+          <td [nzExpand]="expandSet.has(data.person_guid)" (nzExpandChange)="onExpandChange(data.person_guid, $event)">
+            <button nz-button nzType="default" (click)="triggerSelect(data.person_guid)">
+              <i nz-icon nzType="select" nzTheme="outline"></i>
+              Select
+            </button>
+          </td>
+        </tr>
+        <tr [nzExpand]="expandSet.has(data.person_guid)">
+          <nz-card nzTitle="Person's Information">
+            <nz-descriptions nzTitle="{{data.prefix}} {{data.first_name}} {{data.middle_name}} {{data.last_name}} {{data.suffix}}">
+              <nz-descriptions-item nzTitle="Application Date">{{data.application_date | date:'mediumDate'}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Birth Date">{{data.birth_date | date:'mediumDate'}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Blood Type">{{data.blood_type_name}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Citizenship">{{data.citizenship}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Civil Status">{{data.civil_status_name}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Contact No">{{data.contact_no}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Gender">{{data.gender_name}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Height">{{data.height}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Weight">{{data.weight}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Profession">{{data.profession}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Place of Birth">{{data.place_of_birth}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Religion">{{data.religion}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Status">{{data.status}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="T.I.N">{{data.tin}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Zip Code">{{data.zipcode_name}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Barangay">{{data.brgy_name}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Province">{{data.province_name}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="City/Municipality">{{data.city_mun_name}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Street">{{data.street}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Region"></nz-descriptions-item>
+            </nz-descriptions>
+          </nz-card>
+        </tr>
+      </ng-container>
+    </tbody>
+
+    <ng-template #dateFilter>
+
+      <nz-input-group nzAllowClear style="width: 50%;"  nzSize="large" [nzSuffix]="suffixIconSearch">
+        <input 
+        type="text" 
+        [(ngModel)]="searchModel"
+        (ngModelChange)="beginSearch($event)" 
+        nz-input 
+        placeholder="Search Client/Person"
+        [nzAutocomplete]="auto" />
+        <!-- <nz-autocomplete [nzDataSource]="filteredOptions" nzBackfill="true" #auto (click)="triggerSearch($event)"></nz-autocomplete> -->
+        <nz-autocomplete #auto>
+          <nz-auto-option (click)="triggerSearch(option)" *ngFor="let option of filteredOptions" [nzValue]="option.val">{{ option.val }}</nz-auto-option>
+        </nz-autocomplete>
+      </nz-input-group>
+      <ng-template #suffixIconSearch>
+        <i *ngIf="searchModel == ''" nz-icon nzType="search"></i>
+        <a *ngIf="searchModel != ''" (click)="clearSearch()"><i nz-icon nzType="close"></i></a>
+      </ng-template>
+
+      <!-- <label nz-checkbox  style="padding-left: 2%;" [(ngModel)]="statusSwitch" (ngModelChange)="statusFilter()">Show Active Only</label> -->
+
+      <!-- <app-person-filter (valueChange)="search($event)" (clearChange)="clear($event)" (selectChange)="select($event)"></app-person-filter> -->
+      <!-- <app-date-filter></app-date-filter> -->
+    </ng-template>
+    
+  </nz-table>
+</nz-spin>
+
+<ng-template #drawerTemplate let-data let-drawerRef="drawerRef">
+  <i nz-icon nzType="file-search" nzTheme="outline"></i> &nbsp;
+  <span style="font-weight: 500;">{{ data?.value }}</span>
+  <nz-spin nzTip="Data Loading..." [nzSpinning]="isLoadingHistory">
+    <nz-collapse style="margin-top: 10px;">
+      <nz-collapse-panel *ngFor="let data of panel" [nzHeader]="headercollapsed">
+        <div>
+          <span class="labelWeight">Trans No : </span>{{data.form_trans_no}}
+        </div>
+        <div>
+          <span class="labelWeight">Owner : </span> {{data.owner}}
+        </div>
+        <div>
+          <span class="labelWeight">Renter : </span> {{data.renter}}
+        </div>
+        <div>
+          <span class="labelWeight">Physical Disability? : </span> {{data.physical_disability}}
+        </div>
+        <div>
+          <span class="labelWeight">Disability Name : </span>{{data.disability_name}}
+        </div>
+        <div>
+          <span class="labelWeight">If Distresed : </span>{{data.if_distressed}}
+        </div>
+        <div>
+          <span class="labelWeight">Area of Location : </span> {{data.area_of_location}}
+        </div>
+        <div>
+          <span class="labelWeight">Crops Planted : </span> {{data?.crops_planted}}
+        </div>
+        <div>
+          <span class="labelWeight">Estimated Damaged : </span> &#8369; {{data.estimated_damaged | number: '1.2-2'}}
+        </div>
+        <div>
+          <span class="labelWeight">No of Hectares : </span> {{data.no_of_hectares}}
+        </div>
+        <div>
+          <span class="labelWeight">Sources of Income : </span> {{data.sources_of_income}}
+        </div>
+        <div>
+          <span class="labelWeight">Other Sources of Income : </span> {{data.other_sources_of_income}}
+        </div>
+        <div>
+          <span class="labelWeight">Total Family Income : </span> &#8369; {{data.total_family_income | number: '1.2-2'}}
+        </div>
+        <ng-template #headercollapsed>
+          {{data.application_date | date:'medium'}} &nbsp;<span *ngIf="data.status == 'Active'">(Current)</span>
+        </ng-template>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </nz-spin>
+</ng-template>

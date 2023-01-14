@@ -1,0 +1,44 @@
+<div class="headerActions">
+  <h3 style="float: left;"><i nz-icon nzType="file-done" nzTheme="outline" style="color: #1890FF"></i> General Intake List</h3>
+  <button nz-button nzType="default" (click)="excel(); $event.preventDefault();" style="margin-right: 10px;">
+    <i nz-icon nzType="file-excel" nzTheme="outline" style="color: #008141"></i> 
+    EXPORT TO EXCEL
+  </button>
+  <button nz-button nzType="primary" [useExistingCss]="true" printSectionId="report-section" #print ngxPrint>
+    <i nz-icon nzType="printer" nzTheme="outline"></i>
+    PRINT
+  </button>
+</div>
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <div class="printLayout" id="report-section">
+    <div class="printContent">
+      <app-header-print></app-header-print>
+      <div style="text-align: center;"><h2>List of Evacuation Center</h2></div>
+      <div class="content">
+        <nz-table #basicTable [nzData]="listOfData" [nzFrontPagination]="false" nzBordered nzSize="small">
+          <thead>
+            <tr>
+              <th>Region</th>
+              <th>Address</th>
+              <th>Venue</th>
+              <th>Condition</th>
+              <th>Capacity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let data of basicTable.data">
+              <tr>
+                <td>{{data.reg_name }}</td>
+                <td>{{data.brgy_name}} {{data.street}} , {{data.city_mun_name}}, {{data.province_name}}</td>
+                <td>{{data.venue}}</td>
+                <td>{{data.condition}}</td>
+                <td>{{data.capacity}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+    <app-footer-print></app-footer-print>
+  </div>
+</nz-spin>

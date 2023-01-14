@@ -1,0 +1,7 @@
+<div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
+  <div *ngFor="let list of listOfNavContent" nz-col class="gutter-row" [nzSpan]="6">
+    <nz-card [routerLink]="list.routes[0].executable_path">
+      <h4>{{list.form_name}}</h4>
+    </nz-card>
+  </div>
+</div>

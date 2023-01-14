@@ -1,0 +1,928 @@
+<div class="headerActions">
+  <h3 style="float: left;"><i nz-icon nzType="file-done" nzTheme="outline" style="color: #1890FF"></i> SC Indigent Form</h3>
+  <button nz-button nzType="default" [useExistingCss]="true" printSectionId="report-section-empty" #print ngxPrint style="margin-right: 10px;">
+    <i nz-icon nzType="printer" nzTheme="outline"></i>
+    PRINT EMPTY SHEET
+  </button>
+  <button nz-button nzType="default" (click)="excel(); $event.preventDefault();" style="margin-right: 10px;">
+    <i nz-icon nzType="file-excel" nzTheme="outline" style="color: #008141"></i> 
+    EXPORT TO EXCEL
+  </button>
+  <button nz-button (click)="convertToPDF();" nzType="default" style="margin-right: 10px;">
+    <span nz-icon nzType="file-pdf" nzTheme="outline" style="color: red;"></span>
+    EXPORT TO PDF
+  </button>
+  <button nz-button nzType="primary" [useExistingCss]="true" printSectionId="report-section" #print ngxPrint>
+    <i nz-icon nzType="printer" nzTheme="outline"></i>
+    PRINT
+  </button>
+</div>
+
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <div class="printLayout" id="report-section">
+    <div id="content" #content>
+      <div class="printContent">
+        <app-header-print></app-header-print>
+        <div style="text-align: center;"><h2>SOCIAL PENSION FOR INDIGENT SENIOR CITIZENS</h2></div>
+        
+        <div style="text-align: center; margin-top: 3%;">
+          <h2 style="font-weight: bold;">APPLICATION FORM</h2>
+        </div>
+        <div *ngIf="!data.person_image" style="text-align: right; margin-right: 13%; margin-top: -20px;">
+          <span style="border: 2px solid gray;" class="picture">
+            1x1 Picture
+          </span>
+        </div>
+        <div *ngIf="data.person_image" class="idpicture">
+          <img *ngIf="avatarUrl" [src]="avatarUrl" class="pictureimage"/>
+        </div>
+  
+        <nz-descriptions nzTitle="I. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BASIC INFORMATION:" style="margin-top: 5%;">
+          <nz-descriptions-item nzTitle="Name" [nzSpan]="2">
+            <div class="border">
+              <!-- Applicant here -->
+              &nbsp;
+              {{data?.prefix}} {{data?.last_name}}, {{data?.first_name}} {{data?.middle_name}} {{data?.suffix}}
+            </div>
+          </nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Citizenship" [nzSpan]="1">
+            <div class="border">
+              <!-- Citizenship here -->
+              {{data?.citizenship}}
+              &nbsp;
+            </div>
+          </nz-descriptions-item>
+        </nz-descriptions>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="16" style="text-align: center; margin-top: -12px;">
+            <span style="font-style: italic; font-size: 12px;">(Last Name, First Name, Middle Name)</span>
+          </div>
+        </div>
+  
+        <nz-descriptions>
+          <nz-descriptions-item nzTitle="Address" [nzSpan]="3">
+            <div class="border">
+              <!-- Present Address/Residence here -->
+              <!-- &nbsp; -->
+              {{data?.brgy_name}} {{data?.street}} , {{data?.city_mun_name}}, {{data?.province_name}}
+            </div>
+          </nz-descriptions-item>
+        </nz-descriptions>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="6" style="text-align: right; margin-top: -12px;">
+            <span style="font-style: italic; font-size: 12px;">(House No. &nbsp;&nbsp;&nbsp; Street</span>
+          </div>
+          <div nz-col [nzSpan]="6" style="text-align: right; margin-top: -12px;">
+            <span style="font-style: italic; font-size: 12px;">Barangay</span>
+          </div>
+          <div nz-col [nzSpan]="6" style="text-align: right; margin-top: -12px;">
+            <span style="font-style: italic; font-size: 12px;">City/Municipality</span>
+          </div>
+          <div nz-col [nzSpan]="6" style="text-align: right; margin-top: -12px;">
+            <span style="font-style: italic; font-size: 12px;">Province)</span>
+          </div>
+        </div>
+  
+        <nz-descriptions>
+          <nz-descriptions-item nzTitle="Age" [nzSpan]="1">
+            <div class="border">
+              <!-- Age here -->
+              <!-- &nbsp; -->
+              {{data?.age}}
+            </div>
+          </nz-descriptions-item>
+  
+          <nz-descriptions-item nzTitle="Sex" [nzSpan]="1">
+            <div class="border">
+              <!-- Gender here -->
+              <!-- &nbsp; -->
+              {{data?.gender_name}}
+            </div>
+          </nz-descriptions-item>
+  
+          <nz-descriptions-item nzTitle="Civil Status" [nzSpan]="1">
+            <div class="border">
+              <!-- civil status here -->
+              <!-- &nbsp; -->
+              {{data?.civil_status_name}}
+            </div>
+          </nz-descriptions-item>
+        </nz-descriptions>
+  
+        <nz-descriptions>
+          <nz-descriptions-item nzTitle="Birthdate" [nzSpan]="1.5">
+            <div class="border">
+              <!-- Birthdate here -->
+              <!-- &nbsp; -->
+              {{data?.birth_date | date: 'mediumDate'}}
+            </div>
+          </nz-descriptions-item>
+  
+          <nz-descriptions-item nzTitle="Birthplace" [nzSpan]="1.5">
+            <div class="border">
+              <!-- Birthplace here -->
+              &nbsp;
+              {{data?.place_of_birth}}
+            </div>
+          </nz-descriptions-item>
+        </nz-descriptions>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="14" style="text-align: center; margin-top: -12px;">
+            <span style="font-style: italic; font-size: 12px;">(Month, Date, Year)</span>
+          </div>
+        </div>
+  
+        <nz-descriptions>
+          <nz-descriptions-item nzTitle="Living Arrangement" [nzSpan]="3">
+            <nz-input-group [nzSize]="'small'">
+              <div nz-row>
+                <div nz-col nzSpan="3">
+                  <div class="border" style="text-align: center;">
+                    <i *ngIf="data?.living_arrangement_id == 1" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.living_arrangement_id != 1">&nbsp;</span>
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">Owned</span>
+                </div>
+                <div nz-col nzSpan="3">
+                  <div class="border" style="text-align: center;">
+                    <i *ngIf="data?.living_arrangement_id == 2" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.living_arrangement_id != 2">&nbsp;</span>
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">Living Alone</span>
+                </div>
+                <div nz-col nzSpan="3">
+                  <div class="border" style="text-align: center;">
+                    <i *ngIf="data?.living_arrangement_id == 3" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.living_arrangement_id != 3">&nbsp;</span>
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">Living w/ Relatives</span>
+                </div>
+                <div nz-col nzSpan="3">
+                  <div class="border" style="text-align: center;">
+                    <i *ngIf="data?.living_arrangement_id == 4" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.living_arrangement_id != 4">&nbsp;</span>
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">Rent</span>
+                </div>
+              </div>
+            </nz-input-group>
+          </nz-descriptions-item>
+        </nz-descriptions>
+  
+        <nz-descriptions nzTitle="II. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECONOMIC STATUS:">
+          <nz-descriptions-item nzTitle="Pensioner?" [nzSpan]="1.5">
+            <nz-input-group [nzSize]="'small'">
+              <div nz-row>
+                <div nz-col nzSpan="9">
+                  <div class="border" style="text-align: center;">
+                    <!-- <i *ngIf="data?.sss_pensioner == 'true'" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.sss_pensioner == 'false'">&nbsp;</span> -->
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">Yes</span>
+                </div>
+                <div nz-col nzSpan="9">
+                  <div class="border" style="text-align: center;">
+                    <!-- <i *ngIf="data?.sss_pensioner == 'false'" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.sss_pensioner == 'true'">&nbsp;</span> -->
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">No.</span>
+                </div>
+              </div>
+            </nz-input-group>
+          </nz-descriptions-item>
+          <nz-descriptions-item nzTitle="if yes, please specify" [nzSpan]="1.5">
+            <div class="border">
+              <!-- Citizenship here -->
+              &nbsp;
+            </div>
+          </nz-descriptions-item>
+        </nz-descriptions>
+  
+        <nz-descriptions>
+          <nz-descriptions-item nzTitle="Source" [nzSpan]="3">
+            <nz-input-group [nzSize]="'small'">
+              <div nz-row>
+                <div nz-col nzSpan="3">
+                  <div class="border" style="text-align: center;">
+                    <!-- <i *ngIf="data?.sss_pensioner == 'true'" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.sss_pensioner == 'false'">&nbsp;</span> -->
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">GSIS</span>
+                </div>
+                <div nz-col nzSpan="3">
+                  <div class="border" style="text-align: center;">
+                    <!-- <i *ngIf="data?.sss_pensioner == 'false'" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.sss_pensioner == 'true'">&nbsp;</span> -->
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">SSS</span>
+                </div>
+                <div nz-col nzSpan="3">
+                  <div class="border" style="text-align: center;">
+                    <!-- <i *ngIf="data?.sss_pensioner == 'false'" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.sss_pensioner == 'true'">&nbsp;</span> -->
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">AFPSLAI</span>
+                </div>
+                <div nz-col nzSpan="3">
+                  <div class="border" style="text-align: center;">
+                    <!-- <i *ngIf="data?.sss_pensioner == 'false'" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.sss_pensioner == 'true'">&nbsp;</span> -->
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">Others</span>
+                </div>
+              </div>
+            </nz-input-group>
+          </nz-descriptions-item>
+        </nz-descriptions>
+  
+        <nz-descriptions>
+          <nz-descriptions-item nzTitle="Permanent Source of Income?" [nzSpan]="1.5">
+            <nz-input-group [nzSize]="'small'">
+              <div nz-row>
+                <div nz-col nzSpan="7">
+                  <div class="border" style="text-align: center;">
+                    <!-- <i *ngIf="data?.sss_pensioner == 'true'" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.sss_pensioner == 'false'">&nbsp;</span> -->
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">Yes</span>
+                </div>
+                <div nz-col nzSpan="7">
+                  <div class="border" style="text-align: center;">
+                    <!-- <i *ngIf="data?.sss_pensioner == 'false'" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.sss_pensioner == 'true'">&nbsp;</span> -->
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">None.</span>
+                </div>
+              </div>
+            </nz-input-group>
+          </nz-descriptions-item>
+  
+          <nz-descriptions-item nzTitle="If yes, please specify" [nzSpan]="1.5">
+            <div class="border">
+              <!-- Citizenship here -->
+              &nbsp;
+            </div>
+          </nz-descriptions-item>
+        </nz-descriptions>
+  
+        <nz-descriptions>
+          <nz-descriptions-item nzTitle="Regular Support from Family?" [nzSpan]="1">
+            <nz-input-group [nzSize]="'small'">
+              <div nz-row>
+                <div nz-col nzSpan="3">
+                  <div class="border" style="text-align: center;">
+                    <!-- <i *ngIf="data?.sss_pensioner == 'true'" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.sss_pensioner == 'false'">&nbsp;</span> -->
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">Yes</span>
+                </div>
+                <div nz-col nzSpan="3">
+                  <div class="border" style="text-align: center;">
+                    <!-- <i *ngIf="data?.sss_pensioner == 'false'" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.sss_pensioner == 'true'">&nbsp;</span> -->
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">No</span>
+                </div>
+              </div>
+            </nz-input-group>
+          </nz-descriptions-item>
+        </nz-descriptions>
+  
+        <nz-descriptions>
+          <nz-descriptions-item nzTitle="Type of Support?" [nzSpan]="3">
+            <nz-input-group [nzSize]="'small'">
+              <div nz-row>
+                <div nz-col nzSpan="4">
+                  <div class="border" style="text-align: center;">
+                    <!-- <i *ngIf="data?.sss_pensioner == 'true'" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.sss_pensioner == 'false'">&nbsp;</span> -->
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">Cash (How much and how often)</span>
+                </div>
+                <div nz-col nzSpan="6">
+                  <div class="border" style="text-align: center;">
+                    <!-- <i *ngIf="data?.sss_pensioner == 'false'" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.sss_pensioner == 'true'">&nbsp;</span> -->
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">In kind (specify)</span>
+                </div>
+              </div>
+            </nz-input-group>
+          </nz-descriptions-item>
+        </nz-descriptions>
+  
+        <nz-descriptions nzTitle="III. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HEALTH CONDITION:">
+          <nz-descriptions-item nzTitle="Has existing illness?" [nzSpan]="1.5">
+            <nz-input-group [nzSize]="'small'">
+              <div nz-row>
+                <div nz-col nzSpan="9">
+                  <div class="border" style="text-align: center;">
+                    <!-- <i *ngIf="data?.sss_pensioner == 'true'" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.sss_pensioner == 'false'">&nbsp;</span> -->
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">Yes</span>
+                </div>
+                <div nz-col nzSpan="9">
+                  <div class="border" style="text-align: center;">
+                    <!-- <i *ngIf="data?.sss_pensioner == 'false'" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.sss_pensioner == 'true'">&nbsp;</span> -->
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">No.</span>
+                </div>
+              </div>
+            </nz-input-group>
+          </nz-descriptions-item>
+          <nz-descriptions-item nzTitle="if yes, please specify" [nzSpan]="1.5">
+            <div class="border">
+              <!-- Citizenship here -->
+              &nbsp;
+            </div>
+          </nz-descriptions-item>
+        </nz-descriptions>
+  
+        <nz-descriptions>
+          <nz-descriptions-item nzTitle="Hospitalized within the last six months?" [nzSpan]="1">
+            <nz-input-group [nzSize]="'small'">
+              <div nz-row>
+                <div nz-col nzSpan="3">
+                  <div class="border" style="text-align: center;">
+                    <!-- <i *ngIf="data?.sss_pensioner == 'true'" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.sss_pensioner == 'false'">&nbsp;</span> -->
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">Yes</span>
+                </div>
+                <div nz-col nzSpan="3">
+                  <div class="border" style="text-align: center;">
+                    <!-- <i *ngIf="data?.sss_pensioner == 'false'" nz-icon nzType="check" nzTheme="outline"></i>
+                    <span *ngIf="data?.sss_pensioner == 'true'">&nbsp;</span> -->
+                    &nbsp;
+                  </div>
+                </div>
+                <div nz-col>
+                  <span style="font-weight: 500;">No</span>
+                </div>
+              </div>
+            </nz-input-group>
+          </nz-descriptions-item>
+        </nz-descriptions>
+  
+        <p style="font-weight: 500; margin-top: 10px;">
+          I hereby certify that the above-mentioned inforrnation are true and correct to the best of my knowledge.
+        </p>
+  
+        <div nz-row [nzGutter]="24" style="margin-top: 35px;">
+          <div nz-col [nzSpan]="12">
+  
+            <span>&nbsp;</span>
+            <div class="signatureLabel" style="font-style: italic;">
+              (Applicant's Signature over Printed Name)
+            </div>
+  
+          </div>
+          <div nz-col [nzSpan]="12">
+            <nz-descriptions>
+              <nz-descriptions-item [nzTitle]="DateSubmitted" [nzSpan]="2">
+                <div class="border">
+                  <!-- Citizenship here -->
+                  &nbsp;
+                </div>
+              </nz-descriptions-item>
+              <ng-template #DateSubmitted>
+                <div style="font-weight: bold;">
+                  Date Submitted
+                </div>
+              </ng-template>
+            </nz-descriptions>
+          </div>
+        </div>
+  
+        <p style="font-weight: 500;">Initial Assessment</p>
+  
+        <div class="border">
+          <!-- Citizenship here -->
+          &nbsp;
+        </div>
+        <div class="border">
+          <!-- Citizenship here -->
+          &nbsp;
+        </div>
+        <div class="border">
+          <!-- Citizenship here -->
+          &nbsp;
+        </div>
+        <div class="border">
+          <!-- Citizenship here -->
+          &nbsp;
+        </div>
+  
+        <div nz-row [nzGutter]="24" style="margin-top: 50px;">
+          <div nz-col [nzSpan]="12">
+            <nz-descriptions>
+              <nz-descriptions-item style="font-weight: bold !important;" [nzTitle]="Receivedby" [nzSpan]="2">
+                <div class="border">
+                  <!-- Citizenship here -->
+                  &nbsp;
+                </div>
+              </nz-descriptions-item>
+              <ng-template #Receivedby>
+                <div style="font-weight: bold;">
+                  Received by
+                </div>
+              </ng-template>
+            </nz-descriptions>
+  
+            <nz-descriptions [nzColon]="false">
+              <nz-descriptions-item nzTitle="" [nzSpan]="2">
+                <div style="font-weight: bold; padding-left: 24%; font-style: italic;" class="signReceived">
+                  (Signature over Printed Name and Designation)
+                </div>
+              </nz-descriptions-item>
+            </nz-descriptions>
+          </div>
+        </div>
+        
+        
+        <!-- <app-footer-print></app-footer-print> -->
+      </div>
+    </div>
+    
+  </div>
+
+  <div style="display: none;" class="printLayout" id="report-section-empty">
+    <div class="printContent">
+      <app-header-print></app-header-print>
+      <div style="text-align: center;"><h2>SOCIAL PENSION FOR INDIGENT SENIOR CITIZENS</h2></div>
+      
+      <div style="text-align: center; margin-top: 3%;">
+        <h2 style="font-weight: bold;">APPLICATION FORM</h2>
+      </div>
+      <div style="text-align: right; margin-right: 13%; margin-top: -20px;">
+        <span style="border: 2px solid gray;" class="picture">
+          1x1 Picture
+        </span>
+      </div>
+
+      <nz-descriptions nzTitle="I. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BASIC INFORMATION:" style="margin-top: 5%;">
+        <nz-descriptions-item nzTitle="Name" [nzSpan]="2">
+          <div class="border">
+            &nbsp;
+          </div>
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Citizenship" [nzSpan]="1">
+          <div class="border">
+            &nbsp;
+          </div>
+        </nz-descriptions-item>
+      </nz-descriptions>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="16" style="text-align: center; margin-top: -12px;">
+          <span style="font-style: italic; font-size: 12px;">(Last Name, First Name, Middle Name)</span>
+        </div>
+      </div>
+
+      <nz-descriptions>
+        <nz-descriptions-item nzTitle="Address" [nzSpan]="3">
+          <div class="border">
+            &nbsp;
+          </div>
+        </nz-descriptions-item>
+      </nz-descriptions>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="6" style="text-align: right; margin-top: -12px;">
+          <span style="font-style: italic; font-size: 12px;">(House No. &nbsp;&nbsp;&nbsp; Street</span>
+        </div>
+        <div nz-col [nzSpan]="6" style="text-align: right; margin-top: -12px;">
+          <span style="font-style: italic; font-size: 12px;">Barangay</span>
+        </div>
+        <div nz-col [nzSpan]="6" style="text-align: right; margin-top: -12px;">
+          <span style="font-style: italic; font-size: 12px;">City/Municipality</span>
+        </div>
+        <div nz-col [nzSpan]="6" style="text-align: right; margin-top: -12px;">
+          <span style="font-style: italic; font-size: 12px;">Province)</span>
+        </div>
+      </div>
+
+      <nz-descriptions>
+        <nz-descriptions-item nzTitle="Age" [nzSpan]="1">
+          <div class="border">
+            &nbsp;
+          </div>
+        </nz-descriptions-item>
+
+        <nz-descriptions-item nzTitle="Sex" [nzSpan]="1">
+          <div class="border">
+            &nbsp;
+          </div>
+        </nz-descriptions-item>
+
+        <nz-descriptions-item nzTitle="Civil Status" [nzSpan]="1">
+          <div class="border">
+            &nbsp;
+          </div>
+        </nz-descriptions-item>
+      </nz-descriptions>
+
+      <nz-descriptions>
+        <nz-descriptions-item nzTitle="Birthdate" [nzSpan]="1.5">
+          <div class="border">
+            &nbsp;
+          </div>
+        </nz-descriptions-item>
+
+        <nz-descriptions-item nzTitle="Birthplace" [nzSpan]="1.5">
+          <div class="border">
+            &nbsp;
+          </div>
+        </nz-descriptions-item>
+      </nz-descriptions>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="14" style="text-align: center; margin-top: -12px;">
+          <span style="font-style: italic; font-size: 12px;">(Month, Date, Year)</span>
+        </div>
+      </div>
+
+      <nz-descriptions>
+        <nz-descriptions-item nzTitle="Living Arrangement" [nzSpan]="3">
+          <nz-input-group [nzSize]="'small'">
+            <div nz-row>
+              <div nz-col nzSpan="3">
+                <div class="border" style="text-align: center;">
+                  <span>&nbsp;</span>
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">Owned</span>
+              </div>
+              <div nz-col nzSpan="3">
+                <div class="border" style="text-align: center;">
+                  <span>&nbsp;</span>
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">Living Alone</span>
+              </div>
+              <div nz-col nzSpan="3">
+                <div class="border" style="text-align: center;">
+                  <span>&nbsp;</span>
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">Living w/ Relatives</span>
+              </div>
+              <div nz-col nzSpan="3">
+                <div class="border" style="text-align: center;">
+                  <span>&nbsp;</span>
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">Rent</span>
+              </div>
+            </div>
+          </nz-input-group>
+        </nz-descriptions-item>
+      </nz-descriptions>
+
+      <nz-descriptions nzTitle="II. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECONOMIC STATUS:">
+        <nz-descriptions-item nzTitle="Pensioner?" [nzSpan]="1.5">
+          <nz-input-group [nzSize]="'small'">
+            <div nz-row>
+              <div nz-col nzSpan="9">
+                <div class="border" style="text-align: center;">
+                  &nbsp;
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">Yes</span>
+              </div>
+              <div nz-col nzSpan="9">
+                <div class="border" style="text-align: center;">
+                  &nbsp;
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">No.</span>
+              </div>
+            </div>
+          </nz-input-group>
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="if yes, please specify" [nzSpan]="1.5">
+          <div class="border">
+            &nbsp;
+          </div>
+        </nz-descriptions-item>
+      </nz-descriptions>
+
+      <nz-descriptions>
+        <nz-descriptions-item nzTitle="Source" [nzSpan]="3">
+          <nz-input-group [nzSize]="'small'">
+            <div nz-row>
+              <div nz-col nzSpan="3">
+                <div class="border" style="text-align: center;">
+                  &nbsp;
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">GSIS</span>
+              </div>
+              <div nz-col nzSpan="3">
+                <div class="border" style="text-align: center;">
+                  &nbsp;
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">SSS</span>
+              </div>
+              <div nz-col nzSpan="3">
+                <div class="border" style="text-align: center;">
+                  &nbsp;
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">AFPSLAI</span>
+              </div>
+              <div nz-col nzSpan="3">
+                <div class="border" style="text-align: center;">
+                  &nbsp;
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">Others</span>
+              </div>
+            </div>
+          </nz-input-group>
+        </nz-descriptions-item>
+      </nz-descriptions>
+
+      <nz-descriptions>
+        <nz-descriptions-item nzTitle="Permanent Source of Income?" [nzSpan]="1.5">
+          <nz-input-group [nzSize]="'small'">
+            <div nz-row>
+              <div nz-col nzSpan="7">
+                <div class="border" style="text-align: center;">
+                  &nbsp;
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">Yes</span>
+              </div>
+              <div nz-col nzSpan="7">
+                <div class="border" style="text-align: center;">
+                  &nbsp;
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">None.</span>
+              </div>
+            </div>
+          </nz-input-group>
+        </nz-descriptions-item>
+
+        <nz-descriptions-item nzTitle="If yes, please specify" [nzSpan]="1.5">
+          <div class="border">
+            &nbsp;
+          </div>
+        </nz-descriptions-item>
+      </nz-descriptions>
+
+      <nz-descriptions>
+        <nz-descriptions-item nzTitle="Regular Support from Family?" [nzSpan]="1">
+          <nz-input-group [nzSize]="'small'">
+            <div nz-row>
+              <div nz-col nzSpan="3">
+                <div class="border" style="text-align: center;">
+                  &nbsp;
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">Yes</span>
+              </div>
+              <div nz-col nzSpan="3">
+                <div class="border" style="text-align: center;">
+                  &nbsp;
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">No</span>
+              </div>
+            </div>
+          </nz-input-group>
+        </nz-descriptions-item>
+      </nz-descriptions>
+
+      <nz-descriptions>
+        <nz-descriptions-item nzTitle="Type of Support?" [nzSpan]="3">
+          <nz-input-group [nzSize]="'small'">
+            <div nz-row>
+              <div nz-col nzSpan="4">
+                <div class="border" style="text-align: center;">
+                  &nbsp;
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">Cash (How much and how often)</span>
+              </div>
+              <div nz-col nzSpan="6">
+                <div class="border" style="text-align: center;">
+                  &nbsp;
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">In kind (specify)</span>
+              </div>
+            </div>
+          </nz-input-group>
+        </nz-descriptions-item>
+      </nz-descriptions>
+
+      <nz-descriptions nzTitle="III. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HEALTH CONDITION:">
+        <nz-descriptions-item nzTitle="Has existing illness?" [nzSpan]="1.5">
+          <nz-input-group [nzSize]="'small'">
+            <div nz-row>
+              <div nz-col nzSpan="9">
+                <div class="border" style="text-align: center;">
+                  &nbsp;
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">Yes</span>
+              </div>
+              <div nz-col nzSpan="9">
+                <div class="border" style="text-align: center;">
+                  &nbsp;
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">No.</span>
+              </div>
+            </div>
+          </nz-input-group>
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="if yes, please specify" [nzSpan]="1.5">
+          <div class="border">
+            &nbsp;
+          </div>
+        </nz-descriptions-item>
+      </nz-descriptions>
+
+      <nz-descriptions>
+        <nz-descriptions-item nzTitle="Hospitalized within the last six months?" [nzSpan]="1">
+          <nz-input-group [nzSize]="'small'">
+            <div nz-row>
+              <div nz-col nzSpan="3">
+                <div class="border" style="text-align: center;">
+                  &nbsp;
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">Yes</span>
+              </div>
+              <div nz-col nzSpan="3">
+                <div class="border" style="text-align: center;">
+                  &nbsp;
+                </div>
+              </div>
+              <div nz-col>
+                <span style="font-weight: 500;">No</span>
+              </div>
+            </div>
+          </nz-input-group>
+        </nz-descriptions-item>
+      </nz-descriptions>
+
+      <p style="font-weight: 500; margin-top: 10px;">
+        I hereby certify that the above-mentioned inforrnation are true and correct to the best of my knowledge.
+      </p>
+
+      <div nz-row [nzGutter]="24" style="margin-top: 35px;">
+        <div nz-col [nzSpan]="12">
+
+          <span>&nbsp;</span>
+          <div class="signatureLabel" style="font-style: italic;">
+            (Applicant's Signature over Printed Name)
+          </div>
+
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-descriptions>
+            <nz-descriptions-item [nzTitle]="DateSubmitted" [nzSpan]="2">
+              <div class="border">
+                &nbsp;
+              </div>
+            </nz-descriptions-item>
+            <ng-template #DateSubmitted>
+              <div style="font-weight: bold;">
+                Date Submitted
+              </div>
+            </ng-template>
+          </nz-descriptions>
+        </div>
+      </div>
+
+      <p style="font-weight: 500;">Initial Assessment</p>
+
+      <div class="border">
+        &nbsp;
+      </div>
+      <div class="border">
+        &nbsp;
+      </div>
+      <div class="border">
+        &nbsp;
+      </div>
+      <div class="border">
+        &nbsp;
+      </div>
+
+      <div nz-row [nzGutter]="24" style="margin-top: 50px;">
+        <div nz-col [nzSpan]="12">
+          <nz-descriptions>
+            <nz-descriptions-item style="font-weight: bold !important;" [nzTitle]="Receivedby" [nzSpan]="2">
+              <div class="border">
+                &nbsp;
+              </div>
+            </nz-descriptions-item>
+            <ng-template #Receivedby>
+              <div style="font-weight: bold;">
+                Received by
+              </div>
+            </ng-template>
+          </nz-descriptions>
+
+          <nz-descriptions [nzColon]="false">
+            <nz-descriptions-item nzTitle="" [nzSpan]="2">
+              <div style="font-weight: bold; padding-left: 24%; font-style: italic;" class="signReceived">
+                (Signature over Printed Name and Designation)
+              </div>
+            </nz-descriptions-item>
+          </nz-descriptions>
+        </div>
+      </div>
+      
+      
+      <!-- <app-footer-print></app-footer-print> -->
+    </div>
+  </div>
+</nz-spin>

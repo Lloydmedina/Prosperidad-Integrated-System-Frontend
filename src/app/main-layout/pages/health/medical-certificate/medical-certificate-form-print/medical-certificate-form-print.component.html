@@ -1,0 +1,144 @@
+<div class="headerActions">
+  <h3 style="float: left;"><i nz-icon nzType="file-done" nzTheme="outline"></i>Medical Certificate</h3>
+  <!-- <button nz-button nzType="default" (click)="excel(); $event.preventDefault();" style="margin-right: 10px;">
+    <i nz-icon nzType="file-excel" nzTheme="outline"></i>
+    EXPORT TO EXCEL
+  </button> -->
+   <!-- <button nz-button nzType="primary" (click)="print(); $event.preventDefault();">
+    <i nz-icon nzType="printer" nzTheme="outline"></i>
+    PRINT
+  </button> -->
+  <button nz-button nzType="primary" (click)="$event.preventDefault();" [useExistingCss]="true"
+        printSectionId="print-section"
+        ngxPrint>
+          <i nz-icon nzType="printer" nzTheme="outline"></i>
+          PRINT
+        </button>
+</div>
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+
+  <!-- <div class="printLayout" id="report-section"> -->
+  <div class="printLayout printContent" id="print-section">
+    <div  nzAlign="bottom" id="report-section">
+      <br><br><br>
+      <app-header-print></app-header-print>
+      <!-- <div style="text-align: center;"><h2>MUNICIPAL HEALTH OFFICE</h2></div> -->
+      <div style="text-align: center;"><h2>MEDICAL CERTIFICATE</h2></div>
+      <br>
+      <div class="content">
+        <div nz-row>
+
+          <div nz-col nzSpan="20" nzOffset="2">
+            <div nz-row nzJustify="space-between">
+
+              <div nz-row nzJustify="start">
+                <p>I,  the undersigned <span>{{dept_head}}</span> Doctor of Medicine, certify that the examination of:</p>
+            </div>
+
+          </div>
+          <div nz-row>
+            <div nz-col nzSpan="4">
+              <div nz-row nzJustify="start">
+                 <p>
+                    Name
+                 </p>
+              </div>
+            </div>
+            <div nz-col nzSpan="1"><h3>:</h3></div>
+            <div nz-col nzSpan="10"><p><b><i>{{issued_to}}</i></b></p></div>
+          </div>
+          <div nz-row>
+            <div nz-col nzSpan="4">
+              <div nz-row nzJustify="start">
+
+                  <p>
+                Date of birth
+                  </p>
+              </div>
+            </div>
+            <div nz-col nzSpan="1"><h3>:</h3></div>
+            <div nz-col nzSpan="10"><p>{{date_of_birth | date: 'MM/dd/yyyy'}}</p></div>
+          </div>
+          <div nz-row>
+            <div nz-col nzSpan="4">
+              <div nz-row nzJustify="start">
+
+                  <p>
+                     Age
+                  </p>
+              </div>
+            </div>
+            <div nz-col nzSpan="1"><h3>:</h3></div>
+            <div nz-col nzSpan="10"><p>{{age}}</p></div>
+          </div>
+          <div nz-row nzJustify="start">
+            <div nz-col nzSpan="24">
+              <p>
+              reveals the following results:
+              </p>
+
+            </div>
+            <div nz-col nzSpan="24">
+              <nz-list [nzDataSource]="person_data">
+                <li nz-list-item *ngFor="let data of person_data" nzNoFlex>
+                  <p><b>{{data.mc_exams_data[0].mc_lab_exam_name}}: </b>
+
+                    {{data.mc_exams_data[0].mc_lab_exam_result}}</p>
+                </li>
+              </nz-list>
+            </div>
+          </div>
+
+          <br>
+
+
+        </div>
+              <br>
+              <div nz-col nzSpan="20" nzOffset="2">
+                <div nz-row nzJustify="start">
+                  <p>
+                    {{foot_note}},Prosperidad, Agusan Del Sur.
+                  </p>
+                </div>
+
+              <br>
+              <br>
+              <br>
+
+                <div nz-col nzSpan="">
+                  <div nz-row nzJustify="start">
+                    <p>Date : {{date_now}}</p>
+                  </div>
+                  <br>
+                  <br>
+                  <!-- <div nz-col >
+                    <div style="text-align: center;">
+                      <span style="text-decoration: underline; white-space: pre-line"><b><i>{{dept_head}}</i></b></span><br>
+                      Municipal Health Office Head
+                     </div>
+                  </div> -->
+                  <div nz-row nzJustify="space-between">
+                    <div nz-col nzSpan="9"><div style="text-align: center;">
+                      <!-- <span style="text-decoration: underline; white-space: pre-line; text-transform:uppercase;"><b><i>{{mun_doc}}</i></b></span><br>
+                      {{mun_doc_tittle}} -->
+                     </div></div>
+                    <div nz-col nzSpan="9"><div style="text-align: center;">
+                      <span style="text-decoration: underline; white-space: pre-line; text-transform:uppercase;"><b><i>{{person_data[0]?.doctorfname_in_charge}}</i></b></span><br>
+                      {{person_data[0]?.doctorposition_in_charge}}
+                     </div></div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+      </div>
+    </div>
+    <div class="footDiv">
+      <app-footer-print  *ngIf="formSetting.show_footer == 'true'"></app-footer-print>
+    </div>
+
+  <div class="footDivPrint">
+    <app-footer-print  *ngIf="formSetting.show_footer == 'true'"></app-footer-print>
+  </div>
+</div>
+</nz-spin>

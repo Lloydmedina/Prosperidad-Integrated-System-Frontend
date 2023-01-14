@@ -1,0 +1,341 @@
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+
+  <h2>Cumulative Data - Sanitary Permit</h2>
+
+  <nz-table #basicTable [nzData]="listOfData" nzBordered nzFooter=": : :" [nzTitle]="dateFilter" nzSize="small">
+
+    <thead>
+      <tr>
+        <th>Transaction #</th>
+        <th>Date</th>
+        <th>Applicant's Name</th>
+        <th>Barangay</th>
+        <th>Status</th>
+        <th>Fees</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of basicTable.data;  let i = index">
+        <tr>
+
+          <td>{{data.form_trans_no}}</td>
+          <td>{{data.sp_transaction_date | date:'mediumDate'}}</td>
+          <td>{{data.sp_person_fullname}}</td>
+          <td>{{data.sp_business_data == null ? "None" : data.sp_business_data.brgy_name}}</td>
+
+          <td style="width: 5%;">
+            <nz-tag   *ngIf="data.payment_status == '0'" [nzColor]="'#87d068'">Pending</nz-tag>
+            <nz-tag   *ngIf="data.payment_status == '1'" [nzColor]="'blue'">Approved</nz-tag>
+            <nz-tag   *ngIf="data.payment_status == '3'" >Canceled</nz-tag>
+          </td>
+          <td>{{data.sp_transaction_total_fee | currency:'PHP'}}</td>
+          <td [nzExpand]="expandSet.has(data.person_id)" (nzExpandChange)="onExpandChange(data.sp_person_id, data.sp_pk_id, $event, i);" style="width: 8%;">
+            <ng-container *ngIf="data.sp_transaction_status != '3'">
+              <button class="actionEdit" *ngIf="data.payment_status == '0' " nz-button nzType="text" (click)="edit(data)"><i nz-icon nzType="form" nzTheme="outline"></i></button>
+              <button class="actionDelete" *ngIf="data.payment_status == '0' " nz-button nzType="text" (click)="delete(data)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+            </ng-container>
+            <button nz-button nzType="primary" *ngIf="data.payment_status == '1' " nzShape="circle"
+              (click)="showConfirm(data.sp_pk_id)"
+              >
+                <i nz-icon nzType="printer" nzTheme="outline"></i></button>
+
+          </td>
+        </tr>
+   <tr class="dtl" [nzExpand]="expandSet.has(i)">
+          <div nz-row>
+            <div nz-col nzFlex="2">
+              <nz-collapse nzAccordion nz-card  style="height: 100%;">
+                <nz-collapse-panel nzHeader="Transaction Info." >
+
+                  <nz-comment nzAuthor="Health Card Type:">
+                    <nz-comment-content>
+                      <span>Sanitary Permit</span>
+                    </nz-comment-content>
+                  </nz-comment>
+                  <nz-comment nzAuthor="Issued Date:">
+                    <nz-comment-content>
+                      <span> {{data.sp_transaction_date | date:'mediumDate'}}</span>
+                    </nz-comment-content>
+                  </nz-comment>
+                  <nz-comment nzAuthor="Payment:">
+                    <nz-comment-content>
+                      <span> {{data.amount_paid | currency:'PHP'}}</span>
+                    </nz-comment-content>
+                  </nz-comment>
+                  <nz-comment nzAuthor="Proccessed By:">
+                    <nz-comment-content>
+
+                      <span> {{data.sp_department_head}}</span>
+                    </nz-comment-content>
+                  </nz-comment>
+
+                </nz-collapse-panel>
+
+                <nz-collapse-panel nzHeader="Applicant Info."
+                >
+                  <nz-descriptions>
+                    <nz-descriptions-item nzTitle="Owner" [nzSpan]="3">
+                      <div class="text-bordered">
+                        {{data.sp_person_fullname}}
+                      </div>
+                    </nz-descriptions-item>
+                  </nz-descriptions>
+
+                  <nz-descriptions>
+                    <nz-descriptions-item nzTitle="Business Name" [nzSpan]="3">
+                      <div class="text-bordered">
+                        {{data.sp_business_data == null ? "None" : data.sp_business_data.business_name}}
+                      </div>
+                    </nz-descriptions-item>
+                  </nz-descriptions>
+                  <nz-descriptions>
+                    <nz-descriptions-item nzTitle="Trade Name" [nzSpan]="3">
+                      <div class="text-bordered">
+                        {{data.sp_business_data == null ? "None" : data.sp_business_data.trade_name}}
+                      </div>
+                    </nz-descriptions-item>
+                  </nz-descriptions>
+
+                  <nz-descriptions>
+                    <nz-descriptions-item nzTitle="Type of Business" [nzSpan]="3">
+                      <div class="text-bordered">
+                        {{data.sp_business_data == null ? "None" : data.sp_business_data.entity}}
+                      </div>
+                    </nz-descriptions-item>
+                  </nz-descriptions>
+
+                  <nz-descriptions>
+                    <nz-descriptions-item nzTitle="Business Address" [nzSpan]="3">
+                      <div class="text-bordered">
+                        {{data.sp_business_data == null ? "None" : data.sp_business_data.building+", "+data.sp_business_data.street+", "+data.sp_business_data.brgy_name}}
+                      </div>
+                    </nz-descriptions-item>
+                  </nz-descriptions>
+
+                  <nz-descriptions>
+                    <nz-descriptions-item nzTitle="Registration No." [nzSpan]="3">
+                      <div class="text-bordered">
+                        {{data.sp_reg_no}}{{data.sp_reg_date | date:'mmmm-dddd-yyyy'}}
+                      </div>
+                    </nz-descriptions-item>
+                  </nz-descriptions>
+
+                  <nz-descriptions>
+                    <nz-descriptions-item nzTitle="Registration Date" [nzSpan]="3">
+                      <div class="text-bordered">
+                        {{data.sp_reg_date | date:'mediumDate'}}
+                      </div>
+                    </nz-descriptions-item>
+                  </nz-descriptions>
+                </nz-collapse-panel>
+                <nz-collapse-panel nzHeader="Payment Info.">
+                  <nz-comment nzAuthor="OR No:">
+                    <nz-comment-content>
+                      <span> {{data.sp_payment_data == null ? "None" : data.sp_payment_data?.or_id}}</span>
+                    </nz-comment-content>
+                  </nz-comment>
+                  <nz-comment nzAuthor="OR Date:">
+                    <nz-comment-content>
+                      <span> {{data.sp_payment_data == null ? "None" : data.sp_payment_data.or_date | date:'mediumDate'}}</span>
+                    </nz-comment-content>
+                  </nz-comment>
+                  <nz-comment nzAuthor="OR Amount Paid:">
+                    <nz-comment-content>
+                      <span> {{data.sp_payment_data == null ? "None" : data.sp_payment_data.amount_paid | currency:'PHP'}}</span>
+                    </nz-comment-content>
+                  </nz-comment>
+                  <nz-comment nzAuthor="Payment Status:">
+                    <nz-comment-content>
+
+                      <span> {{data.payment_status === 1  ? 'Paid' : 'Unpaid'}} {{data.payment_type != null ? "("+data.payment_type+")" : ' '}} </span>
+                    </nz-comment-content>
+                  </nz-comment>
+                  <br>
+                  <ng-container *ngIf="data.sp_transaction_status != '3'">
+                    <button nz-button nzType="primary" *ngIf="data.sp_transaction_total_fee > data.amount_paid"
+                      (click)="showPayment(data.sp_pk_id, data.sp_transaction_total_fee) "
+                      >Add Payment</button>
+                  </ng-container>
+                </nz-collapse-panel>
+
+
+              </nz-collapse>
+            </div>
+
+            <div nz-col nzFlex="3">
+              <nz-card>
+                <nz-tabset>
+                  <nz-tab nzTitle="Details">
+                    <div nz-col class="gutter-row" [nzSpan]="24">
+                        <nz-timeline>
+                          <ng-template #dotTemplate>
+                            <span nz-icon nzType="pushpin" nzTheme="outline"></span>
+
+                          </ng-template>
+                            <nz-timeline-item [nzDot]="dotTemplate">
+
+                              <nz-descriptions [nzColumn]="1">
+                                <nz-descriptions-item nzTitle="Line of Business" [nzSpan]="2">
+                                  <b><i>{{data.sp_line_of_bsn}}</i></b>
+                                </nz-descriptions-item>
+                                <nz-descriptions-item nzTitle="T.I.N No" [nzSpan]="2">
+                                  <b><i>{{data.sp_tin_no}}</i></b>
+                                </nz-descriptions-item>
+                                <nz-descriptions-item nzTitle="C.T.C No" [nzSpan]="2">
+                                  <b><i>{{data.sp_ctc_no}}</i></b>
+                                </nz-descriptions-item>
+                                <nz-descriptions-item nzTitle="P.I.N No" [nzSpan]="2">
+                                  <b><i>{{data.sp_pin_no}}</i></b>
+                                </nz-descriptions-item>
+
+                                <nz-descriptions-item nzTitle="Business Area" [nzSpan]="2">
+                                  <b><i>{{data.sp_business_area == null ? "None" : data.sp_business_area}}</i></b>
+                                </nz-descriptions-item>
+                                <nz-descriptions-item nzTitle="Telephone No." [nzSpan]="2">
+                                  <b><i>{{data.sp_tel_no == null ? "None" : data.sp_tel_no}}</i></b>
+                                </nz-descriptions-item>
+                                <nz-descriptions-item nzTitle="Mobile No." [nzSpan]="2">
+                                  <b><i>+63{{data.sp_mobile_no == null ? "None" :data.sp_mobile_no}}</i></b>
+                                </nz-descriptions-item>
+                                <nz-descriptions-item nzTitle="Email Address" [nzSpan]="2">
+                                  <b><i>{{data.sp_email_add == null ? "None" :data.sp_email_add}}</i></b>
+                                </nz-descriptions-item>
+                                <nz-descriptions-item nzTitle="Inspection Officer" [nzSpan]="2">
+                                  <b><i>{{data.employee_name == null ? "None" :data.employee_name}}</i></b>
+                                </nz-descriptions-item>
+                              </nz-descriptions>
+
+                            <nz-divider [nzText]="text" nzOrientation="right">
+                              <ng-template #text>
+                                <ng-container *ngIf="data.sp_transaction_status != '3'">
+                                  <button class="actionDelete" nz-button nzType="text" *ngIf="data.payment_status == '0' "><i nz-icon nzType="edit" nzTheme="outline" (click)="edit(data)"></i></button>
+                                </ng-container>
+
+                              </ng-template>
+                            </nz-divider>
+                            </nz-timeline-item>
+
+                          </nz-timeline>
+
+                    </div>
+                  </nz-tab>
+                </nz-tabset>
+              </nz-card>
+            </div>
+          </div>
+
+        </tr>
+      </ng-container>
+
+
+    </tbody>
+
+    <ng-template #dateFilter>
+      <nz-space>
+        <nz-select *nzSpaceItem [(ngModel)]="selectedValue" nzPlaceHolder="Select a filter range type" >
+          <nz-option nzValue="date" nzLabel="Date"></nz-option>
+          <nz-option nzValue="week" nzLabel="Week"></nz-option>
+          <nz-option nzValue="month" nzLabel="Month"></nz-option>
+          <nz-option nzValue="year" nzLabel="Year"></nz-option>
+        </nz-select>
+        <nz-date-picker
+        *nzSpaceItem [nzMode]="selectedValue"
+        [nzDisabledDate]="(disabledStartDate)"
+        nzFormat="yyyy-MM-dd"
+        [(ngModel)]="startDateValue"
+        nzPlaceHolder="Start"
+
+        ></nz-date-picker>
+      </nz-space>
+      <br />
+        <!-- <app-person-filter></app-person-filter> -->
+      </ng-template>
+
+  </nz-table>
+  </nz-spin>
+
+  <nz-drawer
+  nzMaskClosable =false
+  [nzWidth]="500"
+  [nzVisible]="paymentDrawer"
+  nzPlacement="right"
+  nzTitle="Sanitary Permit Payment"
+  (nzOnClose)="closePayment()"
+  >
+  <ng-container >
+    <form *nzDrawerContent nz-form [formGroup]="paymentForm" (ngSubmit)="saveConfirm(paymentForm.value);$event.preventDefault()">
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-card>
+
+            <div nz-col [nzSpan]="12">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8">OR NO</nz-form-label>
+                <nz-form-control nzErrorTip="!">
+                  <nz-input-group>
+
+                    <input nz-input
+                    type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                    formControlName="or_id"/>
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8">OR Date</nz-form-label>
+                <nz-form-control nzErrorTip="!">
+                  <!-- <nz-input-group>
+                    <input nz-input formControlName="or_date" [disabled]="true" />
+                  </nz-input-group> -->
+                  <nz-input-group>
+                    <nz-date-picker style="width: 100%;" formControlName="or_date" [(ngModel)]="date"></nz-date-picker>
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <nz-radio-group formControlName="payment_status">
+              <label nz-radio nzValue="1"(click)="fullPayment($event)">Full Payment</label>
+              <!-- <label nz-radio nzValue="2" (click)="overridePayment($event)">Override</label>
+              <label nz-radio nzValue="3" (click)="waivedPayment($event)">Waived</label> -->
+            </nz-radio-group>
+            <br><br>
+            <div nz-col [nzSpan]="12">
+
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="8">Payment</nz-form-label>
+                    <nz-form-control nzErrorTip="!">
+                      <nz-input-group>
+                        <input
+                        (keyup)="validateValue($event)"
+                        localeCurrencyInput [allowNegative]="false" [currencyCode]="' '" [value]="amount_inputed" (ngModelChange)="amountInputed($event)"
+                        type="number"
+                        formControlName="amount_paid" nz-input  />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+
+
+            </div>
+            <div nz-col [nzSpan]="24">
+              <div nz-row nzJustify="end">
+                <div nz-col>
+                  <button nz-button nzType="primary"
+                     [disabled]="chk_payment || !paymentForm.valid"
+                       >
+                     <i nz-icon nzType="save"></i>
+                       Post Payment
+                     </button>
+                </div>
+              </div>
+            </div>
+
+          </nz-card>
+        </div>
+
+      </div>
+    </form>
+  </ng-container>
+  </nz-drawer>

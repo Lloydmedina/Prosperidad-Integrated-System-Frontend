@@ -1,0 +1,70 @@
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <div style="text-align: center;" nz-col="24">
+  </div>
+  <nz-table #basicTable [nzData]="listOfData" nzBordered [nzTitle]="dateFilter" nzSize="small" nzShowPagination nzShowSizeChanger [nzPageSize]="15" nzShowQuickJumper>
+    <thead>
+      <tr class="content-table-head">
+        <th class="thClass">Form No.</th>
+        <th class="thClass">Intake Date</th>
+        <th class="thClass">Client's Name</th>
+        <th class="thClass">Address</th>
+        <th class="thClass">Case Title</th>
+        <th class="thClass">Status</th>
+        <th class="thClass">Action</th>
+      </tr>
+    </thead>
+    <tbody class="content-table-body">
+      <ng-container *ngFor="let data of basicTable.data; let i = index;">
+        <tr (click)="rowClick(data.main_pk_id, valueClick = !valueClick, i);" class="rowHover">
+          <td>{{data.form_trans_no}}</td>
+          <td>{{data?.logs | date:'mediumDate'}}</td>
+          <td>{{data?.client_pname}}</td>
+          <td>{{data?.client_paddress}}</td>
+          <td>{{data?.case_tittle}}</td>
+          <td *ngIf="data.status == '0'"><nz-tag [nzColor]="'#2799FF'">Pending</nz-tag></td>
+          <td *ngIf="data.status == '1'"><nz-tag [nzColor]="'#f50'">Approved</nz-tag></td>
+          <td>
+            <button nz-tooltip nzTooltipTitle="Edit" class="actionEdit" nz-button nzType="text" (click)="edit(data); $event.stopPropagation()"><i nz-icon nzType="form" nzTheme="outline"></i></button>
+            <button nz-tooltip nzTooltipTitle="Delete" class="actionDelete" nz-button nzType="text" (click)="delete(data.aics_guid, data); $event.stopPropagation()"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+            <button nz-tooltip nzTooltipTitle="Print" class="actionPrint" nz-button nzType="text" (click)="print(data); $event.stopPropagation()"><i nz-icon nzType="printer" nzTheme="outline"></i></button>
+          </td>
+        </tr>
+     <tr [nzExpand]="expandSet.has(i)">
+      <div class="card-container">
+            <nz-card nzTitle="I. Intervention Details" style="height: 100%;">
+              <nz-list nzItemLayout="vertical" nzSize="small">
+                <ng-container *ngIf="data?.wcc_iu_data
+                .length == 0">
+                  <nz-empty nzNotFoundImage="simple"></nz-empty>
+                </ng-container>
+                <ng-container *ngIf="data?.wcc_iu_data
+                .length.length != 0">
+                  <nz-list-item *ngFor="let iuItems of data?.wcc_iu_data
+                  ; let i = index;"
+                >
+                  <nz-list-item-meta>
+                    <nz-list-item-meta-description>
+                    </nz-list-item-meta-description>
+                  </nz-list-item-meta>
+                  {{ iuItems?.iu_id == 0 ? "Specific Intervension: "+iuItems?.iu_details
+                  : iuItems?.iu_tittle }}
+                  <ul nz-list-item-actions>
+                  </ul>
+                  <nz-list-item-extra>
+                    <!-- <a><span nz-icon nzType="minus-square" nzTheme="outline"></span> Remove</a> -->
+                  </nz-list-item-extra>
+                </nz-list-item>
+                </ng-container>
+              </nz-list>  
+            </nz-card>
+      </div>
+      </tr>
+      </ng-container>
+    </tbody>
+
+    <ng-template #dateFilter>
+      <app-date-filter></app-date-filter>
+    </ng-template>
+
+  </nz-table>
+</nz-spin>

@@ -1,0 +1,59 @@
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <div style="text-align: center;" nz-col="24">
+  </div>
+  <nz-table #basicTable [nzData]="listOfData" nzBordered [nzTitle]="dateFilter" nzSize="small" nzShowPagination nzShowSizeChanger [nzPageSize]="15" nzShowQuickJumper>
+    <thead>
+      <tr class="content-table-head">
+        <th class="thClass">Report No.</th>
+        <th class="thClass">Report Date</th>
+        <th class="thClass">Client's Name</th>
+        <th class="thClass">Age</th>
+        <th class="thClass">Address</th>
+        <th class="thClass">Case</th>
+        <th class="thClass">Status</th>
+        <th class="thClass">Action</th>
+      </tr>
+    </thead>
+    <tbody class="content-table-body">
+      <ng-container *ngFor="let data of basicTable.data; let i = index;">
+        <tr (click)="rowClick(data.main_pk_id, valueClick = !valueClick, i);" class="rowHover">
+          <td>{{data.form_trans_no}}</td>
+          <td>{{data.report_date | date:'mediumDate'}}</td>
+          <td>{{data.client_pname}}</td>
+          <td>{{data.client_page}}</td>
+          <td>{{data.client_paddress}}</td>
+          <td>{{data.case_tittle}}</td>
+          <td *ngIf="data.report_status == '0'"><nz-tag [nzColor]="'#2799FF'">Pending</nz-tag></td>
+          <td *ngIf="data.report_status == '1'"><nz-tag [nzColor]="'#f50'">Approved</nz-tag></td>
+          <td>
+            <button nz-tooltip nzTooltipTitle="Edit" class="actionEdit" nz-button nzType="text" (click)="edit(data); $event.stopPropagation()"><i nz-icon nzType="form" nzTheme="outline"></i></button>
+        <!-- <button nz-tooltip nzTooltipTitle="Delete" class="actionDelete" nz-button nzType="text" (click)="delete(data.aics_guid, data); $event.stopPropagation()"><i nz-icon nzType="delete" nzTheme="outline"></i></button> -->
+            <button nz-tooltip nzTooltipTitle="Print" class="actionPrint" nz-button nzType="text" (click)="print(data); $event.stopPropagation()"><i nz-icon nzType="printer" nzTheme="outline"></i></button>
+          </td>
+        </tr>
+     <tr [nzExpand]="expandSet.has(i)">
+      <nz-card nzTitle="Incident Report Details">
+        <nz-descriptions>
+          <nz-descriptions-item nzTitle="Case Tittle">{{data.case_tittle}}</nz-descriptions-item>
+        </nz-descriptions>
+
+        <nz-divider nzText="Summary" nzOrientation="left"></nz-divider>
+        <p style="text-indent: 5%">{{data.case_summary}}</p>
+        
+        <nz-divider nzText="Action Taken" nzOrientation="left"></nz-divider>
+        <p style="text-indent: 5%">{{data.case_action_taken}}</p>
+    
+        <nz-divider nzText="Recommendations" nzOrientation="left"></nz-divider>
+        <p style="text-indent: 5%">{{data.case_recommendation == null ? "N/A" : data.case_recommendation}}</p>
+
+      </nz-card>
+        </tr>
+      </ng-container>
+    </tbody>
+
+    <ng-template #dateFilter>
+      <app-date-filter></app-date-filter>
+    </ng-template>
+
+  </nz-table>
+</nz-spin>

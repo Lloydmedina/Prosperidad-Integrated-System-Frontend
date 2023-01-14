@@ -1,0 +1,50 @@
+.printLayout {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+  box-shadow: 2px 2px 4px 2px #888888;
+}
+
+.printContent {
+  padding: 50px;
+}
+
+.content {
+  margin-top: 30px;
+}
+
+.headerActions {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+  text-align: right;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.border {
+  width: 100%;
+  border-bottom: 1px solid gray;
+}
+
+.signatureLabel {
+  font-weight: 500;
+  height: 50px;
+}
+
+.picture {
+  padding-left: 7%;
+  padding-right: 7%;
+  padding-top: 6%;
+  padding-bottom: 6%;
+}
+
+th {
+  text-align: center !important;
+}
+
+.subSignLabel {
+  font-weight: bold;
+}

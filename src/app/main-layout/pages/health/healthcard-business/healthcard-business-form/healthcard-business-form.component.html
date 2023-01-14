@@ -1,0 +1,69 @@
+
+<h2>Cumulative Data - Business</h2>
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <nz-table #basicTable [nzData]="listOfData" nzBordered nzFooter="Footer" [nzTitle]="dateFilter" nzSize="small">
+    <thead>
+    <tr>
+        <th>Trade Name</th>
+        <th>Business Name</th>
+        <th>Owner</th>
+        <th>Address</th>
+        <th>Contact #</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{data.trade_name}}</td>
+        <td>{{data.business_name}}</td>
+        <td>{{data.owner_name}}</td>
+        <td style="font-size: small;">{{data.building}}, {{data.street}}, {{data.brgy_name}}</td>
+        <td style="font-size: small;">(Tel){{data.tel_no}} | (Moblie){{data.mobile_no}}  </td>
+
+        <td>
+          <button nz-button nzType="primary" (click)="checkBusiness(data.business_id)">Select</button>
+
+        </td>
+      </tr>
+    </tbody>
+
+    <ng-template #dateFilter>
+      <app-date-filter></app-date-filter>
+    </ng-template>
+
+  </nz-table>
+</nz-spin>
+
+<nz-drawer
+      nzMaskClosable =false
+      [nzWidth]="700"
+      nzSize='large'
+      nzSize="large"
+      [nzVisible]="visible"
+      nzPlacement="right"
+      nzTitle="Health Card Previous Record"
+      (nzOnClose)="closeRecords()"
+    >
+      <ng-container *nzDrawerContent>
+       <div nz-col nzSpan="24">
+          <div nz-row>
+            <nz-collapse nzCard nzAccordion nz-col nzSpan="24">
+              <nz-collapse-panel
+              *ngFor="let record of data_transs"
+              nzHeader="{{record.transaction_date | date:'mediumDate'}}"
+              [nzActive]="record.active">
+              <nz-descriptions nzTitle="Health Card Details">
+                <nz-descriptions-item nzTitle="Health-Card Id" [nzSpan]="3">{{record.form_trans_no}}</nz-descriptions-item>
+
+              </nz-descriptions>
+              </nz-collapse-panel>
+            </nz-collapse>
+          </div>
+        </div>
+      </ng-container>
+    </nz-drawer>
+    <ng-template>
+      <button nz-button nzType="default" (click)="closeRecords()">Cancel</button>
+      &nbsp;
+      <button nz-button nzType="primary" (click)="closeRecords()">OK</button>
+    </ng-template>

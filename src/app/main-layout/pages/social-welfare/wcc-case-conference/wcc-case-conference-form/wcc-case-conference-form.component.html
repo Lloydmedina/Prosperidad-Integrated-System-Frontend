@@ -1,0 +1,362 @@
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <div style="height:100%;">
+    <form nz-form [formGroup]="wccForm" (ngSubmit)="saveNewData(wccForm.value);$event.preventDefault();">
+      <nz-anchor [nzShowInkInFixed]="false" >
+        <nz-page-header>
+          <nz-page-header-title>Women & Child Crisis Center - Case Conference Form</nz-page-header-title>
+          <nz-page-header-extra>
+            <button nz-button nzType="primary" (click)="cancel(); $event.preventDefault();" nzDanger>
+              <i nz-icon nzType="close"></i>
+              Cancel
+            </button>
+            <button nz-button nzType="primary"
+
+            [disabled]="discussionArray().length == 0"
+            >
+              <i nz-icon nzType="save"></i>
+              {{buttonTitle}}
+            </button>
+          </nz-page-header-extra>
+        </nz-page-header>
+      </nz-anchor>
+
+      <nz-tabset nzType="card" >
+        <nz-tab nzTitle="Report Details">
+          <!-- <div style="background: #ECECEC;padding:10px;"> -->
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="11" style="padding: 10px;">
+                <nz-card [nzBordered]="false" nzTitle="Client/ Respondent's Info.">
+                  <nz-descriptions [nzColumn]="1" nzBordered nzSize="small">
+                    <nz-descriptions-item nzTitle="Name" [nzSpan]="1">
+                      {{reportData?.client_name}}
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Age" [nzSpan]="1">
+                      {{reportData?.client_age}}
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Address" [nzSpan]="1">
+                      {{reportData?.client_address}}
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Guardian/Parent" [nzSpan]="1">
+                      {{reportData?.client_parent_name}}
+                    </nz-descriptions-item>
+                  </nz-descriptions>
+                </nz-card>
+              </div>
+
+              <div nz-col [nzSpan]="11" style="padding: 10px;">
+                <nz-card [nzBordered]="false" nzTitle="Incedent Report Details.">
+                  <nz-descriptions [nzColumn]="1" nzSize="small">
+                    <nz-descriptions-item nzTitle="Case Tittle" [nzSpan]="1">
+                      {{icData?.case_tittle}}
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Referrer" [nzSpan]="1">
+                      {{reportData?.referral_pname}}
+                    </nz-descriptions-item>
+                  </nz-descriptions>
+                  <br>
+                  <div>
+                    <i>Type of Incident and summary of incident:</i>
+                    <p style="text-indent: 50px;">{{icData?.case_summary}}</p>
+                  </div>
+                  <div>
+                    <i>Action Taken:</i>
+                    <p style="text-indent: 50px;">{{icData?.case_action_taken}}</p>
+                  </div>
+                  <div>
+                    <i>Recommendations:</i>
+                    <p style="text-indent: 50px;">{{icData?.case_recommendation}}</p>
+                  </div>
+                </nz-card>
+              </div>
+            </div>
+        </nz-tab>
+        <nz-tab nzTitle="Case Conference Form">
+            <nz-card [nzBordered]="false" style="padding: 10px; height: 100%;" >
+              <div nz-row [nzGutter]="24">
+
+                <div nz-col [nzSpan]="8">
+                  <nz-card nz-col [nzSpan]="24" nzBordered="false" class="card-2">
+                    <nz-divider [nzText]="aaa" nzOrientation="left"></nz-divider>
+                    <ng-template #aaa>
+                      <p class="label"><b>Time Frame</b></p>
+                    </ng-template>
+
+                    <nz-form-item>
+                      <nz-form-control nzErrorTip="Please write something...">
+                        <nz-input-group >
+                          <nz-radio-group nzButtonStyle="solid" formControlName="case_time_type">
+                            <label nz-radio-button nzValue="min" (click)="selectTimeType($event)">Minute/s</label>
+                            <label nz-radio-button nzValue="hr" (click)="selectTimeType($event)">Hour/s</label>
+                          </nz-radio-group>
+                          <br>
+                        </nz-input-group>
+                      </nz-form-control>
+                    </nz-form-item>
+
+                    <nz-form-item>
+                      <nz-form-control nzErrorTip="Please write something...">
+                        <nz-input-group>
+                          <nz-input-group nzTitle="Transaction Details" >
+                            Duration:
+                            <nz-input-number
+                            style="width: 100%;"
+                            formControlName="case_time_frame"
+                              [(ngModel)]="numValue"
+                              [nzMin]="1"
+                              [nzMax]="10"
+                              [nzStep]="1"
+                              [nzDisabled]="isDisabled"
+
+                            ></nz-input-number>
+                          </nz-input-group>
+                        </nz-input-group>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </nz-card>
+                  <br>
+                  <nz-card nz-col [nzSpan]="24" [nzExtra]="selectPersonnel" nzBordered="false" class="card-2">
+                    <nz-divider [nzText]="aa" nzOrientation="left"></nz-divider>
+                    <ng-template #aa>
+                      <p class="label"><b>Office & Person Responsible</b></p>
+                    </ng-template>
+                    <input type="hidden" formControlName="case_ofc_employee_id"readonly/>
+                    <input type="hidden" formControlName="case_per_responsible_id"readonly/>
+                    <nz-form-item>
+                      <nz-form-control nzErrorTip="Please select something...">
+                        <nz-input-group>
+                          <p><i>Office:</i></p>
+
+                            <input nz-input
+                            (click)="openEmpList($event); $event.preventDefault();"
+                            formControlName="case_ofc_responsible"
+                            readonly
+                            placeholder="Click here to select Personel "
+                            />
+
+                        </nz-input-group>
+                        <nz-input-group>
+                          <p><i>Personnel</i></p>
+                          <input nz-input
+                          formControlName="case_per_responsible_name"
+                          readonly
+                            />
+                        </nz-input-group>
+                        <nz-input-group>
+                          <p><i>Position</i></p>
+                          <input nz-input
+                          formControlName="case_per_responsible_position"
+                          readonly
+                            />
+                        </nz-input-group>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </nz-card>
+                </div>
+
+                <div nz-col [nzSpan]="14">
+                  <ng-container>
+                    <nz-card nz-col [nzSpan]="24" nzBordered="false" class="card-2">
+                      <div nz-col [nzSpan]="24">
+                        <nz-divider [nzText]="bb" nzOrientation="left"></nz-divider>
+                        <ng-template #bb>
+                          <p class="label"><b>Point of Discussion</b></p>
+                        </ng-template>
+
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please write something...">
+                            <nz-input-group>
+                              <textarea style="width: 100%;"
+                              nz-input
+                              rows="4"
+                              formControlName="case_pod"
+                              ></textarea>
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+
+                      <div nz-col [nzSpan]="24">
+                        <nz-divider [nzText]="cc" nzOrientation="left"></nz-divider>
+                        <ng-template #cc>
+                          <p class="label"><b>Findings/Issued/Concerns</b></p>
+                        </ng-template>
+
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please write something...">
+                            <nz-input-group>
+                              <textarea style="width: 100%;"
+                              nz-input
+                              rows="4"
+                              formControlName="case_fic"
+                              ></textarea>
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+
+                      <div nz-col [nzSpan]="24">
+                        <nz-divider [nzText]="ccc" nzOrientation="left"></nz-divider>
+                        <ng-template #ccc>
+                          <p class="label"><b>Agreements Reached</b></p>
+                        </ng-template>
+
+                        <nz-form-item>
+                          <nz-form-control nzErrorTip="Please write something...">
+                            <nz-input-group>
+                              <textarea style="width: 100%;"
+                              nz-input
+                              rows="4"
+                              formControlName="case_agreement"
+                              ></textarea>
+                            </nz-input-group>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div style="float: right">
+                        <button class="box" nz-button nzType="primary" style="margin-right: 8px;"
+                        [disabled]="!wccForm.valid"
+                        (click)="addDiscussion(wccForm.value);$event.preventDefault();"
+                        >
+                          <span nz-icon nzType="plus-circle" nzTheme="outline"></span>Add Discussion</button>
+                      </div>
+                    </nz-card>
+                  </ng-container>
+                </div>
+                <nz-divider></nz-divider>
+                <div nz-col [nzSpan]="24">
+                  <nz-card nz-col [nzSpan]="22" nzBordered="false" class="card-2" nzTitle="Added Discussion/s">
+                    <nz-collapse nzAccordion>
+                      <ng-container *ngFor="let ds_data of wccForm.value.wcc_cc_discussion; let en = index">
+                        <nz-collapse-panel nzHeader="Discussion #{{en+1}}" [nzExtra]="extraTpl">
+                          <div nz-col [nzSpan]="6" style="padding: 10px;">
+                            <nz-card [nzBordered]="false" nzTitle="Office & Person Responsible">
+                              <nz-descriptions [nzColumn]="1" nzBordered="false" nzSize="small">
+                                <nz-descriptions-item nzTitle="Officer" [nzSpan]="1">
+                                  {{ds_data.case_per_responsible_name}}
+                                </nz-descriptions-item>
+                                <nz-descriptions-item nzTitle="Position" [nzSpan]="1">
+                                  {{ds_data.case_per_responsible_position}}
+                                </nz-descriptions-item>
+                                <nz-descriptions-item nzTitle="Office/ Dept." [nzSpan]="1">
+                                  {{ds_data.case_ofc_responsible}}
+                                </nz-descriptions-item>
+
+                              </nz-descriptions>
+                            </nz-card>
+                          </div>
+                          <div nz-col [nzSpan]="16" style="padding: 10px;">
+                            <nz-card [nzBordered]="false" nzTitle="Discussion Details">
+                              <nz-descriptions [nzColumn]="1" nzBordered="false" nzSize="small">
+                                <nz-divider [nzText]="aaaa" nzOrientation="left"></nz-divider>
+                                  <ng-template #aaaa>
+                                    <p class="label"><b>Point of Discussion</b></p>
+                                  </ng-template>
+                                <nz-descriptions-item  [nzSpan]="1">
+                                  {{ds_data.case_pod}}
+                                </nz-descriptions-item>
+                                <nz-divider [nzText]="bbbb" nzOrientation="left"></nz-divider>
+                                <ng-template #bbbb>
+                                  <p class="label"><b>Findings/Issued/Concerns</b></p>
+                                </ng-template>
+                                <nz-descriptions-item [nzSpan]="1">
+                                  {{ds_data.case_fic}}
+                                </nz-descriptions-item>
+                                <nz-divider [nzText]="cccc" nzOrientation="left"></nz-divider>
+                                <ng-template #cccc>
+                                  <p class="label"><b>Agreements Reached</b></p>
+                                </ng-template>
+                                <nz-descriptions-item  [nzSpan]="1">
+                                  {{ds_data.case_agreement}}
+                                </nz-descriptions-item>
+
+                              </nz-descriptions>
+                            </nz-card>
+                          </div>
+                          <ng-template #extraTpl>
+
+                            <span nz-icon nzType="delete" nzTheme="outline" (click)="_deleteData($event,en)"></span>
+                          </ng-template>
+                        </nz-collapse-panel>
+                      </ng-container>
+                    </nz-collapse>
+
+                  </nz-card>
+                </div>
+
+              </div>
+            </nz-card>
+
+        </nz-tab>
+      </nz-tabset>
+
+    </form>
+
+  </div>
+</nz-spin>
+
+<ng-template #selectPersonnel>
+  <button nz-button nzType="primary" (click)="openEmpList($event); $event.preventDefault();">
+    <span nz-icon nzType="search"></span>
+    {{selectEmpbtnText}}
+  </button>
+</ng-template>
+
+<nz-drawer
+nzMaskClosable="false"
+[nzWidth]="800"
+[nzClosable]="false"
+[nzVisible]="openEmpListDrawer"
+nzPlacement="right"
+nzTitle="Employee List"
+(nzOnClose)="closeEmpDrawer()"
+[nzFooter]="footerTplEmp"
+>
+<ng-container *nzDrawerContent>
+  <nz-skeleton [nzLoading]="loadingEmpList" [nzActive]="true">
+  <nz-table #rowSelectionTable [nzData]="listOfEmployee" nzSize="small">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Position</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+      <tbody>
+        <ng-container *ngFor="let data of rowSelectionTable.data; let i =index">
+         <tr >
+           <td>{{ data.employee_name}}</td>
+           <td>{{ data.dept_name }}</td>
+           <td>{{data.position_name}}</td>
+           <!-- <td>{{ data.relation }}</td> -->
+           <td>
+
+             <button nz-button nzType="default" (click)="selectedEmpOp(data,$event)" >
+               <i nz-icon nzType="check" nzTheme="outline"></i>
+               Select
+             </button>
+           </td>
+         </tr>
+         <tr [nzExpand]="expandSet.has(i)">
+           <nz-card style="padding: 2px;color: blue;">
+             <nz-descriptions>
+               <nz-descriptions-item nzTitle="Address">{{data.street != null ? data.street+", ": ""}}
+                 {{data.brgy_name+", "}}{{data.city_mun_name+", "}}{{data.province_name}}
+               </nz-descriptions-item>
+             </nz-descriptions>
+           </nz-card>
+         </tr>
+        </ng-container>
+
+       </tbody>
+
+  </nz-table>
+</nz-skeleton>
+</ng-container>
+</nz-drawer>
+<ng-template #footerTplEmp>
+  <div style="float: right">
+    <button nz-button nzType="primary" nzDanger style="margin-right: 8px;" (click)="cancelEmpDrawer()">Cancel</button>
+  </div>
+</ng-template>

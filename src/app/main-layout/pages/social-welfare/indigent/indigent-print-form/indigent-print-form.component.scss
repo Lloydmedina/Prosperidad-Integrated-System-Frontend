@@ -1,0 +1,89 @@
+.printLayout {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  box-shadow: 2px 2px 4px 2px #888888;
+}
+
+.printContent {
+  padding: 40px;
+}
+
+.content {
+  // margin-top: 30px;
+  border: 2px solid #0F4252;
+}
+
+.contentBack {
+  margin-top: 30px;
+}
+
+@media print {
+  .content-table-head {
+    font-size: 12px !important;
+  }
+  .content-table-body {
+    font-size: 12px !important;
+  }
+  .printContent {
+    padding: 0;
+    padding-left: 40px;
+    padding-right: 40px;
+    transform: scale(0.9);
+    margin-top: -50px;
+  }
+  .content {
+    margin-top: 0;
+  }
+  .dafacLabel {
+    font-size: 12px !important;
+  }
+  .headerMarginTop {
+    margin-top: 10px !important;
+  }
+  .signReceived {
+    margin-top: -10px;
+  }
+}
+
+.headerActions {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  text-align: right;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.border {
+  width: 100%;
+  border-bottom: 1px solid gray;
+}
+
+.signatureLabel {
+  border-top: 1px solid gray;
+  font-weight: bold;
+  height: 50px;
+  text-align: center;
+}
+
+.picture {
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 6%;
+  padding-bottom: 6%;
+  font-weight: 800;
+}
+
+.pictureimage {
+  height: 100px;
+}
+
+.idpicture {
+  text-align: right; 
+  margin-right: 13%; 
+  margin-top: -50px;
+  margin-bottom: -50px;
+}

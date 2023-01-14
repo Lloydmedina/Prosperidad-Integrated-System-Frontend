@@ -1,0 +1,144 @@
+
+<nz-spin [nzSpinning]="loading">
+  <div style="height: 100%;">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
+      <nz-anchor [nzShowInkInFixed]="false">
+        <nz-page-header>
+          <nz-page-header-title>Chart of Account Setup</nz-page-header-title>
+          <nz-page-header-extra>
+           
+            <button nz-button (click)="$event.preventDefault()"  *ngIf="isActive">
+              <i nz-icon nzType="folder-open"></i>
+              Save as Draft
+            </button>
+            <button nz-button (click)="cancel($event);" nzType="primary" nzDanger>
+              <i nz-icon nzType="close"></i>
+              {{btnCancel}}
+            </button>
+            <button  *ngIf="isActive" nz-button nzType="primary" [nzLoading]="loading" class="button-form" [disabled]="!validateForm.valid">
+              <i nz-icon nzType="save"></i>
+              Save & Exit
+            </button>
+          </nz-page-header-extra>
+        </nz-page-header>
+      </nz-anchor>
+  
+      <nz-card nzType="inner" nzBorderless nzTitle="{{title}}">
+        <div nz-row [nzGutter]="32">
+          <div nz-col nzSpan="24">
+            <nz-form-item>
+              <nz-form-label [nzSm]="4" [nzXs]="12"  nzRequired>Account Type</nz-form-label>
+                <nz-form-control  [nzSm]="6" [nzXs]="24" >
+                  <nz-select
+                    nzShowSearch
+                    formControlName="account_type_id"
+                    nzPlaceHolder="Select Account Type"
+                  >
+                  <nz-option *ngFor="let list of accTypeList"  nzValue="{{list.account_type_id}}" nzLabel="{{list.account_type_name}}" >
+                  </nz-option>
+                  </nz-select>
+                 </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                  <nz-form-label [nzSm]="4" [nzXs]="12"  nzRequired>Activity Type</nz-form-label>
+                    <nz-form-control  [nzSm]="6" [nzXs]="24" >
+                      <nz-select
+                        nzShowSearch
+                        formControlName="activity_type_id"
+                        nzPlaceHolder="Select Activity Type"
+                      >
+                      <nz-option *ngFor="let list of activityList" nzValue="{{list.activity_type_id}}" nzLabel="{{list.activity_type_name}}" >
+                      </nz-option>
+                      </nz-select>
+                     </nz-form-control>
+                  </nz-form-item>
+
+
+                  <nz-form-item>
+                    <nz-form-label [nzSm]="4" [nzXs]="12">Parent Account</nz-form-label>
+                      <nz-form-control  [nzSm]="6" [nzXs]="24" >
+                        <nz-select
+                          nzShowSearch
+                          nzAllowClear
+                          formControlName="parent_id"
+                          nzPlaceHolder="Select Parent Account"
+                          (ngModelChange)="parentSelect($event)"
+                        >
+                        <nz-option *ngFor="let list of parentList" nzValue="{{list.account_id}}" nzLabel="{{list.account_name}}" >
+                        </nz-option>
+                        </nz-select>
+                       </nz-form-control>
+                    </nz-form-item>
+                  
+                <!-- <nz-form-item>
+                  <nz-form-label [nzSm]="4" [nzXs]="12" nzRequired>Account Name</nz-form-label>
+                  <nz-form-control [nzSm]="6" [nzXs]="24">
+                    <nz-input-group>
+                      <input type="text" nz-input formControlName="account_name" placeholder="e.g. General Services" />
+                    </nz-input-group>
+                  </nz-form-control>
+                </nz-form-item> -->
+                <nz-form-item>
+                  <nz-form-label [nzSm]="4" [nzXs]="12" nzRequired>Account Code</nz-form-label>
+                  <nz-form-control  [nzSm]="6" [nzXs]="24"  nzHasFeedback nzValidatingTip="" [nzErrorTip]="userErrorTp2">
+                    <nz-input-group>
+                      <input type="text" nz-input formControlName="account_code" placeholder="e.g.10101030" />
+                    </nz-input-group>
+                    <ng-template #userErrorTp2 let-control>
+                      <ng-container *ngIf="control.hasError('duplicated')">Account Code already exist!</ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                  <nz-form-label [nzSm]="4" [nzXs]="12" nzRequired>Account Name</nz-form-label>
+                  <nz-form-control  [nzSm]="6" [nzXs]="24"  nzHasFeedback nzValidatingTip="" [nzErrorTip]="userErrorTpl">
+                    <nz-input-group>
+                      <input type="text" nz-input formControlName="account_name" placeholder="e.g. General Services" />
+                    </nz-input-group>
+                    <ng-template #userErrorTpl let-control>
+                      <ng-container *ngIf="control.hasError('duplicated')">Account Name already exist!</ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+                
+                <nz-form-item>
+                  <nz-form-label [nzSm]="4" [nzXs]="12">Initial Amount</nz-form-label>
+                  <nz-form-control  [nzSm]="6" [nzXs]="24">
+                    <nz-input-group>
+                      <input style="text-align: right;" id="curr" nz-input formControlName="initial_amount" [currencyCode]="' '" mvndrMatCurrencyFormat
+                      [allowNegative]="false" />
+                    </nz-input-group>
+                  </nz-form-control>
+                </nz-form-item>
+
+
+                  <!-- <nz-form-item>
+                    <nz-form-label [nzSm]="4" [nzXs]="12" nzRequired>Account Code</nz-form-label>
+                    <nz-form-control [nzSm]="6" [nzXs]="24">
+                      <nz-input-group>
+                        <input type="text" nz-input formControlName="account_code" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item> -->
+
+              
+
+
+                  <nz-form-item>
+                    <nz-form-label [nzSm]="4" [nzXs]="12" >Description</nz-form-label>
+                    <nz-form-control  [nzSm]="6" [nzXs]="24">
+                  <textarea rows="3" 
+                  id="z" nz-input formControlName="account_desc" placeholder="description..."></textarea>
+                    </nz-form-control>
+                  </nz-form-item>
+  
+
+                
+          </div>
+        </div>
+      </nz-card>
+    </form>
+  </div>
+</nz-spin>

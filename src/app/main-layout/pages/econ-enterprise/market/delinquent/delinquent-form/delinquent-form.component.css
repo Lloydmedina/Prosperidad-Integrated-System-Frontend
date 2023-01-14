@@ -1,0 +1,59 @@
+nz-form-label {
+    font-weight: 500;
+    text-align: left;
+  }
+  
+  nz-page-header {
+    background-color: #fff;
+    margin-left: -2px;
+  }
+  
+td nz-form-control{
+    padding: 0px !important;
+  }
+
+  .sec-text{
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sec-text:hover{
+    overflow: visible !important;
+  }
+
+  .ant-input.demo-input-right:hover,
+  .ant-input.demo-input-right:focus {
+    border-left-width: 1px;
+  }
+
+  .ant-input.ant-input-rtl.demo-input-right {
+    border-right-width: 0px;
+  }
+
+  
+  .ant-input.demo-input-right {
+    width: 100px;
+    text-align: center;
+    border-left-width: 0px;
+  }
+  .button-post{
+    background-color: #87d068;
+    border-color: #87d068;
+  }
+  .button-post:hover{
+      background-color: #87d068;
+      border-color: #87d068;
+  }
+
+  
+th{
+    background-color: #1890ff !important;
+    text-align: center !important;
+    color: #fff !important;
+  }
+
+  tbody tr td{
+    font-size: 14px !important;
+    height: 30px;
+}

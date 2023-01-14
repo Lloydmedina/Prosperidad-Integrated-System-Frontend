@@ -1,0 +1,43 @@
+@media print{
+  .foot{
+    position: fixed !important;
+    bottom: 20px !important;
+  }
+}
+.foot{
+  width: 100%;
+}
+.printLayout {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    box-shadow: 2px 2px 4px 2px #888888;
+  }
+  
+  .printContent {
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  
+  .content {
+    margin-top: 30px;
+  }
+  .label{
+      font-weight:600;
+  }
+  .data{
+      font-weight:  500;
+  }
+  .headerActions {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    text-align: right;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  

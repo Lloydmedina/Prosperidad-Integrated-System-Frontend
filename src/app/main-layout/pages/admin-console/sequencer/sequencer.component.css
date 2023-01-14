@@ -1,0 +1,13 @@
+
+  ::ng-deep .cdk-drag-preview {
+    display: table;
+  }
+
+  ::ng-deep .cdk-drag-placeholder {
+    opacity: 0;
+  }
+  
+  tbody tr td{
+    font-size: 14px !important;
+    height: 55.07px;
+}

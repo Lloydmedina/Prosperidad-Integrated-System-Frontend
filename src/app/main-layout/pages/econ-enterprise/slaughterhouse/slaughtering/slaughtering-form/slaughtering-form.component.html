@@ -1,0 +1,83 @@
+<nz-spin [nzSpinning]="loading">
+  <div style="height: 100%;">
+    <form nz-form [formGroup]="validateForm"  (ngSubmit)="submitForm(validateForm.value)">
+      <nz-anchor [nzShowInkInFixed]="false">
+        <nz-page-header>
+          <nz-page-header-title>Slaughtering</nz-page-header-title>
+          <nz-page-header-extra>
+           
+          
+            <button nz-button (click)="cancel($event);" nzType="primary" nzDanger>
+              <i nz-icon nzType="close"></i>
+              Cancel            </button>
+            <button  nz-button nzType="primary" [nzLoading]="loading" class="button-form" [disabled]="!validateForm.valid ">
+              <i nz-icon nzType="save"></i>
+              Save & Exit
+            </button>
+          </nz-page-header-extra>
+        </nz-page-header>
+      </nz-anchor>
+
+      <nz-card  nzType="inner" nzBorderless >
+        <div nz-row [nzGutter]="32">
+          <div nz-col nzSpan="10">
+            <nz-form-item>
+              <nz-form-label [nzSm]="8" [nzXs]="12" nzRequired>Date Slaughtered</nz-form-label>
+              <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+                <nz-date-picker [nzFormat]="'MM/dd/yyyy'" formControlName="date_slaughtered" nz-input ></nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label [nzSm]="8" [nzXs]="12" nzRequired>Client</nz-form-label>
+              <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+                <nz-input-group nzSearch  [nzAddOnAfter]="browseButton">
+                  <input type="text" [readonly]="true" nz-input formControlName="client_name" style="text-transform: uppercase;" placeholder=""  />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label [nzSm]="8" [nzXs]="12">Brand</nz-form-label>
+              <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+                <nz-input-group>
+                  <input type="text" nz-input formControlName="brand"/>
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label [nzSm]="8" [nzXs]="12" nzRequired>Inspector</nz-form-label>
+              <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+                <nz-input-group nzSearch  [nzAddOnAfter]="browsePersonButton">
+                  <input type="text" [readonly]="true" nz-input formControlName="inspector_name" style="text-transform: uppercase;" placeholder=""  />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+
+            
+            <nz-form-item>
+              <nz-form-label [nzSm]="8" [nzXs]="12">Findings</nz-form-label>
+              <nz-form-control  [nzSm]="12" [nzXs]="24"  >
+                <nz-input-group>
+                  <textarea type="text" nz-input formControlName="findings"></textarea>
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+
+            </div>
+          </div>
+          <div nz-row [nzGutter]="32">
+            <div nz-col nzSpan="24">
+          </div>
+          </div>
+      </nz-card>
+    </form>
+  </div>
+</nz-spin>
+<ng-template #browseButton>
+  <button nz-button nzType="primary" nzSearch (click)="openBrowse();$event.preventDefault()">Browse</button>
+</ng-template>
+<ng-template #browsePersonButton>
+  <button nz-button nzType="primary" nzSearch (click)="openPersonBrowse();$event.preventDefault()">Browse</button>
+</ng-template>

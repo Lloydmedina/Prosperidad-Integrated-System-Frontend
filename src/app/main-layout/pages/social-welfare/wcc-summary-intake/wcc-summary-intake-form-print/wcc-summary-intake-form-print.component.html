@@ -1,0 +1,423 @@
+<div class="headerActions">
+  <h3 style="float: left;"><i nz-icon nzType="file-done" nzTheme="outline" style="color: #1890FF"></i> Incident Report Form</h3>
+  <button nz-button nzType="default" (click)="excel(); $event.preventDefault();" style="margin-right: 10px;">
+    <i nz-icon nzType="file-excel" nzTheme="outline" style="color: #008141"></i>
+    EXPORT TO EXCEL
+  </button>
+  <button nz-button (click)="convertToPDF();" nzType="default" style="margin-right: 10px;">
+    <span nz-icon nzType="file-pdf" nzTheme="outline" style="color: red;"></span>
+    EXPORT TO PDF
+  </button>
+  <button nz-button nzType="primary" (click)="$event.preventDefault();" [useExistingCss]="true"
+  printSectionId="print-section"
+  ngxPrint>
+    <i nz-icon nzType="printer" nzTheme="outline"></i>
+    PRINT
+  </button>
+</div>
+
+<nz-spin nzTip="Generating Form ..." [nzSpinning]="isLoading">
+  <div class="printLayout printContent" id="print-section">
+    <div id="contentpdf" #contentpdf>
+      <div class="" id="report-section">
+        <app-header-print></app-header-print>
+        <div style="text-align: center;"><h2>WOMEN AND CHILDREN CRISIS CENTER</h2></div>
+        <div style="text-align: center;"><h2><b>SUMMARY INTAKE</b></h2></div>
+      
+        <div class="content">
+          <div nz-row>
+  
+            <div nz-col nzSpan="22" nzOffset="1">
+              <div nz-row>
+                <div nz-col nzSpan="12">
+                  <div nz-row nzJustify="start">
+                    <h3>Case:
+                      <span style="text-decoration: underline; white-space: pre-line">
+                      {{isData?.case_tittle}}
+                      </span>
+                    </h3>
+                  </div>
+                </div>
+                <div nz-col nzSpan="12" >
+                  <div style="text-align: center;" nz-row nzJustify="end">
+                    <h3>
+                      Date:
+                      <span style="text-decoration: underline; white-space: pre-line">
+                        {{isData?.wcc_summ_intake_date | date:'mediumDate'}}
+                      </span>
+                    </h3>
+  
+                   </div>
+                </div>
+              </div>
+        
+              <div nz-row>
+                <div nz-col nzSpan="12">
+                  <div nz-row nzJustify="start">
+                    <h3>4P's Member?:
+                      <span style="text-decoration: underline; white-space: pre-line">
+                        {{isData?.client_4ps == 1 ? "Yes" : "No"}}
+                      </span>
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <!-- <b>Date: <span style="text-decoration: underline; white-space: pre-line"> {{ transData?.report_date | date:'mediumDate'}}</span></b> -->
+  
+              <br>
+              <div nz-col nzSpan="24">
+                <h3 style="text-indent: 80px;">
+                  I. <span style="text-indent: 100px;"> Identifying Data:</span>
+                </h3>
+              </div>
+              <div nz-row nzJustify="space-between">
+                <div nz-row nzJustify="start">
+                  <table>
+                    <tr>
+                      <td><b>Name of Client/ Referring Party</b></td><td><b>: </b></td><td>
+                        <span style="text-decoration: underline; white-space: pre-line">
+                          {{clientData?.first_name+" "}}{{clientData?.middle_name == null ? "" : clientData?.middle_name+""}}{{clientData?.last_name}}{{clientData?.suffix == null ? "" : clientData?.suffix}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><b>Age</b></td><td><b>: </b></td><td>
+                        <span style="text-decoration: underline; white-space: pre-line">
+                          {{clientData?.age}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><b>Home Address</b></td><td><b>: </b></td><td>
+                        <span style="text-decoration: underline; white-space: pre-line">
+                          {{clientData?.street == null ? "" : clientData?.street+", "}}
+                          {{clientData?.brgy_name == null ? "" : clientData?.brgy_name+", "}}
+                          {{clientData?.city_mun_name == null ? "" : clientData?.city_mun_name+", "}}
+                          {{clientData?.province_name == null ? "" : clientData?.province_name}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><b>Educational Attainment</b></td><td><b>: </b></td><td>
+                        <span style="text-decoration: underline; white-space: pre-line">
+                        {{isData?.case_tittle}}
+                        </span>
+                    </tr>
+                  </table>
+                </div>
+                <div nz-col nzSpan="12" >
+                  <div style="text-align: center;" nz-row nzJustify="end">
+                    <h3>
+                      Date:
+                      <span style="text-decoration: underline; white-space: pre-line">
+                        {{isData?.wcc_summ_intake_date | date:'mediumDate'}}
+                      </span>
+                    </h3>
+  
+                  </div>
+                </div>
+              </div>
+            </div>
+              
+            <div nz-col nzSpan="24">
+              <h3 style="text-indent: 80px;">
+                II. <span style="text-indent: 100px;"> Family Members:</span>
+              </h3>
+            </div>
+            
+            <div nz-row>
+              <div nz-col nzSpan="24">
+                <h3 style="text-indent: 80px;">
+                  I. <span style="text-indent: 100px;"> Identifying Data:</span>
+                </h3>
+              </div>
+              <div nz-row nzJustify="space-between">
+                <div nz-row nzJustify="start">
+                  <table>
+                    <tr>
+                      <td style="border: none !important;"><b>Name of Client/ Referring Party</b></td><td style="border: none !important;"><b>: </b></td><td style="border: none !important;">
+                        <span style="text-decoration: underline; white-space: pre-line">
+                          {{clientData?.first_name+" "}}{{clientData?.middle_name == null ? "" : clientData?.middle_name+""}}{{clientData?.last_name}}{{clientData?.suffix == null ? "" : clientData?.suffix}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="border: none !important;"><b>Age</b></td><td style="border: none !important;"><b>: </b></td><td style="border: none !important;">
+                        <span style="text-decoration: underline; white-space: pre-line">
+                          {{clientData?.age}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="border: none !important;"><b>Home Address</b></td><td style="border: none !important;"><b>: </b></td><td style="border: none !important;">
+                        <span style="text-decoration: underline; white-space: pre-line">
+                          {{clientData?.street == null ? "" : clientData?.street+", "}}
+                          {{clientData?.brgy_name == null ? "" : clientData?.brgy_name+", "}}
+                          {{clientData?.city_mun_name == null ? "" : clientData?.city_mun_name+", "}}
+                          {{clientData?.province_name == null ? "" : clientData?.province_name}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="border: none !important;"><b>Educational Attainment</b></td><td style="border: none !important;"><b>: </b></td><td style="border: none !important;">
+                        <span style="text-decoration: underline; white-space: pre-line">
+                        {{ clientData?.educational_name}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="border: none !important;"><b>Occupation</b></td><td style="border: none !important;"><b>: </b></td><td style="border: none !important;">
+                        <span style="text-decoration: underline; white-space: pre-line">
+                          {{ clientData?.profession == null ? "N/A" : clientData?.profession}}
+                        </span>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <br>
+              <div nz-col nzSpan="24">
+                <h3 style="text-indent: 80px;">
+                  II. <span style="text-indent: 100px;"> Family Members:</span>
+                </h3>
+              </div>
+              <div nz-row>
+                <div nz-col nzSpan="24">
+                  <nz-table #basicTable nzBordered [nzData]="familyData"  nzSize="small"
+                  nzFrontPagination="false" >
+                    <thead>
+                      <tr>
+                        <th class="th-a">Fullname</th>
+                        <th class="th-a">Age</th>
+                        <th class="th-a">Relationship</th>
+                        <th class="th-a">Occupation</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+  
+                      <ng-container *ngFor="let data of basicTable.data; let i = index;">
+                        <tr>
+                          <td>
+                            {{data.last_name}},
+                            {{data.first_name}} {{data.middle_name == null ? "" : data.middle_name}}{{data.prefix == null ? "" : data.prefix}}
+                          </td>
+                          <td>
+                            {{data.age}}
+                          </td>
+                          <td>
+                            {{data.relation}}
+                          </td>
+                          <td>
+                            {{data.profession == null ? "none" : data.profession}}
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </nz-table>
+                </div>
+              </div>
+            </div>
+  
+              
+              <div nz-col nzSpan="24">
+                <h3 style="text-indent: 80px;">
+                  III. <span style="text-indent: 100px;"> BACKGROUND OF THE CASE:</span>
+                </h3>
+              </div>
+              <div nz-row>
+                <div nz-col nzSpan="24">
+                  <nz-card nzBorderless>
+                    <p><b><i>Incident Report</i></b></p>
+                    <nz-descriptions nzTitle="Case">
+                      <nz-descriptions-item>{{reportData?.case_tittle}}</nz-descriptions-item>
+                    </nz-descriptions>
+                    <nz-descriptions nzTitle="Type of Incident and summary of incident">
+                      <nz-descriptions-item>{{reportData?.case_summary}}</nz-descriptions-item>
+                    </nz-descriptions>
+                    <nz-descriptions nzTitle="Action Taken">
+                      <nz-descriptions-item>{{reportData?.case_action_taken}}</nz-descriptions-item>
+                    </nz-descriptions>
+                    <nz-descriptions nzTitle="Recommendations/ Suggestions">
+                      <nz-descriptions-item>{{reportData?.case_recommendation}}</nz-descriptions-item>
+                    </nz-descriptions>
+                  </nz-card>
+  
+                  <nz-card nzBorderless>
+                    
+                    <nz-timeline>
+                      <p><b><i>Case Conference</i></b></p>
+                      <ng-container *ngFor="let data_trans of caseDtlData; let en = index">
+                        <nz-timeline-item *ngIf="data_trans != null">
+                        <!-- <h4><span nz-typography nzType="secondary">{{data_trans.case_pod}}</span></h4> -->
+                        <nz-descriptions nzTitle="Point of Discussion">
+                          <nz-descriptions-item>{{data_trans.case_pod}}</nz-descriptions-item>
+                        </nz-descriptions>
+                        <nz-descriptions nzTitle="Findings/Issued/Concerns">
+                          <nz-descriptions-item>{{data_trans.case_fic}}</nz-descriptions-item>
+                        </nz-descriptions>
+                        <nz-descriptions nzTitle="Time Frame">
+                          <nz-descriptions-item>{{data_trans.case_time_frame}} <span><i>{{data_trans.case_time_type != 0 ? "Hour/s" : "Minute/s"}}</i>
+                          </span></nz-descriptions-item>
+                        </nz-descriptions>
+                        <nz-descriptions nzTitle="Office & Persone Resposible">
+                          <nz-descriptions-item>{{data_trans.case_per_responsible_name}}
+                            <span><i>&nbsp;of {{data_trans.case_ofc_responsible}}</i></span></nz-descriptions-item>
+                        </nz-descriptions>
+                        <nz-descriptions nzTitle="Agreements Reached">
+                          <nz-descriptions-item>{{data_trans.case_agreement}}</nz-descriptions-item>
+                        </nz-descriptions>
+                        <nz-divider [nzText]="text" nzOrientation="right">
+                          <ng-template #text>
+                            <!-- <button class="actionDelete" nz-button nzType="text"><i nz-icon nzType="edit" nzTheme="outline"></i></button> -->
+                          </ng-template>
+                        </nz-divider>
+                        </nz-timeline-item>
+                      </ng-container>
+                      </nz-timeline>
+                  </nz-card>
+  
+                </div>
+              </div>
+  
+              
+              <div nz-col nzSpan="24">
+                <h3 style="text-indent: 80px;">
+                  IV. <span style="text-indent: 100px;"> ASSESSMENT:</span>
+                </h3>
+              </div>
+              <div nz-row>
+                <div nz-col nzSpan="24">
+                  <nz-descriptions>
+                    <nz-descriptions-item>{{isData?.wcc_si_assesment}}</nz-descriptions-item>
+                  </nz-descriptions>
+                </div>
+              </div>
+  
+              
+              <div nz-col nzSpan="24">
+                <h3 style="text-indent: 80px;">
+                  V. <span style="text-indent: 100px;"> RECOMMENDATION:</span>
+                </h3>
+              </div>
+              <div nz-row>
+                <div nz-col nzSpan="24">
+                  <h3 style="text-indent: 80px;">
+                    IV. <span style="text-indent: 100px;"> ASSESSMENT:</span>
+                  </h3>
+                </div>
+              </div>
+  
+              
+              <div nz-col nzSpan="24">
+                <h3 style="text-indent: 80px;">
+                  VI. <span style="text-indent: 100px;"> ACTION TAKEN:</span>
+                </h3>
+              </div>
+              <div nz-row>
+                <div nz-col nzSpan="24">
+                  <nz-descriptions>
+                    <nz-descriptions-item>{{isData?.wcc_si_actiontaken}}</nz-descriptions-item>
+                  </nz-descriptions>
+                </div>
+              </div>
+  
+                
+              <div nz-row>
+                <div nz-col nzSpan="24">
+                  <nz-descriptions>
+                    <nz-descriptions-item>{{isData?.wcc_si_recommendation}}</nz-descriptions-item>
+                  </nz-descriptions>
+                </div>
+              </div>
+  
+              <br>
+              <div nz-col nzSpan="24">
+                <h3 style="text-indent: 80px;">
+                  VI. <span style="text-indent: 100px;"> ACTION TAKEN:</span>
+                </h3>
+              </div>
+              <div nz-row>
+                <div nz-col nzSpan="24">
+                  <nz-descriptions>
+                    <nz-descriptions-item>{{isData?.wcc_si_actiontaken}}</nz-descriptions-item>
+                  </nz-descriptions>
+                </div>
+              </div>
+  
+                <br>
+                <div nz-row>
+                  <div nz-col nzSpan="12">
+                    <div nz-row nzJustify="start">
+                      <div>
+                        <span style="text-decoration: underline; white-space: pre-line">________________________________________</span><br>
+                        Signature of Client
+                      </div>
+                    </div>
+                  </div>
+                  <div nz-col nzSpan="12" >
+                    <div nz-row nzJustify="end">
+                      <div>
+                        <span style="text-decoration: underline; white-space: pre-line">________________________________________</span><br>
+                        Signature of Social Worker
+                      </div>
+                      </div>
+                  </div>
+                  <div nz-col nzSpan="12">
+                    <div nz-row nzJustify="start">
+                      <div>
+                        Date :<span style="text-decoration: underline; white-space: pre-line">__________________________________</span><br>
+                      </div>
+                    </div>
+                  </div>
+                  <div nz-col nzSpan="12" >
+                    <div nz-row nzJustify="end">
+                      <div>
+                        Date :<span style="text-decoration: underline; white-space: pre-line">__________________________________</span><br>
+                      </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+              <br>
+              <div nz-row>
+                <div nz-col nzSpan="12">
+                  <div nz-row nzJustify="start">
+                    <div>
+                      Noted By:<span style="text-decoration: underline; white-space: pre-line"></span><br>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <br>
+              <div nz-row>
+                <div nz-col nzSpan="12">
+                  <div nz-row nzJustify="start">
+                    <div>
+                      <span>{{desinatedOfficer}}</span><br>
+                      <span>{{designation}}</span>
+                    </div>
+                  </div>
+                </div>
+  
+              </div>
+              <br>
+              <br>
+        </div>
+    
+      </div>
+  
+    </div>
+  
+    <!-- <div class="footDiv">
+      <app-footer-print ></app-footer-print>
+    </div>
+  
+  <div class="footDivPrint">
+    <app-footer-print></app-footer-print>
+  </div> -->
+  
+  </div>
+
+</nz-spin>

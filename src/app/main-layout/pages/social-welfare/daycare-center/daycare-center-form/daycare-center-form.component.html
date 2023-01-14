@@ -1,0 +1,136 @@
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <nz-spin nzTip="Saving..." [nzSpinning]="saveLoading">
+    <div style="height: 100%;">
+      <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-anchor [nzShowInkInFixed]="false" >
+          <nz-page-header>
+            <nz-page-header-title>Daycare Center</nz-page-header-title>
+            <nz-page-header-extra>
+              <!-- <button nz-button (click)="draft(); $event.preventDefault();">
+                <i nz-icon nzType="folder-open"></i>
+                Save as Draft
+              </button> -->
+              <button nz-button nzType="primary" (click)="cancel(); $event.preventDefault();" nzDanger>
+                <i nz-icon nzType="close"></i>
+                Cancel
+              </button>
+              <button nz-button nzType="primary" [disabled]="!validateForm.valid">
+                <i nz-icon nzType="save"></i>
+                {{buttonTitle}}
+              </button>
+            </nz-page-header-extra>
+          </nz-page-header>
+        </nz-anchor>
+
+        <nz-tabset nzType="card">
+          <nz-tab [nzTitle]="TransactionForm">
+
+            <nz-card nzType="inner" nzTitle="I. Daycare Center Registration Form">
+
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="8">
+                  <h3 style="color: #1890FF;">Applicant Information</h3>
+                  <nz-descriptions [nzColumn]="1" nzBordered nzSize="small">
+                    <nz-descriptions-item nzTitle="Name of Child" [nzSpan]="1">
+                      sample
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Middle Name" [nzSpan]="1">
+                      sample
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Age of Months" [nzSpan]="1">
+                      sample
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Birth Date" [nzSpan]="1">
+                      sample
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Birth Place" [nzSpan]="1">
+                      sample
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Sex" [nzSpan]="1">
+                      sample
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Height" [nzSpan]="1">
+                      sample
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Weight" [nzSpan]="1">
+                      sample
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Religion" [nzSpan]="1">
+                      sample
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Rank in the family" [nzSpan]="1">
+                        <input formControlName="prefix" nz-input placeholder="Prefix" />
+                    </nz-descriptions-item>
+                  </nz-descriptions>
+
+                  
+                  
+                </div>
+
+                <div nz-col [nzSpan]="16">
+                  <nz-form-item>
+                    <nz-form-control nzErrorTip="Please input prefix!">
+                      <nz-input-group>
+                        <label nz-checkbox style="font-weight: 500;">4P's Family ?</label>
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+
+                  <div nz-row>
+                    <div nz-col [nzSpan]="12">
+                      <h3 style="color: #1890FF;">Mother's Information</h3>
+                    </div>
+                    <div nz-col [nzSpan]="12" style="text-align: end;">
+                      <button nz-button nzType="default" (click)="browseMotherPerson(); $event.preventDefault();" nzShape="round"><span nz-icon nzType="edit"></span> Browse Person</button>
+                    </div>
+                  </div>
+                  <nz-descriptions [nzColumn]="1" nzBordered nzSize="small">
+                    <nz-descriptions-item nzTitle="Mother's Name" [nzSpan]="1">
+                      sample
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Occupation" [nzSpan]="1">
+                      sample
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Educational Attainment" [nzSpan]="1">
+                      sample
+                    </nz-descriptions-item>
+                  </nz-descriptions>
+                  <nz-divider></nz-divider>
+                  <div nz-row>
+                    <div nz-col [nzSpan]="12">
+                      <h3 style="color: #1890FF;">Father's Information</h3>
+                    </div>
+                    <div nz-col [nzSpan]="12" style="text-align: end;">
+                      <button nz-button nzType="default" (click)="browseFatherPerson(); $event.preventDefault();" nzShape="round"><span nz-icon nzType="edit"></span> Browse Person</button>
+                    </div>
+                  </div>
+                  <nz-descriptions [nzColumn]="1" nzBordered nzSize="small">
+                    <nz-descriptions-item nzTitle="Mother's Name" nzW [nzSpan]="1">
+                      sample
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Occupation" [nzSpan]="1">
+                      sample
+                    </nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Educational Attainment" [nzSpan]="1">
+                      sample
+                    </nz-descriptions-item>
+                  </nz-descriptions>
+
+                </div>
+
+              </div>
+
+            </nz-card>
+
+          </nz-tab>
+        </nz-tabset>
+
+      </form>
+
+    </div>
+  </nz-spin>
+</nz-spin>
+<ng-template #TransactionForm>
+  <i nz-icon nzType="container" nzTheme="outline"></i>
+  Transaction Form
+</ng-template>

@@ -1,0 +1,332 @@
+<div class="headerActions">
+  <h3 style="float: left;"><i nz-icon nzType="file-done" nzTheme="outline" style="color: #1890FF"></i> Family Composition Form</h3>
+  <button nz-button nzType="default" (click)="excel(); $event.preventDefault();" style="margin-right: 10px;">
+    <i nz-icon nzType="file-excel" nzTheme="outline" style="color: #008141"></i> 
+    EXPORT TO EXCEL
+  </button>
+  <button nz-button (click)="convertToPDF();" nzType="default" style="margin-right: 10px;">
+    <span nz-icon nzType="file-pdf" nzTheme="outline" style="color: red;"></span>
+    EXPORT TO PDF
+  </button>
+  <button nz-button nzType="primary" [useExistingCss]="true" printSectionId="report-section" #print ngxPrint>
+    <i nz-icon nzType="printer" nzTheme="outline"></i>
+    PRINT
+  </button>
+</div>
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <div class="printLayout" id="report-section">
+    <div id="content" #content>
+      <div class="printContent">
+        <app-header-print></app-header-print>
+  
+        <div nz-row style="margin-top: 2%;">
+          <div nz-col [nzSpan]="19" style="border: 1px solid gray; text-align: center;">
+            <h2 style="margin-top: 15px;">
+              DISBURSEMENT VOUCHER
+            </h2>
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            <p class="label">Fund:</p>
+            <p style="margin-bottom: 5px !important; border-top: 1px solid gray !important;" class="label">DV No.:</p>
+            <p style="margin-bottom: 5px !important;" class="label">Date:</p>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="24" style="border: 1px solid gray; border-top: none !important;">&nbsp;</div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="19" style="border: 1px solid gray;">
+            <p class="label">Payee: <b style="padding-left: 5%;">{{data?.first_name}} {{data?.middle_name}} {{data?.last_name}}</b></p>
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            <p class="label" style="margin-bottom: 5px !important;">ID No./TIN:</p>
+            <p class="label" style="margin-bottom: 5px !important;">CAFOA No.:</p>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="19" style="border: 1px solid gray;">
+            <p class="label">Address: <b style="padding-left: 5%;"><span style="text-transform: uppercase;">{{data?.street}}, {{data?.brgy_name}}</span>, PROSPERIDAD, AGUSAN DEL SUR</b></p>
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            <p class="label" style="margin-bottom: 5px !important;">Responsibility Center:</p>
+            <p class="label" style="margin-bottom: 5px !important;">&nbsp;</p>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="19" style="border: 1px solid gray;">
+            <p class="label" style="text-align: center;"><b>Particulars</b></p>
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            <p class="label" style="text-align: center;"><b>Amount</b></p>
+          </div>
+        </div>
+  
+        <div nz-row style="height: 200px;">
+          <div nz-col [nzSpan]="19" style="border: 1px solid gray; font-weight: 500;">
+            To payment of Burial assistance to an indigent client as per supporting paper hereto attached in the amount
+            of <b>TWO THOUSAND PESOS ONLY ...</b>
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            <div style="padding: 2%;">
+              <span style="float: left;" class="label"><b>P</b></span> <p class="label" style="text-align: end;"><b>2000</b></p>
+            </div>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="19" style="border: 1px solid gray;">
+            <p class="label" style="text-align: end; padding-right: 5%;"><b>Amount Due</b></p>
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            <div style="padding: 2%;">
+              <span style="float: left;" class="label"><b>P</b></span> <p class="label" style="text-align: end;"><b>2000</b></p>
+            </div>
+          </div>
+        </div>
+
+        <div nz-row>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray; border-bottom: none !important;">
+            <span style="padding-top: 2px; padding-left: 8px; padding-right: 8px; border: 1px solid gray; float: left; font-weight: 500; margin-right: 6px;">A</span>
+            <p class="label"><b>Certified:</b></p>
+            <div class="label" style="text-align: center;">Expenses/Cash Advances necessary,</div>
+            <div class="label" style="text-align: center;">valid, proper, lawful and incurred</div>
+            <div class="label" style="text-align: center;">under my direct supervision.</div>
+          </div>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray; border-bottom: none !important;">
+            <span style="padding-top: 2px; padding-left: 8px; padding-right: 8px; border: 1px solid gray; float: left; font-weight: 500; margin-right: 6px;">B</span>
+            <p class="label"><b>Certified:</b></p>
+            <div class="label" style="text-align: center;">Completeness and propriety of supporting</div>
+            <div class="label" style="text-align: center;">documents/previous cash advance</div>
+            <div class="label" style="text-align: center;">liquidated/existence of funds held in trust.</div>
+          </div>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray; border-bottom: none !important;">
+            <span style="padding-top: 2px; padding-left: 8px; padding-right: 8px; border: 1px solid gray; float: left; font-weight: 500; margin-right: 6px;">C</span>
+            <p class="label"><b>Certified:</b></p>
+            <div class="label" style="text-align: center;">Funds available for the purpose</div>
+          </div>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray; border-top: none !important; padding-left: 2%; padding-right: 2%; text-align: center;">
+            <h3 style="margin-top: 10%; margin-bottom: -5px;"><b>FREDERICK MARK P, MELLANA</b></h3>
+            <div style="border-top: 1px solid gray;">
+              <p style="font-size: 13px;">Signature Over Printed Name/Position<br>Local Chief Executive</p>
+            </div>
+          </div>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray; border-top: none !important; padding-left: 2%; padding-right: 2%; text-align: center;">
+            <h3 style="margin-top: 10%; margin-bottom: -5px;"><b>EM C. SAGRADO, CPA</b></h3>
+            <div style="border-top: 1px solid gray;">
+              <p style="font-size: 13px;">Municipal Accountant<br>Head of Accounting Department/Office</p>
+            </div>
+          </div>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray; border-top: none !important; padding-left: 2%; padding-right: 2%; text-align: center;">
+            <h3 style="margin-top: 10%; margin-bottom: -5px;"><b>ROBERTO S. SABUERO, MPA</b></h3>
+            <div style="border-top: 1px solid gray;">
+              <p style="font-size: 13px;">Municipal Treasurer<br>Head of Treasury Department/Office</p>
+            </div>
+          </div>
+        </div>
+
+        <div nz-row>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray; border-bottom: none !important;">
+            <span style="padding-top: 2px; padding-left: 8px; padding-right: 8px; border: 1px solid gray; float: left; font-weight: 500; margin-right: 6px;">D</span>
+            <p class="label"><b>Approved for Payment: &#8369;___________</b></p>
+            
+          </div>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray; border-bottom: none !important;">
+            <div nz-row>
+              <div nz-col [nzSpan]="6">
+                <img style="width: 75%; padding-top: 75%; padding-left: 2%;" src="/assets/img/Black_Right_Arrow.png" alt="Black Right Arrow">
+              </div>
+              <div nz-col [nzSpan]="18">
+                <div style="padding-top: 15%; ">
+                  <p class="label" style="margin-bottom: 5px; margin-left: -25px;">Payment:</p>
+                  <div class="label">Check No.___________________</div>
+                  <div class="label">Bank Name:__________________</div>
+                  <div class="label">Date:_________________________</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray; border-bottom: none !important;">
+            <span style="padding-top: 2px; padding-left: 8px; padding-right: 8px; border: 1px solid gray; float: left; font-weight: 500; margin-right: 6px;">E</span>
+            <p class="label"><b>Received Payment:</b></p>
+          </div>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray; border-top: none !important; padding-left: 2%; padding-right: 2%; text-align: center;">
+            <h3 style="margin-bottom: -5px;"><b>FREDERICK MARK P, MELLANA</b></h3>
+            <div style="border-top: 1px solid gray;">
+              <p style="font-size: 13px;">Signature Over Printed Name/Position<br>Local Chief Executive</p>
+            </div>
+          </div>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray; border-top: none !important; padding-left: 2%; padding-right: 2%; text-align: center;">
+            
+          </div>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray; border-top: none !important; padding-left: 2%; padding-right: 2%; text-align: center;">
+            <h3 style="margin-bottom: -5px;"><b>MARIA FE G. GO</b></h3>
+            <div style="border-top: 1px solid gray;">
+              <p style="font-size: 13px;">Signature Over Printed Name/Position</p>
+            </div>
+          </div>
+        </div>
+
+        <div nz-row>
+          <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+            <span style="padding-top: 2px; padding-left: 8px; padding-right: 8px; border: 1px solid gray; float: left; font-weight: 500; margin-right: 6px;">F</span>
+            <p class="label"><b>Accounting Entries</b></p>
+          </div>
+        </div>
+
+        <!-- TABLE -->
+        <div nz-row>
+          <div nz-col [nzSpan]="9" style="border: 1px solid gray;">
+            <p class="label" style="text-align: center; margin-bottom: -3px;"><b>Particulars</b></p>
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            <p class="label" style="text-align: center; margin-bottom: -3px;"><b>Account Code</b></p>
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            <p class="label" style="text-align: center; margin-bottom: -3px;"><b>Debit</b></p>
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            <p class="label" style="text-align: center; margin-bottom: -3px;"><b>Credit</b></p>
+          </div>
+        </div>
+
+        <div nz-row>
+          <div nz-col [nzSpan]="9" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+        </div>
+
+        <div nz-row>
+          <div nz-col [nzSpan]="9" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+        </div>
+
+        <div nz-row>
+          <div nz-col [nzSpan]="9" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+        </div>
+
+        <div nz-row>
+          <div nz-col [nzSpan]="9" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+        </div>
+
+        <div nz-row>
+          <div nz-col [nzSpan]="9" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+        </div>
+
+        <div nz-row>
+          <div nz-col [nzSpan]="9" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+        </div>
+
+        <div nz-row>
+          <div nz-col [nzSpan]="9" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+        </div>
+
+        <div nz-row>
+          <div nz-col [nzSpan]="9" style="border: 1px solid gray;">
+            <div><p class="label">Prepared and Noted by:</p></div>
+            <h3 style="text-align: center; margin-bottom: -5px;"><b>&nbsp;</b></h3>
+            <div style="text-align: center; border-top: 1px solid gray; margin-left: 15%; margin-right: 15%;">
+              <p>C/MSWDO Social Worker/Officer</p>
+            </div>
+          </div>
+          <div nz-col [nzSpan]="15" style="border: 1px solid gray;">
+            <div nz-row>
+              <div nz-col [nzSpan]="6">
+                <div><p class="label">Certified Correct:</p></div>
+              </div>
+              <div nz-col [nzSpan]="18">
+              </div>
+              <div nz-col [nzSpan]="6">
+              </div>
+              <div nz-col [nzSpan]="18">
+                <h3 style="text-align: center; margin-bottom: -5px;"><b>EM C. SAGRADO, CPA</b></h3>
+                <div style="text-align: center; border-top: 1px solid gray;">
+                  <p>C/MSWDO Social Worker/Officer</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+</nz-spin>

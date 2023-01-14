@@ -1,0 +1,91 @@
+
+<nz-spin [nzSpinning]="loading">
+  <div style="height: 100%;">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
+      <nz-anchor [nzShowInkInFixed]="false">
+        <nz-page-header>
+          <nz-page-header-title>Position Setup</nz-page-header-title>
+          <nz-page-header-extra>
+           
+            <button nz-button (click)="$event.preventDefault()" >
+              <i nz-icon nzType="folder-open"></i>
+              Save as Draft
+            </button>
+            <button nz-button (click)="cancel($event);" nzType="primary" nzDanger>
+              <i nz-icon nzType="close"></i>
+              Cancel            </button>
+            <button  nz-button nzType="primary" [nzLoading]="loading" class="button-form" [disabled]="!validateForm.valid">
+              <i nz-icon nzType="save"></i>
+              Save & Exit
+            </button>
+          </nz-page-header-extra>
+        </nz-page-header>
+      </nz-anchor>
+  
+      <nz-card nzType="inner" nzBorderless nzTitle="{{title}}">
+        <div nz-row [nzGutter]="32" style="width: 100%;">
+          <div nz-col nzSpan="10">
+            <nz-form-item>
+              <nz-form-label [nzSm]="8" [nzXs]="12"  nzRequired>Position Type</nz-form-label>
+                <nz-form-control  [nzSm]="16" [nzXs]="24" >
+                  <nz-select
+                    formControlName="position_type_id"
+                    nzPlaceHolder="Select Type">
+                  <nz-option *ngFor="let list of posTypeList" nzValue="{{list.position_type_id}}" nzLabel="{{list.position_type}}" >
+                  </nz-option>
+                  </nz-select>
+                 </nz-form-control>
+              </nz-form-item> 
+
+              <nz-form-item>
+              <nz-form-label [nzSm]="8" [nzXs]="12"  nzRequired>Department</nz-form-label>
+                <nz-form-control  [nzSm]="16" [nzXs]="24" >
+                  <nz-select
+                    nzShowSearch 
+                    nzAllowClear 
+                    formControlName="dept_id"
+                    nzPlaceHolder="Select Department">
+                  <nz-option *ngFor="let list of deptList" nzValue="{{list.dept_id}}" nzLabel="{{list.short_desc}}" >
+                  </nz-option>
+                  </nz-select>
+                 </nz-form-control>
+              </nz-form-item> 
+
+              <nz-form-item>
+                <nz-form-label [nzSm]="8" [nzXs]="12" nzRequired>Position Name</nz-form-label>
+                <nz-form-control  [nzSm]="16" [nzXs]="24"  >
+                  <nz-input-group>
+                    <input type="text" nz-input formControlName="position_name" placeholder="e.g. Municipal Government Department Head I"/>
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-label [nzSm]="8" [nzXs]="12">Description</nz-form-label>
+                <nz-form-control  [nzSm]="16" [nzXs]="24"  >
+                  <nz-input-group>
+                    <input type="text" nz-input formControlName="position_desc" placeholder="e.g. Municipal Health Officer"/>
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+
+              <nz-form-item>
+                <nz-form-label [nzSm]="8" [nzXs]="12" >Salary Grade</nz-form-label>
+                  <nz-form-control  [nzSm]="16" [nzXs]="24" >
+                    <nz-select
+                      formControlName="salary_grade"
+                      nzPlaceHolder="Select Grade">
+                    <nz-option *ngFor="let list of salaryGradeList" nzValue="{{list.salary_grade}}" nzLabel="{{list.salary_grade}}" >
+                    </nz-option>
+                    </nz-select>
+                   </nz-form-control>
+                </nz-form-item> 
+
+            </div>
+
+
+        </div>
+      </nz-card>
+    </form>
+  </div>
+</nz-spin>

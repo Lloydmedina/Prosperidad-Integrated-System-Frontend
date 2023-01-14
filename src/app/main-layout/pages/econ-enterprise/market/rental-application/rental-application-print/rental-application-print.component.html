@@ -1,0 +1,508 @@
+<div class="headerActions">
+  <h3 style="float: left;"><i nz-icon nzType="file-done" nzTheme="outline" style="color: #1890FF"></i>Tenant Profile</h3>
+  <button nz-button nzType="default" (click)="excel(); $event.preventDefault();" style="margin-right: 10px;">
+    <i nz-icon nzType="file-excel" nzTheme="outline" style="color: #008141"></i> 
+    EXPORT TO EXCEL
+  </button>
+  <button nz-button nzType="primary" [useExistingCss]="true" printSectionId="report-section" #print ngxPrint>
+    <i nz-icon nzType="printer" nzTheme="outline"></i>
+    PRINT
+  </button>
+</div>
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <!-- <div  style="height: 100vh !important;overflow-y: scroll;"> -->
+  <div id="report-section" *ngIf="!isContract && !firstLoad" class="printMulti"  style="border: 1px solid black; margin-top: 10px !important; margin: auto;" >
+    <div class="reqs printContent">
+      <app-header-print ></app-header-print>
+      <div style="text-align: center; margin-top: 20px;"><h3>OFFICE OF THE MUNICIPAL ECONOMIC ENTERPRISE</h3></div>
+      <div style="text-align: center; margin-top: 20px;"><h4>APPLICANT'S REQUIREMENTS</h4></div>
+      <div nz-row [nzGutter]="32" style="align-content: center;">
+      <div nz-col nzSpan="24" class="content">
+        <div nz-row>
+          <div nz-col nzSpan="10">
+            <nz-descriptions class="desc-policy">
+              <nz-descriptions-item nzTitle="Name">
+                <div style="border-bottom:1px solid black; width:100%;">
+                  &nbsp; &nbsp; &nbsp;{{applicationDtl.applicant_name}}
+                </div>
+              </nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="4">
+            <nz-descriptions class="desc-policy">
+            <nz-descriptions-item nzTitle="Age" >
+              <div style="border-bottom:1px solid black; width:100%;">
+                &nbsp; &nbsp; &nbsp; {{personDtl.age}}
+              </div>
+            </nz-descriptions-item>
+          </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="10">
+            <nz-descriptions class="desc-policy">
+              <nz-descriptions-item nzTitle="Spouse">
+                <div style="border-bottom:1px solid black; width:100%;">
+                  &nbsp; &nbsp; &nbsp;{{applicationDtl.spouse}}
+                </div>
+              </nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+        </div>
+        <div nz-row>
+          <div nz-col nzSpan="10">
+            <nz-descriptions class="desc-policy">
+              <nz-descriptions-item nzTitle="Occupation">
+                <div style="border-bottom:1px solid black; width:100%;">
+                  &nbsp; &nbsp; &nbsp;{{applicationDtl.occupation_a}}
+                </div>
+              </nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="4">
+        
+          </div>
+          <div nz-col nzSpan="10">
+            <nz-descriptions  class="desc-policy">
+              <nz-descriptions-item nzTitle="Occupation">
+                <div style="border-bottom:1px solid black; width:100%;">
+                  &nbsp; &nbsp; &nbsp;{{applicationDtl.occupation_b}}
+                </div>
+              </nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+        </div>
+        <div nz-row>
+          <div nz-col nzSpan="10">
+            <nz-descriptions  class="desc-policy">
+              <nz-descriptions-item nzTitle="Nature of Business">
+                <div style="border-bottom:1px solid black; width:100%;">
+                  &nbsp; &nbsp; &nbsp;  {{applicationDtl.nature_of_business}}
+                </div>
+              </nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="4">
+        
+          </div>
+          <div nz-col nzSpan="10">
+            <nz-descriptions  class="desc-policy">
+              <nz-descriptions-item nzTitle="Type of Building">
+                <div style="border-bottom:1px solid black; width:100%;">
+                  &nbsp; &nbsp; &nbsp;{{applicationDtl.type_of_building}}
+                </div>
+              </nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+        </div>
+        <div nz-row>
+          <div nz-col nzSpan="10">
+            <nz-descriptions  class="desc-policy">
+              <nz-descriptions-item nzTitle="Address">
+                <div style="border-bottom:1px solid black; width:100%;">
+                  
+                  &nbsp; &nbsp;   &nbsp;{{applicationDtl.address}}
+                </div>
+              </nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="4">
+        
+          </div>
+          <div nz-col nzSpan="10">
+            <nz-descriptions  class="desc-policy">
+              <nz-descriptions-item nzTitle="Expected Actual Capital">
+                <div style="border-bottom:1px solid black; width:100%;">
+                  Php {{applicationDtl.expected_actual_capital | number: '1.2-2' }}
+                </div>
+              </nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+      
+        </div>
+        <div style="height: 60px;"></div>
+        <div style="height: 50px;"><h2>OCCUPANT'S POLICY:</h2></div>
+        <div nz-row>
+          <div nz-col nzSpan="1">
+          </div>
+          <div nz-col nzSpan="23">
+              <nz-descriptions class="desc-policy" *ngFor="let req of reqList" [nzColon]="false">
+                <nz-descriptions-item nzTitle="{{req.order}}.">
+                  <div >
+                    {{req.name}}
+                  </div>
+                </nz-descriptions-item>
+                </nz-descriptions>
+          </div>
+
+        </div>
+        <div nz-row>
+          <div nz-col nzSpan="16">
+          </div>
+          <div nz-col nzSpan="8">
+              <div nz-row>
+                <div style="border-bottom:1px solid black; width:100%; text-align: center;">
+                 {{applicationDtl.applicant_name}}
+                </div>
+              </div>
+              <div nz-row>
+                <div style="width:100%; text-align: center;">
+                  PRINTED NAME OVER SIGNATURE
+                </div>
+              </div>
+          </div>
+
+        </div>
+        <div nz-row style="margin-top: 30px;">
+          <div nz-col nzSpan="14">
+          </div>
+          <div nz-col nzSpan="10">
+              <div nz-row>
+                <nz-descriptions  class="desc-policy">
+                  <nz-descriptions-item nzTitle="Res. Cert. No.">
+                    <div style="border-bottom:1px solid black; width:100%;">
+                      &nbsp;{{applicationDtl.form_trans_no}}
+                    </div>
+                  </nz-descriptions-item>
+                  </nz-descriptions>
+              </div>
+              <div nz-row>
+                <nz-descriptions  class="desc-policy">
+                  <nz-descriptions-item nzTitle="Date Issued">
+                    <div style="border-bottom:1px solid black; width:100%;">
+              
+                      &nbsp;
+                    </div>
+                  </nz-descriptions-item>
+                  </nz-descriptions>
+              </div>
+              <div nz-row>
+                <nz-descriptions  class="desc-policy">
+                  <nz-descriptions-item nzTitle="Place Issued">
+                    <div style="border-bottom:1px solid black; width:100%;">
+              
+                      &nbsp;
+                    </div>
+                  </nz-descriptions-item>
+                  </nz-descriptions>
+              </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="footDiv">
+      <app-footer-print  *ngIf="formSetting.show_footer == 'true'"></app-footer-print>
+    </div>
+    </div>
+  </div>
+<div *ngIf="isContract">
+  
+  <div id="report-section" *ngIf="applicationDtl.application_type_id == 1" class="printMulti"  style="border: 1px solid black; margin: auto;" >
+    <div class="lease printContent"> 
+    <div style="text-align: center;"><h3>APPLICATION TO LEASE STALLS OF THE ECONOMIC ENTERPRISES</h3></div>
+    <div style="text-align: center; "><h3>OF THE MUNICIPALITY OF PROSPERIDAD</h3></div>
+    <div style="text-align: center;">Prosperidad, Agusan del Sur</div>
+      <div nz-row [nzGutter]="32" style="align-content: center !important;">
+        <div nz-col nzSpan="1"></div>
+      <div nz-col nzSpan="23" class="content">
+        <div nz-row style="margin-top: 0;">
+          <div nz-col nzSpan="8">
+            <nz-descriptions  class="desc-policy">
+              <nz-descriptions-item nzTitle="Date:">
+                <div style="border-bottom:1px solid black; width:100%; text-align: center;">
+                 {{applicationDtl.application_date | date: 'MM/dd/yyyy'}}
+                </div>
+              </nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+        </div>
+        <div nz-row style="margin-top: 20px;">
+          <div nz-col nzSpan="24">
+            <nz-descriptions [nzColon]="false"  class="desc-policy">
+              <nz-descriptions-item nzTitle="Honorable {{mayor | uppercase}}">
+              </nz-descriptions-item>
+            </nz-descriptions>  
+            <div>Municipal Mayor</div>
+            <div>Prosperidad, Agusan del Sur</div>
+          </div>
+        </div>
+    
+        <div nz-row style="margin-top: 20px;">
+          <div nz-col nzSpan="24">
+            <div>Sir:</div>
+            
+            <div style="margin-top:20px;width:100%;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; I, &nbsp;<div style="width:350px; border-bottom: 1px solid black;text-align: center; display: inline-block;">{{applicationDtl.applicant_name | uppercase}}</div> &nbsp; hereby apply to lease stall at</div>
+            <div style="width:100%">
+              <div style="width: 100px;border-bottom: 1px solid black;text-align: center; display: inline-block;"></div>
+              &nbsp;
+              <div style="width: 110px;border-bottom: 1px solid black;text-align: center; display: inline-block;"></div>
+              &nbsp; Section, Market Building No. <div style="width: 30px;border-bottom: 1px solid black;text-align: center; display: inline-block;"></div>
+              &nbsp; of PROSPERIDAD, Agusan
+              </div>
+              <div style="width:100%">del  &nbsp;&nbsp;  Sur.  &nbsp;  &nbsp;  I  &nbsp;  &nbsp;  am  &nbsp; <div style="width: 50px;border-bottom: 1px solid black;text-align: center; display: inline-block;"></div> &nbsp; years  &nbsp;  old,
+                a  &nbsp;  citizen  &nbsp; of  &nbsp;  the  &nbsp;   <div style="width: 122px;border-bottom: 1px solid black;text-align: center; display: inline-block;">Philippines</div>
+                &nbsp; and residing at
+              </div>
+              <div style="width:100%">
+                <div style="width: 150px;border-bottom: 1px solid black;text-align: center; display: inline-block;"></div>
+                &nbsp;
+                <div style="width: 200px;border-bottom: 1px solid black;text-align: center; display: inline-block;"></div>
+                &nbsp;
+                <div style="width: 151px;border-bottom: 1px solid black;text-align: center; display: inline-block;"></div>.
+                &nbsp;
+                Should &nbsp; the
+              </div>
+              <div style="width:100%">
+               above-mentioned &nbsp; stall &nbsp; be &nbsp; leased &nbsp; to me &nbsp; in &nbsp; accordance&nbsp; with&nbsp; economic enterprises rules&nbsp; and
+              </div><div style="width:100%">
+                regulations, I promise to hold same under the following conditions:
+               </div>
+          </div>
+        </div>
+        <div nz-row style="margin-top:20px">
+          <div nz-col nzSpan="3"></div>
+          <div nz-col nzSpan="21" style="text-align:justify">
+              <div>1) &nbsp; &nbsp;That while I &nbsp;am &nbsp;occupying or leasing the &nbsp;stall, I shall at all times have my picture</div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and &nbsp;&nbsp;that &nbsp;&nbsp;of &nbsp;my &nbsp;helper &nbsp;&nbsp;(or&nbsp; &nbsp;helpers) &nbsp;&nbsp;conveniently &nbsp;&nbsp;framed &nbsp;and &nbsp;&nbsp;hanged&nbsp;&nbsp;up</div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;conspicuously in the stall.</div>
+              <div>2) &nbsp; &nbsp;I &nbsp;shall &nbsp;keep the &nbsp;stall at &nbsp;all times in good &nbsp;sanitary condition, and &nbsp;comply strictly</div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with &nbsp;all &nbsp;pertinent &nbsp; economic enterprises laws, &nbsp;oridnances, &nbsp;rules and regulations,</div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;now existing or which may hereafter be promulgated.</div>
+              <div>3) &nbsp; &nbsp;I &nbsp;shall &nbsp;pay &nbsp;&nbsp;the &nbsp;&nbsp;corresponding &nbsp;&nbsp;rents &nbsp;for the &nbsp;stall in the manner prescribed by</div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;existing ordinance/code.</div>
+              <div>4) &nbsp; &nbsp;I &nbsp;shall &nbsp;pay &nbsp;the &nbsp;Entreprenurial &nbsp;Fee &nbsp;amounting to &nbsp;Twenty Thousand (P20,000.00)</div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pesos only non-refundable before the Lease Contract be prepared.</div>
+              <div>5) &nbsp; &nbsp;I &nbsp;shall &nbsp;not &nbsp;my &nbsp;privilege &nbsp;to &nbsp;the &nbsp;stall &nbsp;or &nbsp;otherwise &nbsp;permit &nbsp;another &nbsp;to &nbsp;conduct</div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;business thereon.</div>
+              <div>6) &nbsp; &nbsp;Any violation on my part or on the party of my helpers of the foregoing conditions</div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shall be sufficient cause for the Municipal Mayor to cancel my lease contract..</div>
+              <div>7) &nbsp; &nbsp;Any modification of the said area, I will secure first permit from building officer..</div>
+          </div>
+        </div>
+
+        <div nz-row style="margin-top:20px">
+          <div nz-col nzSpan="24">
+            <div>Very truly yours,</div>
+          </div>
+        </div>
+        <div nz-row style="margin-top:30px">
+        <div nz-col nzSpan="8">
+          <div nz-row>
+            <div style="border-bottom:1px solid black; width:100%; text-align: center;">
+             {{applicationDtl.applicant_name}}
+            </div>
+          </div>
+          <div nz-row>
+            <div style="width:100%; text-align: center;">
+              APPLICANT
+            </div>
+          </div>
+        </div>
+        </div>
+        <div style="margin-top:20px;width:100%;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; I, &nbsp;<div style="width:300px; border-bottom: 1px solid black;text-align: center; display: inline-block;">{{applicationDtl.applicant_name | uppercase}}</div> 
+        &nbsp; &nbsp;do &nbsp;hereby &nbsp;state &nbsp;hat &nbsp;I &nbsp;am the same</div>
+        <div style="width:100%">
+          person &nbsp;who &nbsp;signed &nbsp;the &nbsp;foregoing &nbsp;application, &nbsp;that &nbsp;I &nbsp;have read &nbsp;the same; &nbsp;and &nbsp;that the contents
+        </div>
+        <div style="width:100%">
+          thereof are true to the best of my knowledge
+        </div>
+        <div nz-row style="margin-top:30px">
+          <div nz-col nzSpan="8">
+            <div nz-row>
+              <div style="border-bottom:1px solid black; width:100%; text-align: center;">
+               {{applicationDtl.applicant_name}}
+              </div>
+            </div>
+            <div nz-row>
+              <div style="width:100%; text-align: center;">
+                APPLICANT
+              </div>
+            </div>
+          </div>
+          </div>
+          <div style="margin-top:30px;width:100%;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+            SUBSCRIBED &nbsp;&nbsp;AND &nbsp;&nbsp;SWORN &nbsp;to &nbsp;before &nbsp;me &nbsp;this &nbsp;&nbsp;<div style="width:50px; border-bottom: 1px solid black;text-align: center; display: inline-block;"></div> 
+            &nbsp;&nbsp;day &nbsp;&nbsp;of &nbsp;&nbsp;<div style="width:100px; border-bottom: 1px solid black;text-align: center; display: inline-block;"></div> &nbsp;&nbsp;at
+        </div>
+        <div style="width:100%">
+          Prosperidad, &nbsp;Agusan &nbsp;del &nbsp;Sur, &nbsp;Philippines, &nbsp;affiant &nbsp;applicant &nbsp;exhibiting &nbsp;to &nbsp;me &nbsp;his/her &nbsp;Community
+        </div>
+        <div style="width:100%">
+          Tax &nbsp;Certificate &nbsp;No. &nbsp;
+          <div style="width:103px; border-bottom: 1px solid black;text-align: center; display: inline-block;"></div>
+          &nbsp;issued on &nbsp;
+          <div style="width:100px; border-bottom: 1px solid black;text-align: center; display: inline-block;"></div>
+          &nbsp;at &nbsp;Prosperidad, &nbsp;Agusan &nbsp;del &nbsp;Sur,
+        </div>
+        <div style="width:100%">
+          Philippines.
+        </div>
+        <div style="margin-top: 10px;">Doc. No. <div style="width:51px; border-bottom: 1px solid black;text-align: center; display: inline-block;"></div></div>
+        <div>Page No. <div style="width:51px; border-bottom: 1px solid black;text-align: center; display: inline-block;"></div></div>
+        <div>Book No. <div style="width:50px; border-bottom: 1px solid black;text-align: center; display: inline-block;"></div></div>
+        <div>Series of 202 <div style="width:30px; border-bottom: 1px solid black;text-align: center; display: inline-block;"></div></div>
+      </div>
+    </div>
+    <div class="footDiv">
+      <app-footer-print  *ngIf="formSetting.show_footer == 'true'"></app-footer-print>
+    </div>
+    </div>
+  </div>
+
+  <div *ngIf="applicationDtl.application_type_id == 2" class="printMulti"  style="border: 1px solid black; margin-top: 10px !important; margin: auto;" >
+    <div class="printContent"> 
+    <div style="text-align: center; margin-top: 5px;"><h3>APPLICATION TO LEASE STALLS OF THE ECONOMIC ENTERPRISES</h3></div>
+    <div style="text-align: center; margin-top: 5px;"><h4>OF THE MUNICIPALITY OF PROSPERIDAD</h4></div>
+    <div style="text-align: center; margin-top: 5px;">Prosperidad, Agusan del Sur</div>
+      <div nz-row [nzGutter]="32" style="align-content: center;">
+        <div nz-col nzSpan="1"></div>
+      <div nz-col nzSpan="23" class="content">
+        <div nz-row style="margin-top: 0;">
+          <div nz-col nzSpan="8">
+            <nz-descriptions  class="desc-policy">
+              <nz-descriptions-item nzTitle="Date:">
+                <div style="border-bottom:1px solid black; width:100%; text-align: center;">
+                 {{applicationDtl.application_date | date: 'MM/dd/yyyy'}}
+                </div>
+              </nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+        </div>
+        <div nz-row style="margin-top: 20px;">
+          <div nz-col nzSpan="24">
+            <nz-descriptions [nzColon]="false"  class="desc-policy">
+              <nz-descriptions-item nzTitle="Honorable {{mayor | uppercase}}">
+              </nz-descriptions-item>
+            </nz-descriptions>  
+            <div>Municipal Mayor</div>
+            <div>Prosperidad, Agusan del Sur</div>
+          </div>
+        </div>
+    
+        <div nz-row style="margin-top: 20px;">
+          <div nz-col nzSpan="24">
+            <div>Sir:</div>
+            
+            <div style="margin-top:20px;width:100%;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; I, &nbsp;<div style="width:350px; border-bottom: 1px solid black;text-align: center; display: inline-block;">{{applicationDtl.applicant_name | uppercase}}</div> &nbsp; hereby apply as</div>
+            <div style="width:100%">
+              TRANSIENT VENDOR at <div style="width: 225px;border-bottom: 1px solid black;text-align: center; display: inline-block;"></div> &nbsp;
+              <div style="width: 175px;border-bottom: 1px solid black;text-align: center; display: inline-block;"></div>
+              </div>
+              <div style="width:100%">
+                Section, for <div style="width: 200px;border-bottom: 1px solid black;text-align: center; display: inline-block;"></div>
+                &nbsp; vending at &nbsp;<div style="width: 100px;border-bottom: 1px solid black;text-align: center; display: inline-block;"></div>&nbsp; , in particular site
+              </div>    
+               <div style="width:100%">
+                of the Public Market, PROSPERIDAD, Agusan del Sur. I   am  &nbsp; <div style="width: 50px;border-bottom: 1px solid black;text-align: center; display: inline-block;"></div> &nbsp; years  &nbsp;  old, residing at
+              </div>
+              <div style="width:100%">
+                <div style="width: 325px;border-bottom: 1px solid black;text-align: center; display: inline-block;"></div>
+                &nbsp;
+                <div style="width: 225px;border-bottom: 1px solid black;text-align: center; display: inline-block;"></div>.
+                &nbsp;
+              </div>
+              <div style="margin-top:10px;width:100%;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Should &nbsp; the above-mentioned &nbsp; stall &nbsp; be &nbsp; leased &nbsp; to me &nbsp; in &nbsp; accordance&nbsp; with&nbsp;
+              
+              </div>
+              <div style="width:100%"> economic enterprises rules&nbsp; and regulations, I promise to hold same under the following</div>
+              <div style="width:100%">
+                conditions:
+               </div>
+               <div style="margin-top:10px;width:100%;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; That while I am occupying the space, I shall:</div>
+               <div style="margin-top:10px;width:100%;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1. &nbsp; keep the space at all thimes in good sanitary condition, and comply strictly with all</div>
+               <div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;pertinent economic enterprises laws, ordinances, rules and regulations, now existing</div>
+               <div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;or which may hereafter be promulgated;</div>
+               <div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;2. &nbsp; pay corresponding rents for the space in the manner prescribed by existing</div>
+               <div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;ordinance/code;</div>
+               <div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;3. &nbsp; not sell my privilege to the space or otherwise permit another to conduct business</div>
+               <div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;thereon;</div>
+               <div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4. &nbsp; Any violation on my part shall be sufficient cause for the Municipal Mayor to cancel</div>
+               <div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;my privilege/lease contract;</div>
+               <div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;5. &nbsp; Any modification of the said area, I will secure first permit from the Municipal</div>
+               <div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;Economic Enterprise Supervisor;</div>
+               <div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;6. &nbsp; <div style="width:250px; border-bottom:1px solid black;display: inline-block;"></div> &nbsp; <div style="width:250px;border-bottom:1px solid black;display: inline-block;"></div></div>
+          </div>
+        </div>
+        <div nz-row style="margin-top:20px">
+          <div nz-col nzSpan="24">
+            <div>Very truly yours,</div>
+          </div>
+        </div>
+        <div nz-row style="margin-top:30px">
+        <div nz-col nzSpan="8">
+          <div nz-row>
+            <div style="border-bottom:1px solid black; width:100%; text-align: center;">
+             {{applicationDtl.applicant_name}}
+            </div>
+          </div>
+          <div nz-row>
+            <div style="width:100%; text-align: center;">
+              APPLICANT
+            </div>
+          </div>
+        </div>
+        </div>
+        <div style="margin-top:20px;width:100%;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; I, &nbsp;<div style="width:300px; border-bottom: 1px solid black;text-align: center; display: inline-block;">{{applicationDtl.applicant_name | uppercase}}</div> 
+        &nbsp; &nbsp;do &nbsp;hereby &nbsp;state &nbsp;hat &nbsp;I &nbsp;am the same</div>
+        <div style="width:100%">
+          person &nbsp;who &nbsp;signed &nbsp;the &nbsp;foregoing &nbsp;application, &nbsp;that &nbsp;I &nbsp;have read &nbsp;the same; &nbsp;and &nbsp;that the contents
+        </div> 
+        <div style="width:100%">
+          thereof are true to the best of my knowledge
+        </div>
+        <div nz-row style="margin-top:30px">
+          <div nz-col nzSpan="8">
+            <div nz-row>
+              <div style="border-bottom:1px solid black; width:100%; text-align: center;">
+               {{applicationDtl.applicant_name}}
+              </div>
+            </div>
+            <div nz-row>
+              <div style="width:100%; text-align: center;">
+                APPLICANT
+              </div>
+            </div>
+          </div>
+          </div>
+          <div style="margin-top:30px;width:100%;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+            SUBSCRIBED &nbsp;&nbsp;AND &nbsp;&nbsp;SWORN &nbsp;to &nbsp;before &nbsp;me &nbsp;this &nbsp;&nbsp;<div style="width:50px; border-bottom: 1px solid black;text-align: center; display: inline-block;"></div> 
+            &nbsp;&nbsp;day &nbsp;&nbsp;of &nbsp;&nbsp;<div style="width:100px; border-bottom: 1px solid black;text-align: center; display: inline-block;"></div> &nbsp;&nbsp;at
+        </div>
+        <div style="width:100%">
+          Prosperidad, &nbsp;Agusan &nbsp;del &nbsp;Sur, &nbsp;Philippines, &nbsp;affiant &nbsp;applicant &nbsp;exhibiting &nbsp;to &nbsp;me &nbsp;his/her &nbsp;Community
+        </div>
+        <div style="width:100%">
+          Tax &nbsp;Certificate &nbsp;No. &nbsp;
+          <div style="width:103px; border-bottom: 1px solid black;text-align: center; display: inline-block;"></div>
+          &nbsp;issued on &nbsp;
+          <div style="width:100px; border-bottom: 1px solid black;text-align: center; display: inline-block;"></div>
+          &nbsp;at &nbsp;Prosperidad, &nbsp;Agusan &nbsp;del &nbsp;Sur,
+        </div>
+        <div style="width:100%">
+          Philippines.
+        </div>
+        <div style="margin-top: 10px;">Doc. No. <div style="width:51px; border-bottom: 1px solid black;text-align: center; display: inline-block;"></div></div>
+        <div>Page No. <div style="width:51px; border-bottom: 1px solid black;text-align: center; display: inline-block;"></div></div>
+        <div>Book No. <div style="width:50px; border-bottom: 1px solid black;text-align: center; display: inline-block;"></div></div>
+        <div>Series of 202 <div style="width:30px; border-bottom: 1px solid black;text-align: center; display: inline-block;"></div></div>
+      </div>
+    </div>
+    <div class="footDiv">
+      <app-footer-print  *ngIf="formSetting.show_footer == 'true'"></app-footer-print>
+    </div>
+    </div>
+  </div>
+</div>
+<!-- </div> -->
+</nz-spin>
+
+<ng-template id="tplContent" #tplContent let-params>
+  <div style="padding-left: 5%;">
+    <label style="font-weight: 500; font-size: 16px;">Select Type:</label>
+    <nz-select style="width:300px; padding-left: 15px;" [nzSize]="'large'" nzShowSearch nzPlaceHolder="Select" [(ngModel)]="selectedOpt">
+      <nz-option *ngFor="let x of printOpts" [nzLabel]="x" [nzValue]="x"></nz-option>
+    </nz-select>
+  </div>
+  
+  
+</ng-template>

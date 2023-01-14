@@ -1,0 +1,39 @@
+nz-form-label {
+  font-weight: 500;
+  text-align: left;
+}
+
+nz-page-header {
+  background-color: #fff;
+  margin-left: -2px;
+}
+
+.actionCompare {
+  color: #1890ff;
+}
+
+
+.actionCompare:hover {
+  color: #188fffc0;
+}
+
+.prev{
+  background-color: #fff2f0;
+  border: 1px solid #ffccc7;
+  // border: 1px solid rgba(0,0,0, 0.06);
+}
+.curr{
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+  // border: 1px solid rgba(0,0,0, 0.06);
+}
+.timeline{
+  word-break: normal !important;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none; 
+}

@@ -1,0 +1,51 @@
+<div class="headerActions">
+  <button nz-button nzType="default" (click)="excel(); $event.preventDefault();" style="margin-right: 10px;">
+    <i nz-icon nzType="file-excel" nzTheme="outline"></i> 
+    EXPORT TO EXCEL
+  </button>
+  <button nz-button nzType="primary" (click)="print(); $event.preventDefault();">
+    <i nz-icon nzType="printer" nzTheme="outline"></i>
+    PRINT
+  </button>
+</div>
+
+<div class="printLayout" id="report-section">
+  <div class="printContent">
+    <app-header-print></app-header-print>
+    <div style="text-align: center;"><h2>Elected Officials</h2></div>
+    <div class="content">
+      <div nz-row [nzGutter]="32">
+        <div nz-col nzSpan="8"></div>
+        <div nz-col nzSpan="10">
+          <div class="label"><span >Mayor:</span></div>
+          <div class="data"><span>Hon. {{listOfData?.model?.mayor}}</span></div>
+          <br/>
+          
+          <div class="label"><span >Vice-Mayor:</span></div>
+          <div class="data"><span>Hon. {{listOfData?.model?.vmayor}}</span></div>
+          <br/>
+          
+          <div class="label"><span >Councilors:</span></div>
+          <ng-container *ngFor="let x of councillors; let i = index">
+          
+            <div class="data" *ngIf="x.title == 'Councilor'">
+              <span style="font-weight: 500 !important">{{i + 1}} - Hon. {{x.name}} <span style="font-weight: 400 !important">({{x.title}})</span></span>
+            </div>
+            <div class="data" *ngIf="x.title != 'Councilor'" >
+              <div *ngIf="x.title == 'ABC President'" style="margin-top: 15px;"></div>
+              <span style="font-weight: 500 !important">{{i + 1}} - Hon. {{x.name}} <span style="font-weight: 400 !important">({{x.title}})</span>
+            </span>
+            </div>
+        </ng-container>
+        </div>
+        <div nz-col nzSpan="6"></div>
+      </div>
+    </div>
+    <div class="footDiv">
+      <app-footer-print></app-footer-print>
+    </div>
+  </div>
+  <div class="footDivPrint">
+    <app-footer-print></app-footer-print>
+  </div>
+</div>

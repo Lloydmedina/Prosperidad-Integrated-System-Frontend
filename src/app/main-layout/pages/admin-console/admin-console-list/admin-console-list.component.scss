@@ -1,0 +1,19 @@
+.gutter-row {
+  padding-top: 20px;
+  
+}
+
+nz-card {
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1);
+  
+}
+
+nz-card:hover {
+  box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.1);
+  border-color: #21B3FF;
+  cursor: pointer;
+  h4 {
+    color: #21B3FF;
+  }
+}
+

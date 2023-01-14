@@ -1,0 +1,64 @@
+<div class="headerActions">
+  <h3 style="float: left;"><i nz-icon nzType="file-done" nzTheme="outline"></i> Sanitary Permit</h3>
+  <button nz-button nzType="default" (click)="excel(); $event.preventDefault();" style="margin-right: 10px;">
+    <i nz-icon nzType="file-excel" nzTheme="outline"></i>
+    EXPORT TO EXCEL
+  </button>
+  <button nz-button nzType="primary" (click)="$event.preventDefault();" [useExistingCss]="true"
+  printSectionId="print-section"
+  ngxPrint>
+    <i nz-icon nzType="printer" nzTheme="outline"></i>
+    PRINT
+  </button>
+</div>
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <div class="printLayout printContent" id="print-section" >
+    <div id="report-section" >
+      <app-header-print></app-header-print>
+      <div style="text-align: center;"><h2> Sanitary Permit Transaction List</h2></div>
+      <div class="content" style="padding: 50px;">
+        <nz-table #basicTable [nzData]="listOfData" nzBordered  [nzFrontPagination]="false"
+        [nzShowPagination]="false" nzSize="small">
+
+          <thead>
+            <tr>
+              <th>Transaction #</th>
+              <th>Date</th>
+              <th>Applicant's Name</th>
+              <th>Business Name</th>
+              <th>Barangay</th>
+              <th>Status</th>
+              <th>Fees</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let data of basicTable.data;  let i = index">
+              <tr>
+
+                <td>{{data.form_trans_no}}</td>
+                <td>{{data.sp_transaction_date | date: 'MM/dd/yyyy'}}</td>
+                <td>{{data.sp_business_data?.owner_name}}</td>
+                <td>{{data.sp_business_data?.business_name}}</td>
+                <td>{{data.sp_business_data?.brgy_name}}</td>
+
+                <td style="width: 5%;">
+                  <nz-tag   *ngIf="data.payment_status === '1'" >Paid</nz-tag>
+                  <nz-tag   *ngIf="data.payment_status !== '0'" >Unpaid</nz-tag>
+                </td>
+                <td>{{data.sp_transaction_total_fee | currency:'PHP'}}</td>
+              </tr>
+            </ng-container>
+
+
+          </tbody>
+
+        </nz-table>
+      </div>
+    </div>
+    <div class="footDiv">
+      <app-footer-print></app-footer-print>
+    </div>
+   
+  </div>
+</nz-spin>

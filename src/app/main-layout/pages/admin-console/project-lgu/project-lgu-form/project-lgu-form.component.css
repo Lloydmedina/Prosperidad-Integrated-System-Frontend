@@ -1,0 +1,38 @@
+
+:host ::ng-deep .avatar-uploader > .ant-upload {
+    width: 200px;
+    height: 200px;
+  }
+  .header{
+    text-align: center;
+  }
+  .footer-left{
+    text-align: left;
+  }
+  .footer-right{
+    text-align: right;
+  }
+  .footer-center{
+    text-align:center;
+  }
+  nz-form-label {
+    font-weight: 500;
+    text-align: left;
+  }
+  nz-form-control{
+    padding: 5px !important;
+  }
+  .report-config{
+    font-size: 24px;
+   color:gainsboro;
+   font-weight: 500;
+   text-align:center !important;
+  }
+  .ant-form-item{
+    margin-bottom: 2px !important;
+  }
+.div-label{
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+}

@@ -1,0 +1,1610 @@
+<div class="headerActions">
+  <h3 style="float: left;"><i nz-icon nzType="file-done" nzTheme="outline" style="color: #1890FF"></i> PWD Form</h3>
+  <button nz-button nzType="default" [useExistingCss]="true" printSectionId="report-section-empty" #print ngxPrint style="margin-right: 10px;">
+    <i nz-icon nzType="printer" nzTheme="outline"></i>
+    PRINT EMPTY SHEET
+  </button>
+  <button nz-button nzType="default" (click)="excel(); $event.preventDefault();" style="margin-right: 10px;">
+    <i nz-icon nzType="file-excel" nzTheme="outline" style="color: #008141"></i> 
+    EXPORT TO EXCEL
+  </button>
+  <button nz-button (click)="convertToPDF();" nzType="default" style="margin-right: 10px;">
+    <span nz-icon nzType="file-pdf" nzTheme="outline" style="color: red;"></span>
+    EXPORT TO PDF
+  </button>
+  <button nz-button nzType="primary" [useExistingCss]="true" printSectionId="report-section" #print ngxPrint>
+    <i nz-icon nzType="printer" nzTheme="outline"></i>
+    PRINT
+  </button>
+</div>
+
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <div class="printLayout" id="report-section">
+    <div id="content" #content>
+      <div class="printContent">
+        <!-- <app-header-print></app-header-print> -->
+        <div nz-row>
+          <div nz-col [nzSpan]="19" style="border: 1px solid gray;">
+  
+            <h2>
+              Philippine Registry Form for Persons With Disability 
+              <span><br>Ver. 2.0</span>
+            </h2>
+            <div nz-row>
+              <div nz-col [nzSpan]="12" style="border: 1px solid gray;">
+                <nz-descriptions>
+                  <nz-descriptions-item [nzTitle]="pwdnumber"></nz-descriptions-item>
+                </nz-descriptions>
+                <ng-template #pwdnumber>
+                  <span style="font-weight: bold;">1. PWD NUMBER</span>
+                </ng-template>
+              </div>
+  
+              <div nz-col [nzSpan]="12" style="border: 1px solid gray;">
+                <nz-descriptions>
+                  <nz-descriptions-item [nzTitle]="date">
+                    <span style="font-weight: 500;">{{data?.application_date | date:'mediumDate'}}</span>
+                  </nz-descriptions-item>
+                </nz-descriptions>
+                <ng-template #date>
+                  <span style="font-weight: bold;">2. DATE</span>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+  
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            <h3 class="photo">Place <br> 1" X " <br> Photo <br> here</h3>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+            <nz-descriptions>
+              <nz-descriptions-item [nzTitle]="lastname">
+                <span style="font-weight: 500;">{{data?.last_name}}</span>
+              </nz-descriptions-item>
+            </nz-descriptions>
+            <ng-template #lastname>
+              <span style="font-weight: bold;">3. LAST NAME</span>
+            </ng-template>
+          </div>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+            <nz-descriptions>
+              <nz-descriptions-item [nzTitle]="firstname">
+                <span style="font-weight: 500;">{{data?.first_name}}</span>
+              </nz-descriptions-item>
+            </nz-descriptions>
+            <ng-template #firstname>
+              <span style="font-weight: bold;">FIRST NAME</span>
+            </ng-template>
+          </div>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+            <nz-descriptions>
+              <nz-descriptions-item [nzTitle]="middlename">
+                <span style="font-weight: 500;">{{data?.middle_name}}</span>
+              </nz-descriptions-item>
+            </nz-descriptions>
+            <ng-template #middlename>
+              <span style="font-weight: bold;">MIDDLE NAME</span>
+            </ng-template>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+            <div nz-row>
+              <div nz-col [nzSpan]="6">
+                <div style="font-weight: bold;">
+                  4. TYPE OF DISABILITY:
+                </div>
+                <div style="margin-left: 5%;">
+                  <span class="dot">
+                    <span *ngIf="data?.type_of_disability_id != 1">&nbsp;</span>
+                    <i *ngIf="data?.type_of_disability_id == 1" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">Mental/Intellectual</span>
+                </div>
+                <div style="margin-left: 5%;">
+                  <span class="dot">
+                    <span *ngIf="data?.type_of_disability_id != 2">&nbsp;</span>
+                    <i *ngIf="data?.type_of_disability_id == 2" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">Hearing Disability</span>
+                </div>
+              </div>
+  
+              <div nz-col [nzSpan]="6">
+                <div>
+                  <span class="dot">
+                    <span *ngIf="data?.type_of_disability_id != 3">&nbsp;</span>
+                    <i *ngIf="data?.type_of_disability_id == 3" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">Psychosocial Disability</span>
+                </div>
+                <div>
+                  <span class="dot">
+                    <span *ngIf="data?.type_of_disability_id != 4">&nbsp;</span>
+                    <i *ngIf="data?.type_of_disability_id == 4" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">Visual Disability</span>
+                </div>
+                <div>
+                  <span class="dot">
+                    <span *ngIf="data?.type_of_disability_id != 5">&nbsp;</span>
+                    <i *ngIf="data?.type_of_disability_id == 5" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">Speech Impairment</span>
+                </div>
+              </div>
+  
+              <div nz-col [nzSpan]="12">
+                <div nz-row>
+                  <div nz-col [nzSpan]="12">
+                    <span class="dot">
+                      <span *ngIf="data?.type_of_disability_id != 6">&nbsp;</span>
+                    <i *ngIf="data?.type_of_disability_id == 6" nz-icon nzType="check" nzTheme="outline"></i>
+                    </span>
+                    <span class="radioText">Disability due to Chronic Illness</span>
+                  </div>
+                  <div nz-col [nzSpan]="12">
+                    <span class="dot">
+                      <span *ngIf="data?.type_of_disability_id != 8">&nbsp;</span>
+                    <i *ngIf="data?.type_of_disability_id == 8" nz-icon nzType="check" nzTheme="outline"></i>
+                    </span>
+                    <span class="radioText">Learning Disability</span>
+                  </div>
+                </div>
+                <div>
+                  <span class="dot">
+                    <span *ngIf="data?.type_of_disability_id != 7">&nbsp;</span>
+                    <i *ngIf="data?.type_of_disability_id == 7" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">Orthopedic (Musculoskeletal) Disability</span>
+                </div>
+                <div >
+                  <span class="dot">
+                    <span *ngIf="data?.type_of_disability_id != 9">&nbsp;</span>
+                    <i *ngIf="data?.type_of_disability_id == 9" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">Multiple Disabilities, specify {{data?.specify_disability}}</span>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+            <div nz-row>
+              <div nz-col [nzSpan]="6">
+                <nz-descriptions>
+                  <nz-descriptions-item [nzTitle]="causeofdisability"></nz-descriptions-item>
+                </nz-descriptions>
+                <ng-template #causeofdisability>
+                  <span style="font-weight: bold;">5. Cause of Disability</span>
+                </ng-template>
+              </div>
+  
+              <div nz-col [nzSpan]="6">
+                <div>
+                  <span class="dot">
+                    <span *ngIf="data?.cause_of_disability_id != 1">&nbsp;</span>
+                    <i *ngIf="data?.cause_of_disability_id == 1" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">Congenital/Inborn</span>
+                </div>
+              </div>
+  
+              <div nz-col [nzSpan]="6">
+                <div>
+                  <span class="dot">
+                    <span *ngIf="data?.cause_of_disability_id != 2">&nbsp;</span>
+                    <i *ngIf="data?.cause_of_disability_id == 2" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">Illness</span>
+                </div>
+              </div>
+  
+              <div nz-col [nzSpan]="6">
+                <div>
+                  <span class="dot">
+                    <span *ngIf="data?.cause_of_disability_id != 3">&nbsp;</span>
+                    <i *ngIf="data?.cause_of_disability_id == 3" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">Injury</span>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+            <nz-descriptions>
+              <nz-descriptions-item [nzTitle]="address"></nz-descriptions-item>
+            </nz-descriptions>
+            <ng-template #address>
+              <span style="font-weight: bold;">6. ADDRESS</span>
+            </ng-template>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            <div style="font-weight: 500;">House No. and Street</div>
+            <div style="font-weight: 500;">{{data?.street}}</div>
+          </div>
+  
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            <div style="font-weight: 500;">Barangay</div>
+            <div style="font-weight: 500;">{{data?.brgy_name}} </div>
+          </div>
+  
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            <div style="font-weight: 500;">Municipality</div>
+            <div style="font-weight: 500;">{{data?.city_mun_name}}</div>
+          </div>
+  
+          <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+            <div style="font-weight: 500;">Province</div>
+            <div style="font-weight: 500;">{{data?.province_name}}</div>
+          </div>
+  
+          <div nz-col [nzSpan]="4" style="border: 1px solid gray;">
+            <div style="font-weight: 500;">Region</div>
+            <div style="font-weight: 500;">{{data?.reg_name}} {{data?.reg_code}}</div>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+            <div style="font-weight: bold;">7. CONTACT DETAILS</div>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+            <div style="font-weight: 500;">7.a. TEL. NOS.:</div>
+            <div style="font-weight: 500;">{{data?.telephone_no == null ? '&nbsp;' : data?.telephone_no}}</div>
+          </div>
+  
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+            <div style="font-weight: 500;">7.b. MOBILE NO.:</div>
+            <div style="font-weight: 500;">{{data?.phone_no == null ? '&nbsp;' : data?.phone_no}}</div>
+          </div>
+  
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+            <div style="font-weight: 500;">7.c. EMAIL ADDRESS</div>
+            <div style="font-weight: 500;">{{data?.email_address == null ? '&nbsp;' : data?.email_address}}</div>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+            <div style="font-weight: bold;">8. DATE OF BIRTH <span style="font-style: italic;">(mm/dd/yyyy)</span>:</div>
+            <div style="font-weight: 500;">{{data?.birth_date | date:'mediumDate'}}</div>
+          </div>
+  
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+            <div style="font-weight: bold;">9. SEX:</div>
+            <div nz-row>
+              <div nz-col [nzSpan]="7" style="padding-left: 10%;">
+                <span class="dot">
+                  <span *ngIf="data?.gender_id != 1">&nbsp;</span>
+                  <i *ngIf="data?.gender_id == 1" nz-icon nzType="check" nzTheme="outline"></i>
+                </span>
+                <span style="font-weight: 500;"> Male</span>
+              </div>
+              <div nz-col [nzSpan]="15">
+                <span class="dot">
+                  <span *ngIf="data?.gender_id != 2">&nbsp;</span>
+                  <i *ngIf="data?.gender_id == 2" nz-icon nzType="check" nzTheme="outline"></i>
+                </span>
+                <span style="font-weight: 500;"> Female</span>
+              </div>
+            </div>
+          </div>
+  
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray;" class="modifiedlabel">
+            <div style="font-weight: bold;">10. CIVIL STATUS:
+              <span class="dot" style="margin-left: 5%;">
+                <span *ngIf="data?.civil_status_id != 1">&nbsp;</span>
+                <i *ngIf="data?.civil_status_id == 1" nz-icon nzType="check" nzTheme="outline"></i>
+              </span>
+              <span style="font-weight: 500;">Single</span>
+              <span class="dot" style="margin-left: 10%;">
+                <span *ngIf="data?.civil_status_id != 2">&nbsp;</span>
+                <i *ngIf="data?.civil_status_id == 2" nz-icon nzType="check" nzTheme="outline"></i>
+              </span>
+              <span style="font-weight: 500;">Married</span>
+            </div>
+            <div nz-row>
+              <div nz-col [nzSpan]="7">
+                <span class="dot">
+                  <span *ngIf="data?.civil_status_id != 3">&nbsp;</span>
+                  <i *ngIf="data?.civil_status_id == 3" nz-icon nzType="check" nzTheme="outline"></i>
+                </span>
+                <span style="font-weight: 500;">Widower</span>
+              </div>
+              <div nz-col [nzSpan]="7">
+                <span class="dot">
+                  <span *ngIf="data?.civil_status_id != 4">&nbsp;</span>
+                  <i *ngIf="data?.civil_status_id == 4" nz-icon nzType="check" nzTheme="outline"></i>
+                </span>
+                <span style="font-weight: 500;">Separated</span>
+              </div>
+              <div nz-col [nzSpan]="10">
+                <span class="dot">
+                  <span *ngIf="data?.civil_status_id != 5">&nbsp;</span>
+                  <i *ngIf="data?.civil_status_id == 5" nz-icon nzType="check" nzTheme="outline"></i>
+                </span>
+                <span style="font-weight: 500;">Co-habitation (Live-in)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="24" style="border: 1px solid gray;" class="modifiedlabel">
+            <div style="font-weight: bold;">11. EDUCATIONAL ATTAINMENT:</div>
+            <div nz-row>
+              <div nz-col [nzSpan]="6">
+                <div style="margin-left: 5%;">
+                  <span class="dot">
+                    <span *ngIf="data?.educational_attainment != 1">&nbsp;</span>
+                    <i *ngIf="data?.educational_attainment == 1" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">Elementary Undergraduate</span>
+                </div>
+                <div style="margin-left: 5%;">
+                  <span class="dot">
+                    <span *ngIf="data?.educational_attainment != 5">&nbsp;</span>
+                    <i *ngIf="data?.educational_attainment == 5" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">College Undergraduate</span>
+                </div>
+              </div>
+  
+              <div nz-col [nzSpan]="6">
+                <div>
+                  <span class="dot">
+                    <span *ngIf="data?.educational_attainment != 2">&nbsp;</span>
+                    <i *ngIf="data?.educational_attainment == 2" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">Elementary Graduate</span>
+                </div>
+                <div>
+                  <span class="dot">
+                    <span *ngIf="data?.educational_attainment != 6">&nbsp;</span>
+                    <i *ngIf="data?.educational_attainment == 6" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">College Graduate</span>
+                </div>
+              </div>
+  
+              <div nz-col [nzSpan]="6">
+                <div>
+                  <span class="dot">
+                    <span *ngIf="data?.educational_attainment != 3">&nbsp;</span>
+                    <i *ngIf="data?.educational_attainment == 3" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">High School Undergraduate</span>
+                </div>
+                <div nz-row>
+                  <div nz-col [nzSpan]="12">
+                    <span class="dot">
+                      <span *ngIf="data?.educational_attainment != 7">&nbsp;</span>
+                      <i *ngIf="data?.educational_attainment == 7" nz-icon nzType="check" nzTheme="outline"></i>
+                    </span>
+                    <span class="radioText">Post Graduate</span>
+                  </div>
+                  <div nz-col [nzSpan]="12">
+                    <span class="dot">
+                      <span *ngIf="data?.educational_attainment != 8">&nbsp;</span>
+                      <i *ngIf="data?.educational_attainment == 8" nz-icon nzType="check" nzTheme="outline"></i>
+                    </span>
+                    <span class="radioText">Vocational</span>
+                  </div>
+                </div>
+              </div>
+  
+              <div nz-col [nzSpan]="6">
+                <div>
+                  <span class="dot">
+                    <span *ngIf="data?.educational_attainment != 4">&nbsp;</span>
+                    <i *ngIf="data?.educational_attainment == 4" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">High School Graduate</span>
+                </div>
+                <div>
+                  <span class="dot">
+                    <span *ngIf="data?.educational_attainment != 9">&nbsp;</span>
+                    <i *ngIf="data?.educational_attainment == 9" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">None</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+            <span style="font-weight: bold;">12. EMPLOYMENT STATUS:</span>
+            <span class="dot" style="margin-left: 5%;">
+              <span *ngIf="data?.employment_status_id != 1">&nbsp;</span>
+              <i *ngIf="data?.employment_status_id == 1" nz-icon nzType="check" nzTheme="outline"></i>
+            </span>
+            <span style="font-weight: 500;">Employed</span>
+            <span class="dot" style="margin-left: 10%;">
+              <span *ngIf="data?.employment_status_id != 2">&nbsp;</span>
+              <i *ngIf="data?.employment_status_id == 2" nz-icon nzType="check" nzTheme="outline"></i>
+            </span>
+            <span style="font-weight: 500;">Unemployed</span>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+            <span style="font-weight: bold;">13. TYPE OF EMPLOYMENT <span style="font-style: italic;">(Please check one if employed)</span>:</span>
+            <span class="dot" style="margin-left: 5%;">
+              <span *ngIf="data?.employment_type_id != 1">&nbsp;</span>
+              <i *ngIf="data?.employment_type_id == 1" nz-icon nzType="check" nzTheme="outline"></i>
+            </span>
+            <span style="font-weight: 500;">Private</span>
+            <span class="dot" style="margin-left: 10%;">
+              <span *ngIf="data?.employment_type_id != 2">&nbsp;</span>
+              <i *ngIf="data?.employment_type_id == 2" nz-icon nzType="check" nzTheme="outline"></i>
+            </span>
+            <span style="font-weight: 500;">Government</span>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+            <div style="font-weight: bold;">14. TYPE OF EMPLOYER <span style="font-style: italic;">(Please check one if employed)</span>:</div>
+            <span class="dot" style="margin-left: 2%;">
+              <span *ngIf="data?.employer_type_id != 1">&nbsp;</span>
+              <i *ngIf="data?.employer_type_id == 1" nz-icon nzType="check" nzTheme="outline"></i>
+            </span>
+            <span style="font-weight: 500;">Permanent</span>
+            <span class="dot" style="margin-left: 2%;">
+              <span *ngIf="data?.employer_type_id != 2">&nbsp;</span>
+              <i *ngIf="data?.employer_type_id == 2" nz-icon nzType="check" nzTheme="outline"></i>
+            </span>
+            <span style="font-weight: 500;">Regular</span>
+            <span class="dot" style="margin-left: 2%;">
+              <span *ngIf="data?.employer_type_id != 3">&nbsp;</span>
+              <i *ngIf="data?.employer_type_id == 3" nz-icon nzType="check" nzTheme="outline"></i>
+            </span>
+            <span style="font-weight: 500;">Contractual</span>
+            <span class="dot" style="margin-left: 2%;">
+              <span *ngIf="data?.employer_type_id != 4">&nbsp;</span>
+              <i *ngIf="data?.employer_type_id == 4" nz-icon nzType="check" nzTheme="outline"></i>
+            </span>
+            <span style="font-weight: 500;">Casual</span>
+            <span class="dot" style="margin-left: 2%;">
+              <span *ngIf="data?.employer_type_id != 5">&nbsp;</span>
+              <i *ngIf="data?.employer_type_id == 5" nz-icon nzType="check" nzTheme="outline"></i>
+            </span>
+            <span style="font-weight: 500;">Self-Employed</span>
+            <span class="dot" style="margin-left: 2%;">
+              <span *ngIf="data?.employer_type_id != 6">&nbsp;</span>
+              <i *ngIf="data?.employer_type_id == 6" nz-icon nzType="check" nzTheme="outline"></i>
+            </span>
+            <span style="font-weight: 500;">Seasonal</span>
+            <span class="dot" style="margin-left: 2%;">
+              <span *ngIf="data?.employer_type_id != 7">&nbsp;</span>
+              <i *ngIf="data?.employer_type_id == 7" nz-icon nzType="check" nzTheme="outline"></i>
+            </span>
+            <span style="font-weight: 500;">Emergency</span>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="12" style="border: 1px solid gray;">
+            <div style="font-weight: bold;">15. OCCUPATION: <span style="font-style: italic;">(Please check one):</span></div>
+            <div style="margin-left: 3%;">
+              <span class="dot">
+                <span *ngIf="data?.occupation_id != 1">&nbsp;</span>
+                <i *ngIf="data?.occupation_id == 1" nz-icon nzType="check" nzTheme="outline"></i>
+              </span>
+              <span class="radioText">Officials of Government and Special Interest
+                <div style="padding-left: 10%;">Organizations, Corporate Executives,</div>
+                <div style="padding-left: 10%;">Managers, Managing Proprietors and</div>
+                <div style="padding-left: 10%;">Supervisors</div>
+              </span>
+            </div>
+            <div style="margin-left: 3%;">
+              <span class="dot">
+                <span *ngIf="data?.occupation_id != 2">&nbsp;</span>
+                <i *ngIf="data?.occupation_id == 2" nz-icon nzType="check" nzTheme="outline"></i>
+              </span>
+              <span class="radioText">Professionals</span>
+            </div>
+            <div style="margin-left: 3%;">
+              <span class="dot">
+                <span *ngIf="data?.occupation_id != 3">&nbsp;</span>
+                <i *ngIf="data?.occupation_id == 3" nz-icon nzType="check" nzTheme="outline"></i>
+              </span>
+              <span class="radioText">Technicians and Associate Professionals</span>
+            </div>
+            <div style="margin-left: 3%;">
+              <span class="dot">
+                <span *ngIf="data?.occupation_id != 4">&nbsp;</span>
+                <i *ngIf="data?.occupation_id == 4" nz-icon nzType="check" nzTheme="outline"></i>
+              </span>
+              <span class="radioText">Clerks</span>
+            </div>
+            <div style="margin-left: 3%;">
+              <span class="dot">
+                <span *ngIf="data?.occupation_id != 5">&nbsp;</span>
+                <i *ngIf="data?.occupation_id == 5" nz-icon nzType="check" nzTheme="outline"></i>
+              </span>
+              <span class="radioText">Service Workers and Shop and Market Sales</span>
+            </div>
+            <div style="margin-left: 3%;">
+              <span class="dot">
+                <span *ngIf="data?.occupation_id != 6">&nbsp;</span>
+                <i *ngIf="data?.occupation_id == 6" nz-icon nzType="check" nzTheme="outline"></i>
+              </span>
+              <span class="radioText">Workers</span>
+            </div>
+            <div style="margin-left: 3%;">
+              <span class="dot">
+                <span *ngIf="data?.occupation_id != 7">&nbsp;</span>
+                <i *ngIf="data?.occupation_id == 7" nz-icon nzType="check" nzTheme="outline"></i>
+              </span>
+              <span class="radioText">Farmers, Forestry Workers and Fishermen</span>
+            </div>
+            <div style="margin-left: 3%;">
+              <span class="dot">
+                <span *ngIf="data?.occupation_id != 8">&nbsp;</span>
+                <i *ngIf="data?.occupation_id == 8" nz-icon nzType="check" nzTheme="outline"></i>
+              </span>
+              <span class="radioText">Trades and Related Workers</span>
+            </div>
+            <div style="margin-left: 3%;">
+              <span class="dot">
+                <span *ngIf="data?.occupation_id != 9">&nbsp;</span>
+                <i *ngIf="data?.occupation_id == 9" nz-icon nzType="check" nzTheme="outline"></i>
+              </span>
+              <span class="radioText">Plant and Machine Operators and Assemblers</span>
+            </div>
+            <div style="margin-left: 3%;">
+              <span class="dot">
+                <span *ngIf="data?.occupation_id != 10">&nbsp;</span>
+                <i *ngIf="data?.occupation_id == 10" nz-icon nzType="check" nzTheme="outline"></i>
+              </span>
+              <span class="radioText">Laborers</span>
+            </div>
+            <div style="margin-left: 3%;">
+              <span class="dot">
+                <span *ngIf="data?.occupation_id != 11">&nbsp;</span>
+                <i *ngIf="data?.occupation_id == 11" nz-icon nzType="check" nzTheme="outline"></i>
+              </span>
+              <span class="radioText">Unskilled Workers</span>
+            </div>
+            <div style="margin-left: 3%;">
+              <span class="dot">
+                <span *ngIf="data?.occupation_id != 12">&nbsp;</span>
+                <i *ngIf="data?.occupation_id == 12" nz-icon nzType="check" nzTheme="outline"></i>
+              </span>
+              <span class="radioText">Not Applicable</span>
+            </div>
+            <div style="margin-left: 3%;">
+              <span class="dot">
+                <span *ngIf="data?.occupation_id != 13">&nbsp;</span>
+                <i *ngIf="data?.occupation_id == 13" nz-icon nzType="check" nzTheme="outline"></i>
+              </span>
+              <span class="radioText">Others, specify {{data?.occupation_others}}</span>
+            </div>
+          </div>
+  
+          <div nz-col [nzSpan]="12">
+            <div nz-row>
+              <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+                <div style="font-weight: bold;">16. ID Reference No.</div>
+              </div>
+              <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+                <div style="font-weight: bold;">SSS No.: 
+                  <span style="font-weight: 500;">{{data?.sss_no == null ? '&nbsp;' : data?.sss_no}}</span>
+                </div>
+              </div>
+              <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+                <div style="font-weight: bold;">GSIS No.:
+                  <span style="font-weight: 500;">{{data?.gsis_no == null ? '&nbsp;' : data?.gsis_no}}</span>
+                </div>
+              </div>
+              <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+                <div style="font-weight: bold;">Pag-ibig No.:
+                  <span style="font-weight: 500;">{{data?.pagibig_no == null ? '&nbsp;' : data?.pagibig_no}}</span>
+                </div>
+              </div>
+              <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+                <div style="font-weight: bold;">PhilHealth No.:
+                  <span style="font-weight: 500;">{{data?.philhealth_no == null ? '&nbsp;' : data?.philhealth_no}}</span>
+                </div>
+              </div>
+              <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+                <div style="margin-left: 5%;">
+                  <span class="dot">
+                    <span *ngIf="data?.philhealth_membership != 'PhilHealth Member'">&nbsp;</span>
+                    <i *ngIf="data?.philhealth_membership == 'PhilHealth Member'" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">PhilHealth Member</span>
+                </div>
+                <div style="margin-left: 5%;">
+                  <span class="dot">
+                    <span *ngIf="data?.philhealth_membership != 'PhilHealth Member Dependent'">&nbsp;</span>
+                    <i *ngIf="data?.philhealth_membership == 'PhilHealth Member Dependent'" nz-icon nzType="check" nzTheme="outline"></i>
+                  </span>
+                  <span class="radioText">PhilHealth Member Dependent</span>
+                </div>
+              </div>
+              <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+                <div style="font-weight: bold;">17. BLOOD TYPE:</div>
+  
+                <div nz-row>
+                  <div nz-col [nzSpan]="6">
+                    <div style="margin-left: 8%;">
+                      <span class="dot">
+                        <span *ngIf="data?.blood_type_id != 1">&nbsp;</span>
+                        <i *ngIf="data?.blood_type_id == 1" nz-icon nzType="check" nzTheme="outline"></i>
+                      </span>
+                      <span class="radioText">A+</span>
+                    </div>
+                    <div style="margin-left: 8%;">
+                      <span class="dot">
+                        <span *ngIf="data?.blood_type_id != 5">&nbsp;</span>
+                        <i *ngIf="data?.blood_type_id == 5" nz-icon nzType="check" nzTheme="outline"></i>
+                      </span>
+                      <span class="radioText">AB+</span>
+                    </div>
+                  </div>
+                  <div nz-col [nzSpan]="6">
+                    <div>
+                      <span class="dot">
+                        <span *ngIf="data?.blood_type_id != 2">&nbsp;</span>
+                        <i *ngIf="data?.blood_type_id == 2" nz-icon nzType="check" nzTheme="outline"></i>
+                      </span>
+                      <span class="radioText">A-</span>
+                    </div>
+                    <div>
+                      <span class="dot">
+                        <span *ngIf="data?.blood_type_id != 6">&nbsp;</span>
+                        <i *ngIf="data?.blood_type_id == 6" nz-icon nzType="check" nzTheme="outline"></i>
+                      </span>
+                      <span class="radioText">AB-</span>
+                    </div>
+                  </div>
+                  <div nz-col [nzSpan]="6">
+                    <div>
+                      <span class="dot">
+                        <span *ngIf="data?.blood_type_id != 3">&nbsp;</span>
+                        <i *ngIf="data?.blood_type_id == 3" nz-icon nzType="check" nzTheme="outline"></i>
+                      </span>
+                      <span class="radioText">B+</span>
+                    </div>
+                    <div>
+                      <span class="dot">
+                        <span *ngIf="data?.blood_type_id != 7">&nbsp;</span>
+                        <i *ngIf="data?.blood_type_id == 7" nz-icon nzType="check" nzTheme="outline"></i>
+                      </span>
+                      <span class="radioText">O+</span>
+                    </div>
+                  </div>
+                  <div nz-col [nzSpan]="6">
+                    <div>
+                      <span class="dot">
+                        <span *ngIf="data?.blood_type_id != 4">&nbsp;</span>
+                        <i *ngIf="data?.blood_type_id == 4" nz-icon nzType="check" nzTheme="outline"></i>
+                      </span>
+                      <span class="radioText">B-</span>
+                    </div>
+                    <div>
+                      <span class="dot">
+                        <span *ngIf="data?.blood_type_id != 8">&nbsp;</span>
+                        <i *ngIf="data?.blood_type_id == 8" nz-icon nzType="check" nzTheme="outline"></i>
+                      </span>
+                      <span class="radioText">O-</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+              <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+                <div style="font-weight: bold;">18. ORGANIZATION INFORMATION.</div>
+              </div>
+              <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+                <div style="font-weight: 500;">Organization Affiliated:</div>
+                <div style="font-weight: 500;">{{data?.organization == null ? '&nbsp;' : data?.organization}}</div>
+              </div>
+              <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+                <div style="font-weight: 500;">Contact Person:</div>
+                <div style="font-weight: 500;">{{data?.contact_person == null ? '&nbsp;' : data?.contact_person}}</div>
+              </div>
+              <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+                <div style="font-weight: 500;">Office Address:</div>
+                <div style="font-weight: 500;">{{data?.office_address == null ? '&nbsp;' : data?.office_address}}</div>
+              </div>
+              <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+                <div style="font-weight: 500;">Tel Nos.: 
+                  <span style="font-weight: 500;">{{data?.tel_no}}</span>
+                </div>
+              </div>
+  
+            </div>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            <div style="font-weight: bold;">19. FAMILY BACKGROUND.</div>
+          </div>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            <div style="font-weight: bold; text-align: center;">Last Name</div>
+          </div>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            <div style="font-weight: bold; text-align: center;">First Name</div>
+          </div>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            <div style="font-weight: bold; text-align: center;">Middle Name</div>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            <div style="font-weight: bold; text-align: center; font-style: italic;">FATHER'S NAME:</div>
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            <div style="text-align: center; font-weight: 500;">{{filteredDataFather[0]?.last_name == null ? '&nbsp;' : filteredDataFather[0]?.last_name}}</div>
+          </div>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            <div style="text-align: center; font-weight: 500;">{{filteredDataFather[0]?.first_name == null ? '&nbsp;' : filteredDataFather[0]?.first_name}}</div>
+          </div>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            <div style="text-align: center; font-weight: 500;">{{filteredDataFather[0]?.middle_name == null ? '&nbsp;' : filteredDataFather[0]?.middle_name}}</div>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            <div style="font-weight: bold; text-align: center; font-style: italic;">MOTHER'S NAME:</div>
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            <div style="text-align: center; font-weight: 500;">{{filteredDataMother[0]?.last_name == null ? '&nbsp;' : filteredDataMother[0]?.last_name}}</div>
+          </div>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            <div style="text-align: center; font-weight: 500;">{{filteredDataMother[0]?.first_name == null ? '&nbsp;' : filteredDataMother[0]?.first_name}}</div>
+          </div>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            <div style="text-align: center; font-weight: 500;">{{filteredDataMother[0]?.middle_name == null ? '&nbsp;' : filteredDataMother[0]?.middle_name}}</div>
+            <div style="text-align: center; font-style: italic; font-weight: 500;">(optional)</div>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            <div style="font-weight: bold; text-align: center; font-style: italic;">GUARDIAN'S NAME:</div>
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            <div style="font-weight: bold; font-style: italic;">20. ACCOMPLISHED BY:</div>
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+            <div style="font-weight: bold; font-style: italic;">20.a. NAME OF REPORTING UNIT:</div>
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="16" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+            <div style="font-weight: bold; font-style: italic;">21. REGISTRATION NUMBER:</div>
+            &nbsp;
+          </div>
+          <div nz-col [nzSpan]="16" style="border: 1px solid gray;">
+            &nbsp;
+          </div>
+        </div>
+  
+      </div>
+    </div>
+    
+  </div>
+
+  <div style="display: none;" class="printLayout" id="report-section-empty">
+    <div class="printContent">
+      <!-- <app-header-print></app-header-print> -->
+      <div nz-row>
+        <div nz-col [nzSpan]="19" style="border: 1px solid gray;">
+
+          <h2>
+            Philippine Registry Form for Persons With Disability 
+            <span><br>Ver. 2.0</span>
+          </h2>
+          <div nz-row>
+            <div nz-col [nzSpan]="12" style="border: 1px solid gray;">
+              <nz-descriptions>
+                <nz-descriptions-item [nzTitle]="pwdnumber"></nz-descriptions-item>
+              </nz-descriptions>
+              <ng-template #pwdnumber>
+                <span style="font-weight: bold;">1. PWD NUMBER</span>
+              </ng-template>
+            </div>
+
+            <div nz-col [nzSpan]="12" style="border: 1px solid gray;">
+              <nz-descriptions>
+                <nz-descriptions-item [nzTitle]="date">
+                  <span style="font-weight: 500;">&nbsp;</span>
+                </nz-descriptions-item>
+              </nz-descriptions>
+              <ng-template #date>
+                <span style="font-weight: bold;">2. DATE</span>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+        <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+          <h3 class="photo">Place <br> 1" X " <br> Photo <br> here</h3>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+          <nz-descriptions>
+            <nz-descriptions-item [nzTitle]="lastname">
+              <span style="font-weight: 500;">&nbsp;</span>
+            </nz-descriptions-item>
+          </nz-descriptions>
+          <ng-template #lastname>
+            <span style="font-weight: bold;">3. LAST NAME</span>
+          </ng-template>
+        </div>
+        <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+          <nz-descriptions>
+            <nz-descriptions-item [nzTitle]="firstname">
+              <span style="font-weight: 500;">&nbsp;</span>
+            </nz-descriptions-item>
+          </nz-descriptions>
+          <ng-template #firstname>
+            <span style="font-weight: bold;">FIRST NAME</span>
+          </ng-template>
+        </div>
+        <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+          <nz-descriptions>
+            <nz-descriptions-item [nzTitle]="middlename">
+              <span style="font-weight: 500;">&nbsp;</span>
+            </nz-descriptions-item>
+          </nz-descriptions>
+          <ng-template #middlename>
+            <span style="font-weight: bold;">MIDDLE NAME</span>
+          </ng-template>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+          <div nz-row>
+            <div nz-col [nzSpan]="6">
+              <div style="font-weight: bold;">
+                4. TYPE OF DISABILITY:
+              </div>
+              <div style="margin-left: 5%;">
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">Mental/Intellectual</span>
+              </div>
+              <div style="margin-left: 5%;">
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">Hearing Disability</span>
+              </div>
+            </div>
+
+            <div nz-col [nzSpan]="6">
+              <div>
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">Psychosocial Disability</span>
+              </div>
+              <div>
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">Visual Disability</span>
+              </div>
+              <div>
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">Speech Impairment</span>
+              </div>
+            </div>
+
+            <div nz-col [nzSpan]="12">
+              <div nz-row>
+                <div nz-col [nzSpan]="12">
+                  <span class="dot">
+                    <span>&nbsp;</span>
+                  </span>
+                  <span class="radioText">Disability due to Chronic Illness</span>
+                </div>
+                <div nz-col [nzSpan]="12">
+                  <span class="dot">
+                    <span>&nbsp;</span>
+                  </span>
+                  <span class="radioText">Learning Disability</span>
+                </div>
+              </div>
+              <div>
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">Orthopedic (Musculoskeletal) Disability</span>
+              </div>
+              <div >
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">Multiple Disabilities, specify</span>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+          <div nz-row>
+            <div nz-col [nzSpan]="6">
+              <nz-descriptions>
+                <nz-descriptions-item [nzTitle]="causeofdisability"></nz-descriptions-item>
+              </nz-descriptions>
+              <ng-template #causeofdisability>
+                <span style="font-weight: bold;">5. Cause of Disability</span>
+              </ng-template>
+            </div>
+
+            <div nz-col [nzSpan]="6">
+              <div>
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">Congenital/Inborn</span>
+              </div>
+            </div>
+
+            <div nz-col [nzSpan]="6">
+              <div>
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">Illness</span>
+              </div>
+            </div>
+
+            <div nz-col [nzSpan]="6">
+              <div>
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">Injury</span>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+          <nz-descriptions>
+            <nz-descriptions-item [nzTitle]="address"></nz-descriptions-item>
+          </nz-descriptions>
+          <ng-template #address>
+            <span style="font-weight: bold;">6. ADDRESS</span>
+          </ng-template>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+          <div style="font-weight: 500;">House No. and Street</div>
+          <div style="font-weight: 500;">&nbsp;</div>
+        </div>
+
+        <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+          <div style="font-weight: 500;">Barangay</div>
+          <div style="font-weight: 500;">&nbsp;</div>
+        </div>
+
+        <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+          <div style="font-weight: 500;">Municipality</div>
+          <div style="font-weight: 500;">&nbsp;</div>
+        </div>
+
+        <div nz-col [nzSpan]="5" style="border: 1px solid gray;">
+          <div style="font-weight: 500;">Province</div>
+          <div style="font-weight: 500;">&nbsp;</div>
+        </div>
+
+        <div nz-col [nzSpan]="4" style="border: 1px solid gray;">
+          <div style="font-weight: 500;">Region</div>
+          <div style="font-weight: 500;">&nbsp;</div>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+          <div style="font-weight: bold;">7. CONTACT DETAILS</div>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+          <div style="font-weight: 500;">7.a. TEL. NOS.:</div>
+          <div style="font-weight: 500;">&nbsp;</div>
+        </div>
+
+        <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+          <div style="font-weight: 500;">7.b. MOBILE NO.:</div>
+          <div style="font-weight: 500;">&nbsp;</div>
+        </div>
+
+        <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+          <div style="font-weight: 500;">7.c. EMAIL ADDRESS</div>
+          <div style="font-weight: 500;">&nbsp;</div>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+          <div style="font-weight: bold;">8. DATE OF BIRTH <span style="font-style: italic;">(mm/dd/yyyy)</span>:</div>
+          <div style="font-weight: 500;">&nbsp;</div>
+        </div>
+
+        <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+          <div style="font-weight: bold;">9. SEX:</div>
+          <div nz-row>
+            <div nz-col [nzSpan]="7" style="padding-left: 10%;">
+              <span class="dot">
+                <span>&nbsp;</span>
+              </span>
+              <span style="font-weight: 500;"> Male</span>
+            </div>
+            <div nz-col [nzSpan]="15">
+              <span class="dot">
+                <span>&nbsp;</span>
+              </span>
+              <span style="font-weight: 500;"> Female</span>
+            </div>
+          </div>
+        </div>
+
+        <div nz-col [nzSpan]="8" style="border: 1px solid gray;" class="modifiedlabel">
+          <div style="font-weight: bold;">10. CIVIL STATUS:
+            <span class="dot" style="margin-left: 5%;">
+              <span>&nbsp;</span>
+            </span>
+            <span style="font-weight: 500;">Single</span>
+            <span class="dot" style="margin-left: 10%;">
+              <span>&nbsp;</span>
+            </span>
+            <span style="font-weight: 500;">Married</span>
+          </div>
+          <div nz-row>
+            <div nz-col [nzSpan]="7">
+              <span class="dot">
+                <span>&nbsp;</span>
+              </span>
+              <span style="font-weight: 500;">Widower</span>
+            </div>
+            <div nz-col [nzSpan]="7">
+              <span class="dot">
+                <span>&nbsp;</span>
+              </span>
+              <span style="font-weight: 500;">Separated</span>
+            </div>
+            <div nz-col [nzSpan]="10">
+              <span class="dot">
+                <span>&nbsp;</span>
+              </span>
+              <span style="font-weight: 500;">Co-habitation (Live-in)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="24" style="border: 1px solid gray;" class="modifiedlabel">
+          <div style="font-weight: bold;">11. EDUCATIONAL ATTAINMENT:</div>
+          <div nz-row>
+            <div nz-col [nzSpan]="6">
+              <div style="margin-left: 5%;">
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">Elementary Undergraduate</span>
+              </div>
+              <div style="margin-left: 5%;">
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">College Undergraduate</span>
+              </div>
+            </div>
+
+            <div nz-col [nzSpan]="6">
+              <div>
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">Elementary Graduate</span>
+              </div>
+              <div>
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">College Graduate</span>
+              </div>
+            </div>
+
+            <div nz-col [nzSpan]="6">
+              <div>
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">High School Undergraduate</span>
+              </div>
+              <div nz-row>
+                <div nz-col [nzSpan]="12">
+                  <span class="dot">
+                    <span>&nbsp;</span>
+                  </span>
+                  <span class="radioText">Post Graduate</span>
+                </div>
+                <div nz-col [nzSpan]="12">
+                  <span class="dot">
+                    <span>&nbsp;</span>
+                  </span>
+                  <span class="radioText">Vocational</span>
+                </div>
+              </div>
+            </div>
+
+            <div nz-col [nzSpan]="6">
+              <div>
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">High School Graduate</span>
+              </div>
+              <div>
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">None</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+          <span style="font-weight: bold;">12. EMPLOYMENT STATUS:</span>
+          <span class="dot" style="margin-left: 5%;">
+            <span>&nbsp;</span>
+          </span>
+          <span style="font-weight: 500;">Employed</span>
+          <span class="dot" style="margin-left: 10%;">
+            <span>&nbsp;</span>
+          </span>
+          <span style="font-weight: 500;">Unemployed</span>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+          <span style="font-weight: bold;">13. TYPE OF EMPLOYMENT <span style="font-style: italic;">(Please check one if employed)</span>:</span>
+          <span class="dot" style="margin-left: 5%;">
+            <span>&nbsp;</span>
+          </span>
+          <span style="font-weight: 500;">Private</span>
+          <span class="dot" style="margin-left: 10%;">
+            <span>&nbsp;</span>
+          </span>
+          <span style="font-weight: 500;">Government</span>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+          <div style="font-weight: bold;">14. TYPE OF EMPLOYER <span style="font-style: italic;">(Please check one if employed)</span>:</div>
+          <span class="dot" style="margin-left: 2%;">
+            <span>&nbsp;</span>
+          </span>
+          <span style="font-weight: 500;">Permanent</span>
+          <span class="dot" style="margin-left: 2%;">
+            <span>&nbsp;</span>
+          </span>
+          <span style="font-weight: 500;">Regular</span>
+          <span class="dot" style="margin-left: 2%;">
+            <span>&nbsp;</span>
+          </span>
+          <span style="font-weight: 500;">Contractual</span>
+          <span class="dot" style="margin-left: 2%;">
+            <span>&nbsp;</span>
+          </span>
+          <span style="font-weight: 500;">Casual</span>
+          <span class="dot" style="margin-left: 2%;">
+            <span>&nbsp;</span>
+          </span>
+          <span style="font-weight: 500;">Self-Employed</span>
+          <span class="dot" style="margin-left: 2%;">
+            <span>&nbsp;</span>
+          </span>
+          <span style="font-weight: 500;">Seasonal</span>
+          <span class="dot" style="margin-left: 2%;">
+            <span>&nbsp;</span>
+          </span>
+          <span style="font-weight: 500;">Emergency</span>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="12" style="border: 1px solid gray;">
+          <div style="font-weight: bold;">15. OCCUPATION: <span style="font-style: italic;">(Please check one):</span></div>
+          <div style="margin-left: 3%;">
+            <span class="dot">
+              <span>&nbsp;</span>
+            </span>
+            <span class="radioText">Officials of Government and Special Interest
+              <div style="padding-left: 10%;">Organizations, Corporate Executives,</div>
+              <div style="padding-left: 10%;">Managers, Managing Proprietors and</div>
+              <div style="padding-left: 10%;">Supervisors</div>
+            </span>
+          </div>
+          <div style="margin-left: 3%;">
+            <span class="dot">
+              <span>&nbsp;</span>
+            </span>
+            <span class="radioText">Professionals</span>
+          </div>
+          <div style="margin-left: 3%;">
+            <span class="dot">
+              <span>&nbsp;</span>
+            </span>
+            <span class="radioText">Technicians and Associate Professionals</span>
+          </div>
+          <div style="margin-left: 3%;">
+            <span class="dot">
+              <span>&nbsp;</span>
+            </span>
+            <span class="radioText">Clerks</span>
+          </div>
+          <div style="margin-left: 3%;">
+            <span class="dot">
+              <span>&nbsp;</span>
+            </span>
+            <span class="radioText">Service Workers and Shop and Market Sales</span>
+          </div>
+          <div style="margin-left: 3%;">
+            <span class="dot">
+              <span>&nbsp;</span>
+            </span>
+            <span class="radioText">Workers</span>
+          </div>
+          <div style="margin-left: 3%;">
+            <span class="dot">
+              <span>&nbsp;</span>
+            </span>
+            <span class="radioText">Farmers, Forestry Workers and Fishermen</span>
+          </div>
+          <div style="margin-left: 3%;">
+            <span class="dot">
+              <span>&nbsp;</span>
+            </span>
+            <span class="radioText">Trades and Related Workers</span>
+          </div>
+          <div style="margin-left: 3%;">
+            <span class="dot">
+              <span>&nbsp;</span>
+            </span>
+            <span class="radioText">Plant and Machine Operators and Assemblers</span>
+          </div>
+          <div style="margin-left: 3%;">
+            <span class="dot">
+              <span>&nbsp;</span>
+            </span>
+            <span class="radioText">Laborers</span>
+          </div>
+          <div style="margin-left: 3%;">
+            <span class="dot">
+              <span>&nbsp;</span>
+            </span>
+            <span class="radioText">Unskilled Workers</span>
+          </div>
+          <div style="margin-left: 3%;">
+            <span class="dot">
+              <span>&nbsp;</span>
+            </span>
+            <span class="radioText">Not Applicable</span>
+          </div>
+          <div style="margin-left: 3%;">
+            <span class="dot">
+              <span>&nbsp;</span>
+            </span>
+            <span class="radioText">Others, specify </span>
+          </div>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <div nz-row>
+            <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+              <div style="font-weight: bold;">16. ID Reference No.</div>
+            </div>
+            <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+              <div style="font-weight: bold;">SSS No.: 
+                <span style="font-weight: 500;">&nbsp;</span>
+              </div>
+            </div>
+            <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+              <div style="font-weight: bold;">GSIS No.:
+                <span style="font-weight: 500;">&nbsp;</span>
+              </div>
+            </div>
+            <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+              <div style="font-weight: bold;">Pag-ibig No.:
+                <span style="font-weight: 500;">&nbsp;</span>
+              </div>
+            </div>
+            <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+              <div style="font-weight: bold;">PhilHealth No.:
+                <span style="font-weight: 500;">&nbsp;</span>
+              </div>
+            </div>
+            <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+              <div style="margin-left: 5%;">
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">PhilHealth Member</span>
+              </div>
+              <div style="margin-left: 5%;">
+                <span class="dot">
+                  <span>&nbsp;</span>
+                </span>
+                <span class="radioText">PhilHealth Member Dependent</span>
+              </div>
+            </div>
+            <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+              <div style="font-weight: bold;">17. BLOOD TYPE:</div>
+
+              <div nz-row>
+                <div nz-col [nzSpan]="6">
+                  <div style="margin-left: 8%;">
+                    <span class="dot">
+                      <span>&nbsp;</span>
+                    </span>
+                    <span class="radioText">A+</span>
+                  </div>
+                  <div style="margin-left: 8%;">
+                    <span class="dot">
+                      <span>&nbsp;</span>
+                    </span>
+                    <span class="radioText">AB+</span>
+                  </div>
+                </div>
+                <div nz-col [nzSpan]="6">
+                  <div>
+                    <span class="dot">
+                      <span>&nbsp;</span>
+                    </span>
+                    <span class="radioText">A-</span>
+                  </div>
+                  <div>
+                    <span class="dot">
+                      <span>&nbsp;</span>
+                    </span>
+                    <span class="radioText">AB-</span>
+                  </div>
+                </div>
+                <div nz-col [nzSpan]="6">
+                  <div>
+                    <span class="dot">
+                      <span>&nbsp;</span>
+                    </span>
+                    <span class="radioText">B+</span>
+                  </div>
+                  <div>
+                    <span class="dot">
+                      <span>&nbsp;</span>
+                    </span>
+                    <span class="radioText">O+</span>
+                  </div>
+                </div>
+                <div nz-col [nzSpan]="6">
+                  <div>
+                    <span class="dot">
+                      <span>&nbsp;</span>
+                    </span>
+                    <span class="radioText">B-</span>
+                  </div>
+                  <div>
+                    <span class="dot">
+                      <span>&nbsp;</span>
+                    </span>
+                    <span class="radioText">O-</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+              <div style="font-weight: bold;">18. ORGANIZATION INFORMATION.</div>
+            </div>
+            <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+              <div style="font-weight: 500;">Organization Affiliated:</div>
+              <div style="font-weight: 500;">&nbsp;</div>
+            </div>
+            <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+              <div style="font-weight: 500;">Contact Person:</div>
+              <div style="font-weight: 500;">&nbsp;</div>
+            </div>
+            <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+              <div style="font-weight: 500;">Office Address:</div>
+              <div style="font-weight: 500;">&nbsp;</div>
+            </div>
+            <div nz-col [nzSpan]="24" style="border: 1px solid gray;">
+              <div style="font-weight: 500;">Tel Nos.: 
+                <span style="font-weight: 500;">&nbsp;</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          <div style="font-weight: bold;">19. FAMILY BACKGROUND.</div>
+        </div>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          <div style="font-weight: bold; text-align: center;">Last Name</div>
+        </div>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          <div style="font-weight: bold; text-align: center;">First Name</div>
+        </div>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          <div style="font-weight: bold; text-align: center;">Middle Name</div>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          <div style="font-weight: bold; text-align: center; font-style: italic;">FATHER'S NAME:</div>
+          &nbsp;
+        </div>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          <div style="text-align: center; font-weight: 500;">&nbsp;</div>
+        </div>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          <div style="text-align: center; font-weight: 500;">&nbsp;</div>
+        </div>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          <div style="text-align: center; font-weight: 500;">&nbsp;</div>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          <div style="font-weight: bold; text-align: center; font-style: italic;">MOTHER'S NAME:</div>
+          &nbsp;
+        </div>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          <div style="text-align: center; font-weight: 500;">&nbsp;</div>
+        </div>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          <div style="text-align: center; font-weight: 500;">&nbsp;</div>
+        </div>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          <div style="text-align: center; font-weight: 500;">&nbsp;</div>
+          <div style="text-align: center; font-style: italic; font-weight: 500;">(optional)</div>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          <div style="font-weight: bold; text-align: center; font-style: italic;">GUARDIAN'S NAME:</div>
+          &nbsp;
+        </div>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          &nbsp;
+        </div>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          &nbsp;
+        </div>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          &nbsp;
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          <div style="font-weight: bold; font-style: italic;">20. ACCOMPLISHED BY:</div>
+          &nbsp;
+        </div>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          &nbsp;
+        </div>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          &nbsp;
+        </div>
+        <div nz-col [nzSpan]="6" style="border: 1px solid gray;">
+          &nbsp;
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+          <div style="font-weight: bold; font-style: italic;">20.a. NAME OF REPORTING UNIT:</div>
+          &nbsp;
+        </div>
+        <div nz-col [nzSpan]="16" style="border: 1px solid gray;">
+          &nbsp;
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="8" style="border: 1px solid gray;">
+          <div style="font-weight: bold; font-style: italic;">21. REGISTRATION NUMBER:</div>
+          &nbsp;
+        </div>
+        <div nz-col [nzSpan]="16" style="border: 1px solid gray;">
+          &nbsp;
+        </div>
+      </div>
+
+    </div>
+  </div>
+</nz-spin>

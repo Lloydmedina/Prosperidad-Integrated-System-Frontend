@@ -1,0 +1,31 @@
+.actionEdit {
+    color: #1582E7;
+  }
+  
+  .actionDelete {
+    color: #f50;
+  }
+  
+  .actionEdit:hover {
+    color: #1582E7;
+  }
+  
+  .actionDelete:hover {
+    color: #1582E7;
+  }
+  
+  .actionPrint {
+    color: #1582E7;
+  }
+  
+  .box{
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  }
+  [nz-radio] {
+    display: block;
+    height: 32px;
+    line-height: 32px;
+  }
+  .card-2 {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  }

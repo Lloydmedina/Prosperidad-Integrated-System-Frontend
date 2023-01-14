@@ -1,0 +1,121 @@
+
+<nz-spin [nzSpinning]="loading">
+<div style="height: 100%;">
+  <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
+    <nz-anchor [nzShowInkInFixed]="false">
+      <nz-page-header>
+        <nz-page-header-title>Signatory Setup</nz-page-header-title>
+        <nz-page-header-extra>
+          <button nz-button (click)="$event.preventDefault()">
+            <i nz-icon nzType="folder-open"></i>
+            Save as Draft
+          </button>
+          <button nz-button (click)="cancel($event);" nzType="primary" nzDanger>
+            <i nz-icon nzType="close"></i>
+            Cancel
+          </button>
+          <button nz-button nzType="primary" class="button-form" [disabled]="!validateForm.valid">
+            <i nz-icon nzType="save"></i>
+            Save & Exit
+          </button>
+        </nz-page-header-extra>
+      </nz-page-header>
+    </nz-anchor>
+
+    <nz-card nzType="inner" nzTitle="{{title}}">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="10">
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="8" [nzXs]="8"  nzRequired>Department</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24">
+              <nz-select
+                nzShowSearch
+                
+                formControlName="dept_id"
+                nzPlaceHolder="Select Department"
+                (ngModelChange)="deptSelect($event)"
+              >
+                <nz-option *ngFor="let list of deptList" nzValue="{{list.dept_id}}" nzLabel="{{list.short_desc}}"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="8" [nzXs]="8"  nzRequired>Form</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24">
+              <nz-select
+                nzShowSearch
+                
+                formControlName="form_id"
+                nzPlaceHolder="Select Form"
+                (ngModelChange)="formSelect($event)"
+              >
+              <nz-option *ngFor="let list of formDropdown" nzValue="{{list.form_guid}}" nzLabel="{{list.form_name}}"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-table nzSize="small" [nzTitle]="add" formArrayName="signatoryDetails" [nzShowPagination]="false" nzBordered [nzData]="['']">
+            <thead>
+              <tr>
+                <th style="width: 200px ">Signatory Type</th>
+                <th>Name</th>
+                <th style="width: 100px ">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of signatory_dtl().controls; let i=index" [formGroupName]="i">
+                <td > 
+                  <nz-form-control >
+                    <nz-select style="width: 200px " nzShowSearch formControlName="signatory_type_id" nzPlaceHolder="Select Signatory Type" >
+                      <nz-option *ngFor="let type of sigTypeList" [nzValue]="type.signatory_type_id" [nzLabel]="type.signatory_type_name"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </td>
+                <td>
+                  <nz-form-control >
+                    <nz-select style="width: 300px " nzShowSearch formControlName="assign_type_id" nzPlaceHolder="Select Signatory Type" >
+                      <nz-option *ngFor="let type of assignTypeList" [nzValue]="type.assign_type_id" [nzLabel]="type.assign_type_name"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </td>
+                <td>
+                  <div>
+                    <button style="transform: scale(0.8); width: 100%;" nz-button nzType="primary" (click)="deleteRow(i)" nzDanger>Remove</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+  <!--   
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24">Description</nz-form-label>
+            <nz-form-control nzErrorTip="Please input your username!">
+              <nz-input-group>
+                <input type="text" nz-input formControlName="description" placeholder="Description" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Route Reference</nz-form-label>
+            <nz-form-control nzErrorTip="Please input your username!">
+              <nz-input-group>
+                <input type="text" nz-input style="text-transform: lowercase;" formControlName="route_reference" placeholder="e.g. health" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item> -->
+
+        </div>
+      </div>
+    </nz-card>
+
+  </form>
+  
+</div>
+</nz-spin>
+<ng-template #add>
+  <div style="padding-left: 27vw;">
+    <button nz-button (click)="addRow();$event.preventDefault()" style="transform: scale(0.9); background: #1890ff; color: white;"><i nz-icon nzType="plus-square" nzTheme="outline"></i> Add Row</button>
+  </div>
+</ng-template>

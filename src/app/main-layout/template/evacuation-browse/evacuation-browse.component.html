@@ -1,0 +1,39 @@
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <nz-table #basicTable [nzData]="listOfData" nzBordered [nzTitle]="dateFilter" nzSize="small" nzShowPagination nzShowSizeChanger>
+    <thead>
+      <tr>
+        <th>Region</th>
+        <th>Address</th>
+        <th>Venue</th>
+        <th>Condition</th>
+        <th>Capacity</th>
+        <th>Status</th>
+        <th nzWidth="10%">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{data.reg_name}}</td>
+        <td>{{data.brgy_name}} {{data.street}} , {{data.city_mun_name}}, {{data.province_name}}</td>
+        <td>{{data.venue}}</td>
+        <td>{{data.venue_condition}}</td>
+        <td>{{data.capacity}}</td>
+        <td *ngIf="data.status == 'Active'"><nz-tag [nzColor]="'#2799FF'">{{data.status}}</nz-tag></td>
+        <td *ngIf="data.status == 'Deleted'"><nz-tag style="color: #001529;" [nzColor]="'#FAFAFA'">{{data.status}}</nz-tag></td>
+        <td>
+          <button nz-button nzType="default" (click)="triggerSelect(data)">
+            <i nz-icon nzType="select" nzTheme="outline"></i>
+            Select
+          </button>
+        </td>
+      </tr>
+    </tbody>
+
+    <ng-template #dateFilter>
+      <input nz-input placeholder="Search" [(ngModel)]="searchText" (input)="onKey()" />
+      <!-- <app-person-filter (valueChange)="search($event)" (clearChange)="clear($event)" (selectChange)="select($event)"></app-person-filter> -->
+      <!-- <app-date-filter></app-date-filter> -->
+    </ng-template>
+    
+  </nz-table>
+</nz-spin>

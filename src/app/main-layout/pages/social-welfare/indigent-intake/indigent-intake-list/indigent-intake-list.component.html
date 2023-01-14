@@ -1,0 +1,117 @@
+<nz-spin nzTip="Data Loading..." [nzSpinning]="isLoading">
+  <nz-table #basicTable [nzData]="listOfData" nzBordered [nzTitle]="dateFilter" nzSize="small" nzShowPagination nzShowSizeChanger>
+    <thead>
+      <tr>
+        <th>Trans No.</th>
+        <th>Trans Date</th>
+        <th>Applicant/Client</th>
+        <th>Address</th>
+        <th>Member Count</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of basicTable.data; let i = index;">
+        <tr>
+          <td>{{data.form_trans_no}}</td>
+          <td>{{data.application_date | date:'mediumDate'}}</td>
+          <td>{{data.prefix}} {{data.first_name}} {{data.middle_name}} {{data.last_name}} {{data.suffix}}</td>
+          <td>{{data.brgy_name}} {{data.street}} , {{data.city_mun_name}}, {{data.province_name}}</td>
+          <td>{{data.member_count}}</td>
+          <td *ngIf="data.status == 'Active'"><nz-tag [nzColor]="'#2799FF'">{{data.status}}</nz-tag></td>
+          <td *ngIf="data.status == 'Deleted'"><nz-tag [nzColor]="'#f50'">{{data.status}}</nz-tag></td>
+          <td [nzExpand]="expandSet.has(data.dafac_intake_guid)" (nzExpandChange)="onExpandChange(data.dafac_intake_guid, $event, i)">
+            <button nz-tooltip nzTooltipTitle="Edit" class="actionEdit" nz-button nzType="text" (click)="edit(data.dafac_intake_guid)"><i nz-icon nzType="form" nzTheme="outline"></i></button>
+            <button nz-tooltip nzTooltipTitle="Delete" class="actionDelete" nz-button nzType="text" (click)="delete(data.dafac_intake_guid, data)"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+            <button nz-tooltip nzTooltipTitle="Print" class="actionPrint" nz-button nzType="text" (click)="print(data.dafac_intake_guid)"><i nz-icon nzType="printer" nzTheme="outline"></i></button>
+          </td>
+        </tr>
+        <tr [nzExpand]="expandSet.has(data.dafac_intake_guid)">
+          <nz-card nzTitle="Family Members Information">
+            <nz-descriptions nzTitle="{{data.prefix}} {{data.first_name}} {{data.middle_name}} {{data.last_name}} {{data.suffix}}">
+              <nz-descriptions-item nzTitle="Application Date">{{data.application_date | date:'mediumDate'}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Sex">{{data.gender_name}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Age"></nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Birth Date">{{data.birth_date | date:'mediumDate'}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Birth Place">{{data.place_of_birth}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Province">{{data.province_name}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="City/Municipality">{{data.city_mun_name}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Barangay">{{data.brgy_name}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Street">{{data.street}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Civil Status">{{data.civil_status_name}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Educational Attainment"></nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Religion">{{data.religion}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Occupation">{{data.profession}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Monthly Income"></nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Primary Contact">{{data.contact_no}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Secondary Contact"></nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Status of House Occupancy"></nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Estimated Cost of Property"></nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Total Family Income"></nz-descriptions-item>
+            </nz-descriptions>
+
+            <nz-table [nzShowPagination]="false" #basicTable [nzData]="listOfDataDetails[i]" nzBordered [nzTitle]="FamilymMembers">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Address</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let dataDetails of basicTable.data; let iDetails = index">
+                  <tr>
+                    <td>{{dataDetails.prefix}} {{dataDetails.first_name}} {{dataDetails.middle_name}} {{dataDetails.last_name}} {{dataDetails.suffix}}</td>
+                    <td>{{dataDetails.brgy_name}} {{dataDetails.street}} , {{dataDetails.city_mun_name}}, {{dataDetails.province_name}}</td>
+                    <td *ngIf="dataDetails.status == 'Active'"><nz-tag [nzColor]="'#2799FF'">{{dataDetails.status}}</nz-tag></td>
+                    <td *ngIf="dataDetails.status == 'Deleted'"><nz-tag [nzColor]="'#f50'">{{dataDetails.status}}</nz-tag></td>
+                    <td [nzExpand]="expandSetDetails.has(dataDetails.person_guid)" (nzExpandChange)="onExpandChangeDetails(dataDetails.person_guid, $event, iDetails)"></td>
+                  </tr>
+                  <tr [nzExpand]="expandSetDetails.has(dataDetails.person_guid)">
+                    <nz-card nzTitle="Family Member Information">
+                      <nz-descriptions nzTitle="{{dataDetails.prefix}} {{dataDetails.first_name}} {{dataDetails.middle_name}} {{dataDetails.last_name}} {{dataDetails.suffix}}">
+                        <nz-descriptions-item nzTitle="Application Date">{{dataDetails.application_date | date:'mediumDate'}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Sex">{{dataDetails.gender_name}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Age"></nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Birth Date">{{dataDetails.birth_date | date:'mediumDate'}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Birth Place">{{dataDetails.place_of_birth}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Province">{{dataDetails.province_name}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="City/Municipality">{{dataDetails.city_mun_name}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Barangay">{{dataDetails.brgy_name}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Street">{{dataDetails.street}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Civil Status">{{dataDetails.civil_status_name}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Educational Attainment"></nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Religion">{{dataDetails.religion}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Occupation">{{dataDetails.profession}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Monthly Income"></nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Primary Contact">{{dataDetails.contact_no}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Secondary Contact"></nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="4P's Member"></nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="IP's"></nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Status of House Occupancy"></nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Estimated Cost of Property"></nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Total Family Income"></nz-descriptions-item>
+                      </nz-descriptions>
+                    </nz-card>
+                  </tr>
+                </ng-container>
+              </tbody>
+              <ng-template #FamilymMembers>
+                <h4>Family Members</h4>
+              </ng-template>
+              
+            </nz-table>
+
+          </nz-card>
+        </tr>
+      </ng-container>
+    </tbody>
+
+    <ng-template #dateFilter>
+      <app-date-filter></app-date-filter>
+    </ng-template>
+    
+  </nz-table>
+</nz-spin>
